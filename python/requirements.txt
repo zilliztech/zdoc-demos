@@ -1,2 +1,2 @@
-pymilvus
+pymilvus==2.3.0
 minio

@@ -19,28 +19,23 @@ Running any demo in this repository requires the installation of corresponding S
     </thead>
     <tbody>
         <tr>
-            <td rowspan="9"><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
-            <td>00_quick_start.py</td>
+            <td rowspan="8"><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/main/python/00_quick_start.py">python/00_quick_start.py</a></td>
             <td>Python</td>
             <td>Ready</td>
         <tr>
         <tr>
-            <td>00_quick_start.java</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/main/java/quick_start">java/quick_start</a></td>
             <td>Java</td>
             <td>Ready</td>
         <tr>
         <tr>
-            <td>00_quick_start.go</td>
-            <td>Golang</td>
-            <td>Ready</td>
-        <tr>
-        <tr>
-            <td>00_quick_start.js</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/main/node/00_quick_start.js">node/00_quick_start.js</a></td>
             <td>Node.js</td>
             <td>Ready</td>
         <tr>
         <tr>
-            <td>00_quick_start.sh</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/main/curl/00_quick_start.sh">curl/00_quick_start.sh</a></td>
             <td>RESTful</td>
             <td>Ready</td>
         <tr>
