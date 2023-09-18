@@ -28,6 +28,11 @@ To run the demos, do as following in the `python` folder:
     > python 00_quick_start.py 
     ```
 
+| Case | Demo | Status |
+| ---- | ---- | ------ |
+| [Quick Start](https://docs.zilliz.com/docs/quick-start-1) | [python/00_quick_start.py](https://github.com/zilliztech/zdoc-demos/blob/master/python/00_quick_start.py) | Ready |
+| [Use Customized Schema](https://docs.zilliz.com/docs/use-customized-schema) | 01_use_customized_schema.py | Ready |
+
 <table>
     <thead>
         <tr>
