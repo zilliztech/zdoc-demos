@@ -4,15 +4,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-
-import io.milvus.client.*;
+import io.milvus.client.MilvusServiceClient;
 import io.milvus.grpc.DescribeCollectionResponse;
-import io.milvus.param.*;
+import io.milvus.param.ConnectParam;
+import io.milvus.param.R;
+import io.milvus.param.RpcStatus;
 import io.milvus.param.collection.DescribeCollectionParam;
 import io.milvus.param.collection.DropCollectionParam;
 import io.milvus.param.highlevel.collection.CreateSimpleCollectionParam;
@@ -83,7 +83,7 @@ public final class App {
         // 4. Insert a single entity
         String content;
 
-        Path file = Path.of("medium_articles_2020_dpr.json");
+        Path file = Path.of("../../medium_articles_2020_dpr.json");
         try {
             content = Files.readString(file);
         } catch (Exception e) {
