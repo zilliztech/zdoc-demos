@@ -28,11 +28,6 @@ To run the demos, do as following in the `python` folder:
     > python 00_quick_start.py 
     ```
 
-| Case | Demo | Status |
-| ---- | ---- | ------ |
-| [Quick Start](https://docs.zilliz.com/docs/quick-start-1) | [python/00_quick_start.py](https://github.com/zilliztech/zdoc-demos/blob/master/python/00_quick_start.py) | Ready |
-| [Use Customized Schema](https://docs.zilliz.com/docs/use-customized-schema) | 01_use_customized_schema.py | Ready |
-
 <table>
     <thead>
         <tr>
@@ -46,37 +41,37 @@ To run the demos, do as following in the `python` folder:
             <td><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
             <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/00_quick_start.py">python/00_quick_start.py</a></td>
             <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use-customized-schema">Use Customized Schema</a></td>
             <td>01_use_customized_schema.py</td>
             <td>Ready</td>
-        <tr>
-        <tr>
-            <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
-            <td>01_enable_dynamic_schema.py</td>
-            <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
             <td>01_enable_dynamic_schema.py</td>
             <td>Ready</td>
+        </tr>
         <tr>
+            <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
+            <td>01_enable_dynamic_schema.py</td>
+            <td>Ready</td>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use_partition_key">Use Partition Key</a></td>
             <td>01_use_partition_key.py</td>
             <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
             <td>01_use_json_field.py</td>
             <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use-bulkwriter-for-data-import">Use BulkWriter for Data Import</a></td>
             <td>01_use_bulk_writer_and_import.py</td>
             <td>Ready</td>
-        <tr>
+        </tr>
     </tbody>
 </table>
 
@@ -108,37 +103,37 @@ To run the demos in the `java` folder, run the following commands:
             <td><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
             <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/quick_start/src/main/java/com/zilliz/docs/App.java">java/quick_start</a></td>
             <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use-customized-schema">Use Customized Schema</a></td>
             <td>java/use_customized_schema</td>
             <td>Ready</td>
-        <tr>
-        <tr>
-            <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
-            <td>java/enable_dynamic_schema</td>
-            <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
             <td>java/enable_dynamic_schema</td>
             <td>Ready</td>
+        </tr>
         <tr>
+            <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
+            <td>java/enable_dynamic_schema</td>
+            <td>Ready</td>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use_partition_key">Use Partition Key</a></td>
             <td>java/use_partition_key</td>
             <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
             <td>java/use_json_field</td>
             <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use-bulkwriter-for-data-import">Use BulkWriter for Data Import</a></td>
             <td>java/use_bulk_writer_and_import</td>
             <td>Ready</td>
-        <tr>
+        </tr>
     </tbody>
 </table>
 
@@ -175,32 +170,32 @@ To run the demos, do the following in the `node` folder:
             <td><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
             <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/node/00_quick_start.js">node/00_quick_start.js</a></td>
             <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use-customized-schema">Use Customized Schema</a></td>
             <td>node/01_use_customized_schema.js</td>
             <td>Ready</td>
-        <tr>
-        <tr>
-            <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
-            <td>node/01_enable_dynamic_schema.js</td>
-            <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
             <td>node/01_enable_dynamic_schema.js</td>
             <td>Ready</td>
+        </tr>
         <tr>
+            <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
+            <td>node/01_enable_dynamic_schema.js</td>
+            <td>Ready</td>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use_partition_key">Use Partition Key</a></td>
             <td>node/01_use_partition_key.js</td>
             <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
             <td>node/01_use_json_field.js</td>
             <td>Ready</td>
-        <tr>
+        </tr>
     </tbody>
 </table>
 
@@ -239,27 +234,27 @@ To run the demos, do the following in the `go` project folder:
             <td><a href="https://docs.zilliz.com/docs/use-customized-schema">Use Customized Schema</a></td>
             <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/go/use_customized_schema/main.go">go/use_customized_schema/main.go</a></td>
             <td>Ready</td>
-        <tr>
-        <tr>
-            <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
-            <td>go/enable_dynamic_schema/main.go</td>
-            <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
             <td>go/enable_dynamic_schema/main.go</td>
             <td>Ready</td>
+        </tr>
         <tr>
+            <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
+            <td>go/enable_dynamic_schema/main.go</td>
+            <td>Ready</td>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use_partition_key">Use Partition Key</a></td>
             <td>go/use_partition_key/main.go</td>
             <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
             <td>go/use_json_field/main.go</td>
             <td>Ready</td>
-        <tr>
+        </tr>
     </tbody>
 </table>
 
@@ -290,31 +285,31 @@ To run the demos, do the following in the `curl` folder:
             <td><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
             <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/node/00_quick_start.js">curl/00_quick_start.sh</a></td>
             <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use-customized-schema">Use Customized Schema</a></td>
             <td>curl/01_use_customized_schema.sh</td>
             <td>Ready</td>
-        <tr>
-        <tr>
-            <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
-            <td>curl/01_enable_dynamic_schema.sh</td>
-            <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
             <td>curl/01_enable_dynamic_schema.sh</td>
             <td>Ready</td>
+        </tr>
         <tr>
+            <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
+            <td>curl/01_enable_dynamic_schema.sh</td>
+            <td>Ready</td>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use_partition_key">Use Partition Key</a></td>
             <td>curl/01_use_partition_key.sh</td>
             <td>Ready</td>
-        <tr>
+        </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
             <td>curl/01_use_json_field.sh</td>
             <td>Ready</td>
-        <tr>
+        </tr>
     </tbody>
 </table>
