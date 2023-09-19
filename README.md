@@ -44,7 +44,7 @@ To run the demos, do as following in the `python` folder:
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use-customized-schema">Use Customized Schema</a></td>
-            <td>01_use_customized_schema.py</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/01_use_customized_schema.py">python/01_use_customized_schema.py</a></td>
             <td>Ready</td>
         </tr>
         <tr>
@@ -87,7 +87,7 @@ To run the demos in the `java` folder, run the following commands:
     ```shell
     # replace the folder with the one you are interested in.
     > cd java/quick_start 
-    > mvn compile exec:java -Dexec.mainClass="com.zilliz.docs.App"
+    > mvn compile exec:java -Dexec.mainClass="com.zilliz.docs.QuickStartDemo"
     ```
 
 <table>
@@ -101,12 +101,12 @@ To run the demos in the `java` folder, run the following commands:
     <tbody>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/quick_start/src/main/java/com/zilliz/docs/App.java">java/quick_start</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/quick_start/src/main/java/com/zilliz/docs/QuickStartDemo.java">java/quick_start</a></td>
             <td>Ready</td>
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use-customized-schema">Use Customized Schema</a></td>
-            <td>java/use_customized_schema</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/quick_start/src/main/java/com/zilliz/docs/UseCustomizedSchemaDemo.java">java/use_customized_schema</a></td>
             <td>Ready</td>
         </tr>
         <tr>

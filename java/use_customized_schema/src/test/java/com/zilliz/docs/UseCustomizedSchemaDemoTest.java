@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Unit test for simple App.
  */
-class AppTest {
+class UseCustomizedSchemaDemoTest {
     /**
      * Rigorous Test.
      */

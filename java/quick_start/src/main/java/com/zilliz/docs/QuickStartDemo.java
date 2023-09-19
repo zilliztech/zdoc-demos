@@ -31,8 +31,8 @@ import io.milvus.response.QueryResultsWrapper;
 /**
  * Hello world!
  */
-public final class App {
-    private App() {
+public final class QuickStartDemo {
+    private QuickStartDemo() {
     }
 
     /**
