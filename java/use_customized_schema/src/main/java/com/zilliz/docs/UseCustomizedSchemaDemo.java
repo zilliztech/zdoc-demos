@@ -39,8 +39,8 @@ public final class UseCustomizedSchemaDemo  {
      * @param args The arguments of the program.
      */
     public static void main(String[] args) {
-        String clusterEndpoint = "https://in01-54d48357cf3a0c5.aws-us-west-2.vectordb-uat3.zillizcloud.com:19531";
-        String token = "db_admin:Mark567Fruit*";
+        String clusterEndpoint = "YOUR_CLUSTER_ENDPOINT";
+        String token = "YOUR_CLUSTER_TOKEN";
 
         // 1. Connect to Zilliz Cloud cluster
         ConnectParam connectParam = ConnectParam.newBuilder()
