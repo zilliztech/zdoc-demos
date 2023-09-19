@@ -106,7 +106,7 @@ To run the demos in the `java` folder, run the following commands:
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use-customized-schema">Use Customized Schema</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/quick_start/src/main/java/com/zilliz/docs/UseCustomizedSchemaDemo.java">java/use_customized_schema</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/use_customized_schema/src/main/java/com/zilliz/docs/UseCustomizedSchemaDemo.java">java/use_customized_schema</a></td>
             <td>Ready</td>
         </tr>
         <tr>
