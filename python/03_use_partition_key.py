@@ -21,7 +21,8 @@ fields = [
     FieldSchema(name="title_vector", dtype=DataType.FLOAT_VECTOR, dim=768),
     FieldSchema(name="link", dtype=DataType.VARCHAR, max_length=512),
     FieldSchema(name="reading_time", dtype=DataType.INT64),
-    FieldSchema(name="publication", dtype=DataType.VARCHAR, max_length=512),
+    # The field "publication" acts as the partition key.
+    FieldSchema(name="publication", dtype=DataType.VARCHAR, max_length=512, is_partition_key=True),
     FieldSchema(name="claps", dtype=DataType.INT64),
     FieldSchema(name="responses", dtype=DataType.INT64)
 ]
@@ -30,7 +31,8 @@ fields = [
 schema = CollectionSchema(
     fields,
     description="Schema of Medium articles",
-    enable_dynamic_field=False
+    # As an alternative, you can set the partition key by its name in the collection schema
+    # partition_key_field="publication"
 )
 
 # 3. Create collection
@@ -118,6 +120,8 @@ results = collection.search(
     data=[rows[0]['title_vector']],
     anns_field="title_vector",
     param=search_params,
+    # When conducting searches and queries, include the partition key in the bolean expression
+    expr="claps > 30 and reading_time < 10 and publication in ['Towards Data Science', 'Personal Growth']",
     output_fields=["title", "link"],
     limit=5
 )
