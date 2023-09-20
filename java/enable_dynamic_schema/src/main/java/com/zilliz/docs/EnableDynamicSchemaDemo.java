@@ -39,8 +39,8 @@ public final class EnableDynamicSchemaDemo {
      * @param args The arguments of the program.
      */
     public static void main(String[] args) {
-        String clusterEndpoint = "https://in01-55aa41ad635aafc.aws-us-west-2.vectordb.zillizcloud.com:19540";
-        String token = "db_admin:Mark567Fruit*";
+        String clusterEndpoint = "YOUR_CLUSTER_ENDPOINT";
+        String token = "YOUR_CLUSTER_TOKEN";
 
         // 1. Connect to Zilliz Cloud cluster
         ConnectParam connectParam = ConnectParam.newBuilder()
