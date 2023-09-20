@@ -195,7 +195,7 @@ public final class EnableDynamicSchemaDemo {
             .withTopK(5)   
             .withMetricType(MetricType.L2)  
             .withOutFields(outputFields)
-            .withExpr("title link \"Top%\"")
+            .withExpr("title like \"Top%\"")
             .build();
 
         R<SearchResults> response = client.search(searchParam);
