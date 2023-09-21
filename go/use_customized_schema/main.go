@@ -200,7 +200,7 @@ func main() {
 
 	res, err := conn.Search(
 		context.Background(),               // context
-		"medium_articles_2020",             // collectionName
+		COLLNAME,                           // collectionName
 		[]string{},                         // partitionNames
 		"claps > 30 and reading_time < 10", // expr
 		[]string{"claps", "reading_time"},  // outputFields
@@ -217,10 +217,17 @@ func main() {
 		log.Fatal("Failed to insert rows:", err.Error())
 	}
 
-	for _, result := range res {
-		fmt.Println("Number of found entities:", result.ResultCount)
-		fmt.Println("Scores: ", result.Scores)
-		fmt.Println("IDs: ", result.IDs)
+	for i, result := range res {
+		log.Println("Result counts", i, ":", result.ResultCount)
+
+		ids := result.IDs.FieldData().GetScalars().GetLongData().GetData()
+		scores := result.Scores
+		titles := result.Fields.GetColumn("title").FieldData().GetScalars().GetStringData().GetData()
+		publications := result.Fields.GetColumn("publication").FieldData().GetScalars().GetStringData().GetData()
+
+		for i, record := range ids {
+			log.Println("ID:", record, "Score:", scores[i], "Title:", titles[i], "Publication:", publications[i])
+		}
 	}
 
 	// Drop collection

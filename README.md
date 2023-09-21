@@ -57,7 +57,7 @@ To run the demos, do as following in the `python` folder:
         </tr>
         <tr>
             <td rowspan=2><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/02_enable_dynamic_schema.py.py">python/02_enable_dynamic_schema.py</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/02_enable_dynamic_schema.py">python/02_enable_dynamic_schema.py</a></td>
             <td>Ready</td>
         </tr>
         <tr>
@@ -66,7 +66,7 @@ To run the demos, do as following in the `python` folder:
         </tr>
         <tr>
             <td rowspan=2><a href="https://docs.zilliz.com/docs/use_partition_key">Use Partition Key</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/03_use_partition_key.py.py">python/03_use_partition_key.py</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/03_use_partition_key.py">python/03_use_partition_key.py</a></td>
             <td>Ready</td>
         </tr>
         <tr>
@@ -75,7 +75,7 @@ To run the demos, do as following in the `python` folder:
         </tr>
         <tr>
             <td rowspan=2><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/04_use_json_field.py.py">python/04_use_json_field.py</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/04_use_json_field.py">python/04_use_json_field.py</a></td>
             <td>Ready</td>
         </tr>
         <tr>
@@ -83,12 +83,28 @@ To run the demos, do as following in the `python` folder:
             <td>Ready</td>            
         </tr>
         <tr>
-            <td rowspan=2><a href="https://docs.zilliz.com/docs/use-bulkwriter-for-data-import">Use BulkWriter for Data Import</a></td>
-            <td>python/05_use_bulk_writer_and_import.py</td>
+            <td rowspan=6><a href="https://docs.zilliz.com/docs/use-bulkwriter-for-data-import">Use BulkWriter for Data Import</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/05_use_local-bulk-writer.py">python/05_use_local-bulk-writer.py</td>
             <td>Ready</td>
         </tr>
         <tr>
-            <td>python/05_use_bulk_writer_and_import.ipynb</td>
+            <td>python/05_use_local-bulk-writer.ipynb</td>
+            <td>Ready</td>            
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/06_use_remote-bulk-writer.py">python/06_use_remote-bulk-writer.py</td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td>python/06_use_remote-bulk-writer.ipynb</td>
+            <td>Ready</td>            
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/07_use_bulk_import.py">python/07_use_bulk_import.py</td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td>python/07_use_bulk_import.ipynb</td>
             <td>Ready</td>            
         </tr>
     </tbody>
@@ -241,17 +257,17 @@ To run the demos, do the following in the `go` project folder:
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
-            <td>go/enable_dynamic_schema/main.go</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/go/enable_dynamic_schema/main.go">go/enable_dynamic_schema/main.go</a></td>
             <td>Ready</td>
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use_partition_key">Use Partition Key</a></td>
-            <td>go/use_partition_key/main.go</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/go/use_partition_key/main.go">go/use_partition_key/main.go</a></td>
             <td>Ready</td>
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
-            <td>go/use_json_field/main.go</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/go/use_json_field/main.go">go/use_json_field/main.go</a></td>
             <td>Ready</td>
         </tr>
     </tbody>
@@ -287,15 +303,6 @@ To run the demos, do the following in the `curl` folder:
         </tr>
         <tr>
             <td>curl/00_quick_start_restful.ipynb</td>
-            <td>Ready</td>
-        </tr>
-        <tr>
-            <td rowspan=2><a href="https://docs.zilliz.com/docs/use-bulkwriter-for-data-import">Use BulkWriter for Data Import</a></td>
-            <td>curl/05_use_bulk_writer_and_import.sh</td>
-            <td>Ready</td>
-        </tr>
-        <tr>
-            <td>curl/05_use_bulk_writer_and_import_restful.ipynb</td>
             <td>Ready</td>
         </tr>
     </tbody>
