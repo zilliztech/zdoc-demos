@@ -10,7 +10,6 @@ import io.milvus.param.collection.DropCollectionParam;
 import io.milvus.grpc.DataType;
 import io.milvus.grpc.FlushResponse;
 import io.milvus.param.dml.InsertParam;
-import io.milvus.param.dml.InsertParam.Field;
 import io.milvus.grpc.MutationResult;
 import io.milvus.response.MutationResultWrapper;
 import io.milvus.param.dml.SearchParam;
@@ -39,8 +38,8 @@ public final class EnableDynamicSchemaDemo {
      * @param args The arguments of the program.
      */
     public static void main(String[] args) {
-        String clusterEndpoint = "https://in01-55aa41ad635aafc.aws-us-west-2.vectordb.zillizcloud.com:19540";
-        String token = "db_admin:Mark567Fruit*";
+        String clusterEndpoint = "YOUR_CLUSTER_ENDPOINT";
+        String token = "YOUR_CLUSTER_TOKEN";
 
         // 1. Connect to Zilliz Cloud cluster
         ConnectParam connectParam = ConnectParam.newBuilder()
@@ -81,6 +80,7 @@ public final class EnableDynamicSchemaDemo {
             .addFieldType(id)
             .addFieldType(title)
             .addFieldType(title_vector)
+            // Enable dynamic schema
             .withEnableDynamicField(true)
             .build();
 
@@ -144,12 +144,14 @@ public final class EnableDynamicSchemaDemo {
 
         // Load dataset
         JSONObject dataset = JSON.parseObject(content);
+
+        // Insert your data in rows, all the fields not pre-defined in the schema 
+        // are recognized as pre-defined schema
         List<JSONObject> rows = getRows(dataset.getJSONArray("rows"), 1000);
-        List<Field> fields = getFields(dataset.getJSONArray("rows"), 1000);
 
         InsertParam insertParam = InsertParam.newBuilder()
             .withCollectionName("medium_articles")
-            .withFields(fields)
+            .withRows(rows)
             .build();
 
         R<MutationResult> insertResponse = client.insert(insertParam);
@@ -184,7 +186,9 @@ public final class EnableDynamicSchemaDemo {
 
         List<String> outputFields = new ArrayList<>();
         outputFields.add("title");
-        outputFields.add("link");
+        // The following two fields are dynamic fields.
+        outputFields.add("claps");
+        outputFields.add("reading_time");
 
         // Search vectors in a collection
 
@@ -194,8 +198,9 @@ public final class EnableDynamicSchemaDemo {
             .withVectors(queryVectors)
             .withTopK(5)   
             .withMetricType(MetricType.L2)  
+            .withParams("{\"nprobe\":10,\"offset\":2, \"limit\":3}")
             .withOutFields(outputFields)
-            .withExpr("title like \"Top%\"")
+            .withExpr("$meta[\"claps\"] > 30 and reading_time < 10")
             .build();
 
         R<SearchResults> response = client.search(searchParam);
@@ -205,32 +210,32 @@ public final class EnableDynamicSchemaDemo {
 
         for (int i = 0; i < queryVectors.size(); ++i) {
             List<SearchResultsWrapper.IDScore> scores = wrapper.getIDScore(i);
-            System.out.println(scores.size());
-            // List<String> titles = (List<String>) wrapper.getFieldData("title", i);
-            // List<String> links = (List<String>) wrapper.getFieldData("link", i);
+            List<String> titles = (List<String>) wrapper.getFieldData("title", i);
             for (int j = 0; j < scores.size(); ++j) {
                 SearchResultsWrapper.IDScore score = scores.get(j);
                 System.out.println("Top " + j + " ID:" + score.getLongID() + " Distance:" + score.getScore());
-                // System.out.println("Title: " + titles.get(j));
-                // System.out.println("Link: " + links.get(j));
+                System.out.println("Title: " + titles.get(j));
+                // Getting dynamic fields from the search result.
+                System.out.println("Claps: " + scores.get(j).get("claps"));
+                System.out.println("Reading time:" + scores.get(j).get("reading_time"));
             }
             System.out.print("=====================================\n");
-        } 
+        }
 
         // Drop collection
 
-        // DropCollectionParam dropCollectionParam = DropCollectionParam.newBuilder()
-        //     .withCollectionName("medium_articles")
-        //     .build();
+        DropCollectionParam dropCollectionParam = DropCollectionParam.newBuilder()
+            .withCollectionName("medium_articles")
+            .build();
 
-        // R<RpcStatus> dropCollectionRes = client.dropCollection(dropCollectionParam);
+        R<RpcStatus> dropCollectionRes = client.dropCollection(dropCollectionParam);
 
-        // if (dropCollectionRes.getException() != null) {
-        //     System.out.println("Failed to drop collection: " + dropCollectionRes.getException().getMessage());
-        //     return;
-        // }
+        if (dropCollectionRes.getException() != null) {
+            System.out.println("Failed to drop collection: " + dropCollectionRes.getException().getMessage());
+            return;
+        }
 
-        // System.out.println("Successfully drop collection");
+        System.out.println("Successfully drop collection");
     }
 
     public static List<JSONObject> getRows(JSONArray dataset, int counts) {
@@ -249,37 +254,5 @@ public final class EnableDynamicSchemaDemo {
             rows.add(row);
         }
         return rows;
-    }
-
-    public static List<Field> getFields(JSONArray dataset, int counts) {
-        List<Field> fields = new ArrayList<Field>();
-        List<String> titles = new ArrayList<String>();
-        List<List<Float>> title_vectors = new ArrayList<List<Float>>();
-        List<String> links = new ArrayList<String>();
-        List<Long> reading_times = new ArrayList<Long>();
-        List<String> publications = new ArrayList<String>();
-        List<Long> claps_list = new ArrayList<Long>();
-        List<Long> responses_list = new ArrayList<Long>();
-
-        for (int i = 0; i < counts; i++) {
-            JSONObject row = dataset.getJSONObject(i);
-            titles.add(row.getString("title"));
-            title_vectors.add(row.getJSONArray("title_vector").toJavaList(Float.class));
-            links.add(row.getString("link"));
-            reading_times.add(row.getLong("reading_time"));
-            publications.add(row.getString("publication"));
-            claps_list.add(row.getLong("claps"));
-            responses_list.add(row.getLong("responses"));
-        }
-
-        fields.add(new Field("title", titles));
-        fields.add(new Field("title_vector", title_vectors));
-        fields.add(new Field("link", links));
-        fields.add(new Field("reading_time", reading_times));
-        fields.add(new Field("publication", publications));
-        fields.add(new Field("claps", claps_list));
-        fields.add(new Field("responses", responses_list));
-
-        return fields;        
     }
 }

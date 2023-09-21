@@ -38,34 +38,58 @@ To run the demos, do as following in the `python` folder:
     </thead>
     <tbody>
         <tr>
-            <td><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
+            <td rowspan="2"><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
             <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/00_quick_start.py">python/00_quick_start.py</a></td>
             <td>Ready</td>
         </tr>
         <tr>
-            <td><a href="https://docs.zilliz.com/docs/use-customized-schema">Use Customized Schema</a></td>
+            <td>python/00_quick_start.ipynb</td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td rowspan=2><a href="https://docs.zilliz.com/docs/use-customized-schema">Use Customized Schema</a></td>
             <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/01_use_customized_schema.py">python/01_use_customized_schema.py</a></td>
             <td>Ready</td>
         </tr>
         <tr>
-            <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/02_enable_dynamic_schema.py.py">02_enable_dynamic_schema.py</a></td>
+            <td>python/01_use_customized_schema.ipynb</td>
             <td>Ready</td>
         </tr>
         <tr>
-            <td><a href="https://docs.zilliz.com/docs/use_partition_key">Use Partition Key</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/03_use_partition_key.py.py">03_use_partition_key.py</a></td>
+            <td rowspan=2><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/02_enable_dynamic_schema.py.py">python/02_enable_dynamic_schema.py</a></td>
             <td>Ready</td>
         </tr>
         <tr>
-            <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/04_use_json_field.py.py">04_use_json_field.py</a></td>
+            <td>python/02_enable_dynamic_schema.ipynb</td>
+            <td>Ready</td>            
+        </tr>
+        <tr>
+            <td rowspan=2><a href="https://docs.zilliz.com/docs/use_partition_key">Use Partition Key</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/03_use_partition_key.py.py">python/03_use_partition_key.py</a></td>
             <td>Ready</td>
         </tr>
         <tr>
-            <td><a href="https://docs.zilliz.com/docs/use-bulkwriter-for-data-import">Use BulkWriter for Data Import</a></td>
-            <td>01_use_bulk_writer_and_import.py</td>
+            <td>python/03_use_partition_key.ipynb</td>
+            <td>Ready</td>            
+        </tr>
+        <tr>
+            <td rowspan=2><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/04_use_json_field.py.py">python/04_use_json_field.py</a></td>
             <td>Ready</td>
+        </tr>
+        <tr>
+            <td>python/04_use_json_field.ipynb</td>
+            <td>Ready</td>            
+        </tr>
+        <tr>
+            <td rowspan=2><a href="https://docs.zilliz.com/docs/use-bulkwriter-for-data-import">Use BulkWriter for Data Import</a></td>
+            <td>python/05_use_bulk_writer_and_import.py</td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td>python/05_use_bulk_writer_and_import.ipynb</td>
+            <td>Ready</td>            
         </tr>
     </tbody>
 </table>
@@ -106,12 +130,7 @@ To run the demos in the `java` folder, run the following commands:
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
-            <td>java/enable_dynamic_schema</td>
-            <td>Ready</td>
-        </tr>
-        <tr>
-            <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
-            <td>java/enable_dynamic_schema</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/enable_dynamic_schema/src/main/java/com/zilliz/docs/EnableDynamicSchemaDemo.java">java/enable_dynamic_schema</td>
             <td>Ready</td>
         </tr>
         <tr>
@@ -267,8 +286,21 @@ To run the demos, do the following in the `curl` folder:
     </thead>
     <tbody>
         <tr>
-            <td><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
+            <td rowspan=2><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
             <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/node/00_quick_start.js">curl/00_quick_start.sh</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td>curl/00_quick_start_restful.ipynb</td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td rowspan=2><a href="https://docs.zilliz.com/docs/use-bulkwriter-for-data-import">Use BulkWriter for Data Import</a></td>
+            <td>curl/05_use_bulk_writer_and_import.sh</td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td>curl/05_use_bulk_writer_and_import_restful.ipynb</td>
             <td>Ready</td>
         </tr>
     </tbody>
