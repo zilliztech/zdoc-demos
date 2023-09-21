@@ -43,7 +43,7 @@ To run the demos, do as following in the `python` folder:
             <td>Ready</td>
         </tr>
         <tr>
-            <td>python/00_quick_start.ipynb</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/00_quick_start.ipynb">python/00_quick_start.ipynb</a></td>
             <td>Ready</td>
         </tr>
         <tr>
@@ -52,7 +52,7 @@ To run the demos, do as following in the `python` folder:
             <td>Ready</td>
         </tr>
         <tr>
-            <td>python/01_use_customized_schema.ipynb</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/01_use_customized_schema.ipynb">python/01_use_customized_schema.ipynb</a></td>
             <td>Ready</td>
         </tr>
         <tr>
@@ -61,7 +61,7 @@ To run the demos, do as following in the `python` folder:
             <td>Ready</td>
         </tr>
         <tr>
-            <td>python/02_enable_dynamic_schema.ipynb</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/02_enable_dynamic_schema.ipynb">python/02_enable_dynamic_schema.ipynb</a></td>
             <td>Ready</td>            
         </tr>
         <tr>
@@ -70,7 +70,7 @@ To run the demos, do as following in the `python` folder:
             <td>Ready</td>
         </tr>
         <tr>
-            <td>python/03_use_partition_key.ipynb</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/03_use_partition_key.ipynb">python/03_use_partition_key.ipynb</a></td>
             <td>Ready</td>            
         </tr>
         <tr>
@@ -79,32 +79,32 @@ To run the demos, do as following in the `python` folder:
             <td>Ready</td>
         </tr>
         <tr>
-            <td>python/04_use_json_field.ipynb</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/04_use_json_field.ipynb">python/04_use_json_field.ipynb</a></td>
             <td>Ready</td>            
         </tr>
         <tr>
             <td rowspan=6><a href="https://docs.zilliz.com/docs/use-bulkwriter-for-data-import">Use BulkWriter for Data Import</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/05_use_local-bulk-writer.py">python/05_use_local-bulk-writer.py</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/05_use_local-bulk-writer.py">python/05_use_local-bulk-writer.py</a></td>
             <td>Ready</td>
         </tr>
         <tr>
-            <td>python/05_use_local-bulk-writer.ipynb</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/05_use_local-bulk-writer.ipynb">python/05_use_local-bulk-writer.ipynb</a></td>
             <td>Ready</td>            
         </tr>
         <tr>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/06_use_remote-bulk-writer.py">python/06_use_remote-bulk-writer.py</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/06_use_remote-bulk-writer.py">python/06_use_remote-bulk-writer.py</a></td>
             <td>Ready</td>
         </tr>
         <tr>
-            <td>python/06_use_remote-bulk-writer.ipynb</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/06_use_remote-bulk-writer.ipynb">python/06_use_remote-bulk-writer.ipynb</a></td>
             <td>Ready</td>            
         </tr>
         <tr>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/07_use_bulk_import.py">python/07_use_bulk_import.py</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/07_use_bulk_import.py">python/07_use_bulk_import.py</a></td>
             <td>Ready</td>
         </tr>
         <tr>
-            <td>python/07_use_bulk_import.ipynb</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/07_use_bulk_import.ipynb">python/07_use_bulk_import.ipynb</a></td>
             <td>Ready</td>            
         </tr>
     </tbody>
@@ -298,11 +298,11 @@ To run the demos, do the following in the `curl` folder:
     <tbody>
         <tr>
             <td rowspan=2><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/node/00_quick_start.js">curl/00_quick_start.sh</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/curl/00_quick_start.sh">curl/00_quick_start.sh</a></td>
             <td>Ready</td>
         </tr>
         <tr>
-            <td>curl/00_quick_start_restful.ipynb</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/curl/00_quick_start.ipynb">curl/00_quick_start.ipynb</a></td>
             <td>Ready</td>
         </tr>
     </tbody>
