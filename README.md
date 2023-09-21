@@ -135,17 +135,12 @@ To run the demos in the `java` folder, run the following commands:
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use_partition_key">Use Partition Key</a></td>
-            <td>java/use_partition_key</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/use_partition_key/src/main/java/com/zilliz/docs/UsePartitionKeyDemo.java">java/use_partition_key</td>
             <td>Ready</td>
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
-            <td>java/use_json_field</td>
-            <td>Ready</td>
-        </tr>
-        <tr>
-            <td><a href="https://docs.zilliz.com/docs/use-bulkwriter-for-data-import">Use BulkWriter for Data Import</a></td>
-            <td>java/use_bulk_writer_and_import</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/use_json_field/src/main/java/com/zilliz/docs/UseJsonFieldDemo.java">java/use_json_field</td>
             <td>Ready</td>
         </tr>
     </tbody>

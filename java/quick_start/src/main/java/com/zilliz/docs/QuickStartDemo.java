@@ -42,6 +42,7 @@ public final class QuickStartDemo {
     public static void main(String[] args) {
         String clusterEndpoint = "YOUR_CLUSTER_ENDPOINT";
         String token = "YOUR_CLUSTER_TOKEN";
+        String collectionName = "medium_articles";
 
         // 1. Connect to Zilliz Cloud
         // - For a serverless cluster, use an API key as the token.                                 
@@ -58,7 +59,7 @@ public final class QuickStartDemo {
         // 2. Create collection
 
         CreateSimpleCollectionParam createCollectionParam = CreateSimpleCollectionParam.newBuilder()
-            .withCollectionName("medium_articles_2020")
+            .withCollectionName(collectionName)
             .withDimension(768)
             .build();
 
@@ -70,7 +71,6 @@ public final class QuickStartDemo {
         }
 
         // 3. Describe collection
-        String collectionName = "medium_articles_2020";
 
         DescribeCollectionParam describeCollectionParam = DescribeCollectionParam.newBuilder()
             .withCollectionName(collectionName)
