@@ -1,7 +1,16 @@
 bin
+share
 lib
 pyvenv.cfg
 node_modules
 package-lock.json
 .vscode/*
 target
+
+output/*
+
+.env
+paintings
+paintings.zip
+
+.DS_Store

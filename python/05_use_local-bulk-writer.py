@@ -3,6 +3,9 @@ import os, json
 
 import pandas as pd
 
+DATASET_PATH = "{}/../New_Medium_Data.csv".format(os.path.dirname(__file__))
+OUTPUT_PATH = "{}/../output".format(os.path.dirname(__file__))
+
 ## Running this requires PyMilvus 2.2.16
 ## Create a virtualenv and install that.
 
@@ -27,12 +30,12 @@ fields = [
 schema = CollectionSchema(fields)
 
 # Load the dataset
-dataset = pd.read_csv(Path("../New_Medium_Data.csv"))
+dataset = pd.read_csv(Path(DATASET_PATH))
 
 # Rewrite the above dataset into a JSON file
 local_writer = LocalBulkWriter(
     schema=schema,
-    local_path=Path("../output").joinpath('json'),
+    local_path=Path(OUTPUT_PATH).joinpath('json'),
     segment_size=4*1024*1024,
     file_type=BulkFileType.JSON_RB
 )
@@ -44,7 +47,24 @@ for i in range(0, len(dataset)):
 
 local_writer.commit()
 print("test local writer done!")
-print(local_writer.data_path)
+
+# Output
+#
+# test local writer done!
+
+
+print(os.path.relpath(local_writer.data_path))
+
+# Output
+#
+# output/json/09ce63fa-9fd8-4ac6-b915-5e6b0ded2ff5
+
+
 
 # Check what you have in the `output` folder
 print(os.listdir(local_writer.data_path))
+
+# Output
+#
+# ["1.json", "2.json", "3.json", "4.json", "5.json"]
+

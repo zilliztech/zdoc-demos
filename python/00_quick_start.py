@@ -1,8 +1,10 @@
-import json
+import os, json
 from pymilvus import MilvusClient
 
 CLUSTER_ENDPOINT="YOUR_CLUSTER_ENDPOINT" # Set your cluster endpoint
 TOKEN="YOUR_CLUSTER_TOKEN" # Set your token
+COLLECTION_NAME="medium_articles_2020" # Set your collection name
+DATASET_PATH="{}/../medium_articles_2020_dpr.json".format(os.path.dirname(__file__)) # Set your dataset path
 
 # Initialize a MilvusClient instance
 # Replace uri and API key with your own
@@ -15,19 +17,55 @@ client = MilvusClient(
 
 # Create a collection
 client.create_collection(
-    collection_name="medium_articles_2020",
+    collection_name=COLLECTION_NAME,
     dimension=768
 )
 
 res = client.describe_collection(
-    collection_name='medium_articles_2020'
+    collection_name=COLLECTION_NAME
 )
 
 print(res)
 
+# Output
+#
+# {
+#     "collection_name": "medium_articles_2020",
+#     "auto_id": false,
+#     "num_shards": 1,
+#     "description": "",
+#     "fields": [
+#         {
+#             "field_id": 100,
+#             "name": "id",
+#             "description": "",
+#             "type": 5,
+#             "params": {},
+#             "is_primary": true
+#         },
+#         {
+#             "field_id": 101,
+#             "name": "vector",
+#             "description": "",
+#             "type": 101,
+#             "params": {
+#                 "dim": 768
+#             }
+#         }
+#     ],
+#     "aliases": [],
+#     "collection_id": 443943328732839733,
+#     "consistency_level": 2,
+#     "properties": [],
+#     "num_partitions": 1,
+#     "enable_dynamic_field": true
+# }
+
+
+
 # Insert a single entity
 res = client.insert(
-        collection_name="medium_articles_2020",
+        collection_name=COLLECTION_NAME,
         data={
         'id': 0, 
         'title': 'The Reported Mortality Rate of Coronavirus Is Not Important', 
@@ -42,8 +80,14 @@ res = client.insert(
 
 print(res)
 
+# Output
+#
+# [0]
+
+
+
 # Read the first 200 records
-with open("../medium_articles_2020_dpr.json") as f:
+with open(DATASET_PATH) as f:
   data = json.load(f)
   data = data["rows"][:200]
   for x in data:
@@ -51,28 +95,106 @@ with open("../medium_articles_2020_dpr.json") as f:
 
 # Insert multiple entities
 res = client.insert(
-  collection_name="medium_articles_2020",
+  collection_name=COLLECTION_NAME,
   data=data
 )
 
 print(res)
 
+# Output
+#
+# [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, "(180 more items hidden)"]
+
+
+
 # Read the dataset
-with open("../medium_articles_2020_dpr.json") as f:
+with open(DATASET_PATH) as f:
   data = json.load(f)
 
 # Conduct an ANN search
 res = client.search(
-    collection_name="medium_articles_2020",
+    collection_name=COLLECTION_NAME,
           data=[data["rows"][0]["title_vector"]],
     output_fields=["title"]
 )
 
 print(res)
 
+# Output
+#
+# [
+#     [
+#         {
+#             "id": 0,
+#             "distance": 1.0,
+#             "entity": {
+#                 "title": "The Reported Mortality Rate of Coronavirus Is Not Important"
+#             }
+#         },
+#         {
+#             "id": 70,
+#             "distance": 0.7525784969329834,
+#             "entity": {
+#                 "title": "How bad will the Coronavirus Outbreak get? \u2014 Predicting the outbreak figures"
+#             }
+#         },
+#         {
+#             "id": 160,
+#             "distance": 0.7132074236869812,
+#             "entity": {
+#                 "title": "The Funeral Industry is a Killer"
+#             }
+#         },
+#         {
+#             "id": 111,
+#             "distance": 0.6888885498046875,
+#             "entity": {
+#                 "title": "The role of AI in web-based ADA and WCAG compliance"
+#             }
+#         },
+#         {
+#             "id": 196,
+#             "distance": 0.6882869601249695,
+#             "entity": {
+#                 "title": "The Question We Should Be Asking About the Cost of Youth Sports"
+#             }
+#         },
+#         {
+#             "id": 51,
+#             "distance": 0.6719912886619568,
+#             "entity": {
+#                 "title": "What if Facebook had to pay you for the profit they are making?"
+#             }
+#         },
+#         {
+#             "id": 178,
+#             "distance": 0.6699185371398926,
+#             "entity": {
+#                 "title": "Is The Environmental Damage Due To Cruise Ships Irreversible?"
+#             }
+#         },
+#         {
+#             "id": 47,
+#             "distance": 0.6680259704589844,
+#             "entity": {
+#                 "title": "What Happens When the Google Cookie Crumbles?"
+#             }
+#         },
+#         {
+#             "id": 135,
+#             "distance": 0.6597772836685181,
+#             "entity": {
+#                 "title": "How to Manage Risk as a Product Manager"
+#             }
+#         }
+#     ]
+# ]
+
+
+
 # Conduct an ANN search with filters
 res = client.search(
-    collection_name="medium_articles_2020",
+    collection_name=COLLECTION_NAME,
     data=[data["rows"][0]["title_vector"]],
     filter='claps > 100 and publication in ["The Startup", "Towards Data Science"]',
     output_fields=["title", "claps", "publication"]
@@ -80,9 +202,99 @@ res = client.search(
 
 print(res)
 
+# Output
+#
+# [
+#     [
+#         {
+#             "id": 0,
+#             "distance": 1.0,
+#             "entity": {
+#                 "title": "The Reported Mortality Rate of Coronavirus Is Not Important",
+#                 "publication": "The Startup",
+#                 "claps": 1100
+#             }
+#         },
+#         {
+#             "id": 70,
+#             "distance": 0.7525784969329834,
+#             "entity": {
+#                 "title": "How bad will the Coronavirus Outbreak get? \u2014 Predicting the outbreak figures",
+#                 "publication": "Towards Data Science",
+#                 "claps": 1100
+#             }
+#         },
+#         {
+#             "id": 160,
+#             "distance": 0.7132074236869812,
+#             "entity": {
+#                 "title": "The Funeral Industry is a Killer",
+#                 "publication": "The Startup",
+#                 "claps": 407
+#             }
+#         },
+#         {
+#             "id": 111,
+#             "distance": 0.6888885498046875,
+#             "entity": {
+#                 "title": "The role of AI in web-based ADA and WCAG compliance",
+#                 "publication": "Towards Data Science",
+#                 "claps": 935
+#             }
+#         },
+#         {
+#             "id": 47,
+#             "distance": 0.6680259704589844,
+#             "entity": {
+#                 "title": "What Happens When the Google Cookie Crumbles?",
+#                 "publication": "The Startup",
+#                 "claps": 203
+#             }
+#         },
+#         {
+#             "id": 135,
+#             "distance": 0.6597772836685181,
+#             "entity": {
+#                 "title": "How to Manage Risk as a Product Manager",
+#                 "publication": "The Startup",
+#                 "claps": 120
+#             }
+#         },
+#         {
+#             "id": 174,
+#             "distance": 0.6502071619033813,
+#             "entity": {
+#                 "title": "I Thought Suicide was Selfish Until I Wanted to Die",
+#                 "publication": "The Startup",
+#                 "claps": 319
+#             }
+#         },
+#         {
+#             "id": 7,
+#             "distance": 0.6361640095710754,
+#             "entity": {
+#                 "title": "Building Comprehensible Customer Churn Prediction Models",
+#                 "publication": "The Startup",
+#                 "claps": 261
+#             }
+#         },
+#         {
+#             "id": 181,
+#             "distance": 0.6355971693992615,
+#             "entity": {
+#                 "title": "It\u2019s OK to Admit You\u2019re Writing For Money",
+#                 "publication": "The Startup",
+#                 "claps": 626
+#             }
+#         }
+#     ]
+# ]
+
+
+
 # Perform a query
 res = client.query(
-        collection_name="medium_articles_2020",
+        collection_name=COLLECTION_NAME,
         filter="claps > 100 and publication in ['The Startup', 'Towards Data Science']",
         limit=3,
   outputField=["title", "claps", "publication"]
@@ -90,41 +302,271 @@ res = client.query(
 
 print(res)
 
+# Output
+#
+# [
+#     {
+#         "id": 0,
+#         "title": "The Reported Mortality Rate of Coronavirus Is Not Important",
+#         "link": "<https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912>",
+#         "reading_time": 13,
+#         "publication": "The Startup",
+#         "claps": 1100,
+#         "responses": 18,
+#         "vector": [
+#             0.041732933,
+#             0.013779674,
+#             -0.027564144,
+#             -0.013061441,
+#             0.009748648,
+#             0.00082446384,
+#             -0.00071647146,
+#             0.048612226,
+#             -0.04836573,
+#             -0.04567751,
+#             0.018008126,
+#             0.0063936645,
+#             -0.011913628,
+#             0.030776596,
+#             -0.018274948,
+#             0.019929802,
+#             0.020547243,
+#             0.032735646,
+#             -0.031652678,
+#             -0.033816382,
+#             "(748 more items hidden)"
+#         ]
+#     },
+#     {
+#         "id": 1,
+#         "title": "Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else",
+#         "link": "https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a",
+#         "reading_time": 14,
+#         "publication": "The Startup",
+#         "claps": 726,
+#         "responses": 3,
+#         "vector": [
+#             0.0039737443,
+#             0.003020432,
+#             -0.0006188639,
+#             0.03913546,
+#             -0.00089768134,
+#             0.021238148,
+#             0.014454661,
+#             0.025742851,
+#             0.0022063442,
+#             -0.051130578,
+#             -0.0010897011,
+#             0.038453076,
+#             0.011593861,
+#             -0.046852026,
+#             0.0064208573,
+#             0.010120634,
+#             -0.023668954,
+#             0.041229635,
+#             0.008146385,
+#             -0.023367394,
+#             "(748 more items hidden)"
+#         ]
+#     }
+# ]
+
+
+
 # Retrieve a single entity by ID
 res = client.get(
-        collection_name="medium_articles_2020",
+        collection_name=COLLECTION_NAME,
         ids=1
 )
 
 print(res)
 
+# Output
+#
+# [
+#     {
+#         "id": 1,
+#         "title": "Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else",
+#         "link": "https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a",
+#         "reading_time": 14,
+#         "publication": "The Startup",
+#         "claps": 726,
+#         "responses": 3,
+#         "vector": [
+#             0.0039737443,
+#             0.003020432,
+#             -0.0006188639,
+#             0.03913546,
+#             -0.00089768134,
+#             0.021238148,
+#             0.014454661,
+#             0.025742851,
+#             0.0022063442,
+#             -0.051130578,
+#             -0.0010897011,
+#             0.038453076,
+#             0.011593861,
+#             -0.046852026,
+#             0.0064208573,
+#             0.010120634,
+#             -0.023668954,
+#             0.041229635,
+#             0.008146385,
+#             -0.023367394,
+#             "(748 more items hidden)"
+#         ]
+#     }
+# ]
+
+
+
 # Retrieve a set of entities by their IDs
 res = client.get(
-        collection_name="medium_articles_2020",
+        collection_name=COLLECTION_NAME,
         ids=[1, 2, 3]
 )
 
 print(res)
 
+# Output
+#
+# [
+#     {
+#         "id": 1,
+#         "title": "Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else",
+#         "link": "https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a",
+#         "reading_time": 14,
+#         "publication": "The Startup",
+#         "claps": 726,
+#         "responses": 3,
+#         "vector": [
+#             0.0039737443,
+#             0.003020432,
+#             -0.0006188639,
+#             0.03913546,
+#             -0.00089768134,
+#             0.021238148,
+#             0.014454661,
+#             0.025742851,
+#             0.0022063442,
+#             -0.051130578,
+#             -0.0010897011,
+#             0.038453076,
+#             0.011593861,
+#             -0.046852026,
+#             0.0064208573,
+#             0.010120634,
+#             -0.023668954,
+#             0.041229635,
+#             0.008146385,
+#             -0.023367394,
+#             "(748 more items hidden)"
+#         ]
+#     },
+#     {
+#         "id": 2,
+#         "title": "How Can We Best Switch in Python?",
+#         "link": "https://medium.com/swlh/how-can-we-best-switch-in-python-458fb33f7835",
+#         "reading_time": 6,
+#         "publication": "The Startup",
+#         "claps": 500,
+#         "responses": 7,
+#         "vector": [
+#             0.031961977,
+#             0.00047043373,
+#             -0.018263113,
+#             0.027324716,
+#             -0.0054595284,
+#             -0.014779159,
+#             0.017511465,
+#             0.030381083,
+#             -0.018930407,
+#             -0.03372473,
+#             -0.009049301,
+#             0.05401713,
+#             -0.030117748,
+#             -0.05029242,
+#             -0.004565209,
+#             -0.013697411,
+#             0.0091306195,
+#             0.020263411,
+#             0.022377398,
+#             -0.013710004,
+#             "(748 more items hidden)"
+#         ]
+#     },
+#     {
+#         "id": 3,
+#         "title": "Maternity leave shouldn\u2019t set women back",
+#         "link": "https://medium.com/swlh/maternity-leave-shouldnt-set-women-back-5019dd3129d8",
+#         "reading_time": 9,
+#         "publication": "The Startup",
+#         "claps": 460,
+#         "responses": 1,
+#         "vector": [
+#             0.032572296,
+#             -0.011148319,
+#             -0.01688577,
+#             -0.0026665623,
+#             -0.011911687,
+#             -0.00067226397,
+#             0.00549793,
+#             0.024287743,
+#             -0.006913468,
+#             0.0077994824,
+#             0.013071344,
+#             0.006062147,
+#             -0.00041493092,
+#             0.01481426,
+#             -0.030682443,
+#             0.013120984,
+#             0.025862636,
+#             0.041487154,
+#             -0.014245749,
+#             -0.058048885,
+#             "(748 more items hidden)"
+#         ]
+#     }
+# ]
+
+
+
 # Delete a single entity
 res = client.delete(
-        collection_name="medium_articles_2020",
+        collection_name=COLLECTION_NAME,
         pks=0
 )
 
 print(res)
 
+# Output
+#
+# [0]
+
+
+
 # Delete a set of entities in a batch
 res = client.delete(
-        collection_name="medium_articles_2020",
+        collection_name=COLLECTION_NAME,
         pks=[1, 2, 3]
 )
 
 print(res)
 
+# Output
+#
+# [1, 2, 3]
+
+
+
 # Drop a collection
 res = client.drop_collection(
-        collection_name="medium_articles_2020"
+        collection_name=COLLECTION_NAME
 )
 
 print(res)
+
+# Output
+#
+# None
+

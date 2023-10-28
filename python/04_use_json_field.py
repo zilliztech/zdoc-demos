@@ -1,8 +1,10 @@
-import json
+import os, json
 from pymilvus import connections, FieldSchema, CollectionSchema, DataType, Collection, utility
 
 CLUSTER_ENDPOINT="YOUR_CLUSTER_ENDPOINT" # Set your cluster endpoint
 TOKEN="YOUR_CLUSTER_TOKEN" # Set your token
+COLLECTION_NAME="medium_articles_2020" # Set your collection name
+DATASET_PATH="{}/../medium_articles_2020_dpr.json".format(os.path.dirname(__file__)) # Set your dataset path
 
 connections.connect(
   alias='default', 
@@ -11,8 +13,6 @@ connections.connect(
   secure=True,
   token=TOKEN, # Username and password specified when you created this cluster
 )
-
-print("Connected successfully")
 
 # 2. Define fields
 fields = [
@@ -30,9 +30,7 @@ schema = CollectionSchema(
 )
 
 # 4. Create collection
-collection = Collection("medium_articles_with_json_field", schema)
-
-print("Collection created successfully")
+collection = Collection(COLLECTION_NAME, schema)
 
 # 5. Index collection
 index_params = {
@@ -49,12 +47,20 @@ collection.create_index(
 collection.load()
 
 # Get loading progress
-progress = utility.loading_progress("medium_articles_with_json_field")
+progress = utility.loading_progress(COLLECTION_NAME)
 
-print(f"Collection loaded successfully: {progress}")
+print(progress)
+
+# Output
+#
+# {
+#     "loading_progress": "100%"
+# }
+
+
 
 # 6. Prepare data
-with open("../medium_articles_2020_dpr.json") as f:
+with open(DATASET_PATH) as f:
     data = json.load(f)
     list_of_rows = data['rows']
 
@@ -75,12 +81,16 @@ with open("../medium_articles_2020_dpr.json") as f:
 
 # 7. Insert data
 
-print("Inserting data...")
-
 result = collection.insert(data_rows)
 collection.flush()
 
 print(f"Data inserted successfully! Inserted counts: {result.insert_count}")
+
+# Output
+#
+# Data inserted successfully! Inserted counts: 5979
+
+
 
 # 8. Search data
 result = collection.search(
@@ -94,25 +104,67 @@ result = collection.search(
     output_fields=["title", "article_meta"],
 )
 
-print("Search completed successfully!")
-print("===========================================")
+print([ list(map(lambda y: y.entity.to_dict(),  x)) for x in result ])
 
-for hits in result:
-    print("Matched IDs: ", hits.ids)
-    print("Distance to the query vector: ", hits.distances)
-    print("Matched articles: ")
-    for hit in hits:
-        print(
-            "Title: ", 
-            hit.entity.get("title"), 
-            ", Reading time: ", 
-            hit.entity.get("article_meta")['reading_time'], 
-            ", Claps: ", hit.entity.get("article_meta")["claps"]
-        )
-    
+# Output
+#
+# [
+#     [
+#         {
+#             "id": 443943328732940369,
+#             "distance": 0.36103835701942444,
+#             "entity": {
+#                 "title": "The Hidden Side Effect of the Coronavirus",
+#                 "article_meta": {
+#                     "link": "https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586",
+#                     "reading_time": 8,
+#                     "publication": "The Startup",
+#                     "claps": 83,
+#                     "responses": 0
+#                 }
+#             }
+#         },
+#         {
+#             "id": 443943328732940403,
+#             "distance": 0.37674015760421753,
+#             "entity": {
+#                 "title": "Why The Coronavirus Mortality Rate is Misleading",
+#                 "article_meta": {
+#                     "link": "https://towardsdatascience.com/why-the-coronavirus-mortality-rate-is-misleading-cc63f571b6a6",
+#                     "reading_time": 9,
+#                     "publication": "Towards Data Science",
+#                     "claps": 2900,
+#                     "responses": 47
+#                 }
+#             }
+#         },
+#         {
+#             "id": 443943328732938203,
+#             "distance": 0.4162980318069458,
+#             "entity": {
+#                 "title": "Coronavirus shows what ethical Amazon could look like",
+#                 "article_meta": {
+#                     "link": "https://medium.com/swlh/coronavirus-shows-what-ethical-amazon-could-look-like-7c80baf2c663",
+#                     "reading_time": 4,
+#                     "publication": "The Startup",
+#                     "claps": 51,
+#                     "responses": 0
+#                 }
+#             }
+#         }
+#     ]
+# ]
+
+
 
 # get collection info
 print("Entity counts: ", collection.num_entities)
 
+# Output
+#
+# Entity counts:  5979
+
+
+
 # 9. Drop collection
-utility.drop_collection("medium_articles_with_json_field")
+utility.drop_collection(COLLECTION_NAME)
