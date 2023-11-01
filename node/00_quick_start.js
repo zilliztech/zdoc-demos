@@ -2,9 +2,9 @@ const fs = require("fs")
 const { MilvusClient } = require("@zilliz/milvus2-sdk-node")
 
 const address = "YOUR_CLUSTER_ENDPOINT"
-// - For a serverless cluster, use an API key as the token. 
-// - For a dedicated cluster, use the cluster credentials as the token in the format of 'user:password'.
 const token = "YOUR_CLUSTER_TOKEN"
+const collectionName = "medium_articles_2020"
+const data_file = `./medium_articles_2020_dpr.json`
 
 // Include the following in an async function declaration
 async function main () {
@@ -14,22 +14,54 @@ async function main () {
         
     // Create a collection
     let res = await client.createCollection({
-        collection_name: "medium_articles_2020",
+        collection_name: collectionName,
         dimension: 768,
     });
 
     console.log(res)
 
+    // Output
+    // 
+    // { error_code: 'Success', reason: '', code: 0 }
+    // 
+
     // Describe the created collection
     res = await client.describeCollection({
-        collection_name: "medium_articles_2020"
+        collection_name: collectionName
     });
    
     console.log(res)
 
+    // Output
+    // 
+    // {
+    //   virtual_channel_names: [ 'by-dev-rootcoord-dml_11_445311585782767873v0' ],
+    //   physical_channel_names: [ 'by-dev-rootcoord-dml_11' ],
+    //   aliases: [],
+    //   start_positions: [],
+    //   properties: [],
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   schema: {
+    //     fields: [ [Object], [Object] ],
+    //     name: 'medium_articles_2020',
+    //     description: '',
+    //     autoID: false,
+    //     enable_dynamic_field: true
+    //   },
+    //   collectionID: '445311585782767873',
+    //   created_timestamp: '445316436082294790',
+    //   created_utc_timestamp: '1698747391061',
+    //   shards_num: 1,
+    //   consistency_level: 'Bounded',
+    //   collection_name: 'medium_articles_2020',
+    //   db_name: 'default',
+    //   num_partitions: '1'
+    // }
+    // 
+
     // Insert a record
     res = await client.insert({
-        collection_name: "medium_articles_2020",
+        collection_name: collectionName,
         data: [{
             'id': 0, 
             'title': 'The Reported Mortality Rate of Coronavirus Is Not Important', 
@@ -44,99 +76,355 @@ async function main () {
 
     console.log(res)
 
+    // Output
+    // 
+    // {
+    //   succ_index: [ 0 ],
+    //   err_index: [],
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
+    //   acknowledged: false,
+    //   insert_cnt: '1',
+    //   delete_cnt: '0',
+    //   upsert_cnt: '0',
+    //   timestamp: '445316437170454533'
+    // }
+    // 
+
     // Read a few records from the dataset
-    const data = JSON.parse(fs.readFileSync('../medium_articles_2020_dpr.json', 'utf8'));
-    const client_data = data.rows.slice(1, 200).map((row) => {
-        return {
-            'id': row.id,
-            'title': row.title,
-            'link': row.link,
-            'reading_time': row.reading_time,
-            'publication': row.publication,
-            'claps': row.claps,
-            'responses': row.responses,
-            'vector': row.title_vector
-        }
+    const data = JSON.parse(fs.readFileSync(data_file, 'utf8'));
+    const client_data = data.rows.map((row) => {
+        row.vector = row.title_vector;
+        delete row.title_vector;
+        return row;
     });
     
-    console.log(client_data);
+    console.log(client_data.slice(0, 2));
+
+    // Output
+    // 
+    // [
+    //   {
+    //     id: 0,
+    //     title: 'The Reported Mortality Rate of Coronavirus Is Not Important',
+    //     link: 'https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912',
+    //     reading_time: 13,
+    //     publication: 'The Startup',
+    //     claps: 1100,
+    //     responses: 18,
+    //     vector: [
+    //         0.041732933,   0.013779674,   -0.027564144, -0.013061441,
+    //         0.009748648, 0.00082446384, -0.00071647146,  0.048612226,
+    //         -0.04836573,   -0.04567751,    0.018008126, 0.0063936645,
+    //        -0.011913628,   0.030776596,   -0.018274948,  0.019929802,
+    //         0.020547243,   0.032735646,   -0.031652678, -0.033816382,
+    //        -0.051087562,  -0.033748355,   0.0039493158,  0.009246126,
+    //        -0.060236514,  -0.017136049,    0.028754413, -0.008433934,
+    //         0.011168004,  -0.012391256,   -0.011225835,  0.031775184,
+    //         0.002929508,  -0.007448661,   -0.005337719, -0.010999258,
+    //         -0.01515909,  -0.005130484,   0.0060212007, 0.0034560722,
+    //        -0.022935811,   -0.04970116,  -0.0155887455,   0.06627353,
+    //        -0.006052789,  -0.051570725,   -0.109865054,  0.033205193,
+    //       0.00041118253,  0.0029823708,    0.036160238, -0.011256539,
+    //       0.00023560718,   0.058322437,    0.022275906,  0.015206677,
+    //         -0.02884609,  0.0016338055,   0.0049200393,  0.014388571,
+    //       -0.0049061654,   -0.04664761,   -0.027454877,  0.017526226,
+    //        -0.005100602,   0.018090058,     0.02700998,   0.04031944,
+    //          -0.0097965,   -0.03674761,  -0.0043163053, -0.023320708,
+    //         0.012654851,  -0.014262311,   -0.008081833, -0.018334744,
+    //        0.0014025003,  -0.003053399,   -0.002636383, -0.022398386,
+    //        -0.004725274, 0.00036367847,   -0.012368711, 0.0014739085,
+    //          0.03450414,   0.009684024,    0.017912658,   0.06594397,
+    //         0.021381201,   0.029343689,  -0.0069561847,  0.026152428,
+    //          0.04635037,   0.014746184,   -0.002119602,  0.034359712,
+    //        -0.013705124,   0.010691518,     0.04060854,  0.013679299,
+    //       ... 668 more items
+    //     ]
+    //   },
+    //   {
+    //     id: 1,
+    //     title: 'Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else',
+    //     link: 'https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a',
+    //     reading_time: 14,
+    //     publication: 'The Startup',
+    //     claps: 726,
+    //     responses: 3,
+    //     vector: [
+    //         0.0039737443,   0.003020432, -0.0006188639,    0.03913546,
+    //       -0.00089768134,   0.021238148,   0.014454661,   0.025742851,
+    //         0.0022063442,  -0.051130578, -0.0010897011,   0.038453076,
+    //          0.011593861,  -0.046852026,  0.0064208573,   0.010120634,
+    //         -0.023668954,   0.041229635,   0.008146385,  -0.023367394,
+    //         -0.029139837,  -0.023222756,  -0.016318452,  -0.076287195,
+    //          0.035851076,   0.044926822,  0.0037161126,   0.024241403,
+    //         -0.024827085,  -0.012770665,  0.0018561907,   0.047921725,
+    //         -0.030281143,  -0.031129083,  -0.038785066,  -0.048101038,
+    //          0.008587025, -0.0036647166,  -0.013043694,  -0.044786748,
+    //         0.0015023423,   -0.02393749,   0.027479807,    0.03407725,
+    //         -0.011031249,  -0.016997544,   -0.11140522, -0.0012403706,
+    //        -0.0116099715,   0.010803051,  -0.042221617,   0.071550176,
+    //          0.029078195,    0.02936992,  -0.016870253,   0.024187507,
+    //        -0.0064322287, -0.0018420032,  -0.010838795,   0.005448679,
+    //          0.042049922,   0.015199081,   -0.00612731,    0.04651738,
+    //        -0.0004543191,  0.0018536948,  -0.021741537,   0.042303678,
+    //         -0.016282137,   0.031659417,    0.03347323,   -0.05687932,
+    //          -0.04784338,   0.047716856,   -0.04012971,  -0.024161791,
+    //         -0.015605036,    0.01364975,   0.023177518,    0.01887649,
+    //          0.040253926,   0.021470893,    0.09768697,  -0.032784328,
+    //           0.03222924,    0.03559948, -0.0028161134,    0.03687029,
+    //         -0.013814558,  -0.009652667,   0.021593641,   -0.05943368,
+    //          0.026042875,   0.028282177,   0.007687183,   0.020226369,
+    //        -0.0016281981,  -0.008526736,   0.025751492,  -0.003104332,
+    //       ... 668 more items
+    //     ]
+    //   }
+    // ]
+    // 
     
     res = await client.insert({
-        collection_name: "medium_articles_2020",
+        collection_name: collectionName,
         data: client_data
     })
     
     console.log(res);
 
+    // Output
+    // 
+    // {
+    //   succ_index: [
+    //      0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11,
+    //     12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+    //     24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+    //     36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+    //     48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+    //     60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
+    //     72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
+    //     84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
+    //     96, 97, 98, 99,
+    //     ... 5879 more items
+    //   ],
+    //   err_index: [],
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
+    //   acknowledged: false,
+    //   insert_cnt: '5979',
+    //   delete_cnt: '0',
+    //   upsert_cnt: '0',
+    //   timestamp: '445316442229571586'
+    // }
+    // 
+
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
     // Conduct an ANN search
     res = await client.search({
-        collection_name: "medium_articles_2020",
-        vector: data.rows[0].title_vector,
-        output_fields: ['title', 'link']
+        collection_name: collectionName,
+        vector: client_data[0].vector,
+        output_fields: ['title', 'link'],
+        limit: 5,
     })
     
     console.log(res)
+
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   results: [
+    //     {
+    //       score: 1,
+    //       id: '0',
+    //       title: 'The Reported Mortality Rate of Coronavirus Is Not Important',
+    //       link: 'https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912'
+    //     },
+    //     {
+    //       score: 0.8500008583068848,
+    //       id: '3177',
+    //       title: 'Following the Spread of Coronavirus',
+    //       link: 'https://towardsdatascience.com/following-the-spread-of-coronavirus-23626940c125'
+    //     },
+    //     {
+    //       score: 0.8194807767868042,
+    //       id: '5607',
+    //       title: 'The Hidden Side Effect of the Coronavirus',
+    //       link: 'https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586'
+    //     },
+    //     {
+    //       score: 0.8116300106048584,
+    //       id: '5641',
+    //       title: 'Why The Coronavirus Mortality Rate is Misleading',
+    //       link: 'https://towardsdatascience.com/why-the-coronavirus-mortality-rate-is-misleading-cc63f571b6a6'
+    //     }
+    //   ]
+    // }
+    // 
 
     // Conduct an ANN search with filters
     res = await client.search({
-        collection_name: "medium_articles_2020",
-        vector: data.rows[0].title_vector,
+        collection_name: collectionName,
+        vector: client_data[0].vector,
         output_fields: ["title", "claps", "publication"],
-        filter: 'claps > 100 and publication in ["The Startup", "Towards Data Science"]'
+        filter: 'claps > 100 and publication in ["The Startup", "Towards Data Science"]',
+        limit: 5,
     })
     
     console.log(res)
+
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   results: [
+    //     {
+    //       score: 1,
+    //       id: '0',
+    //       title: 'The Reported Mortality Rate of Coronavirus Is Not Important',
+    //       claps: 1100,
+    //       publication: 'The Startup'
+    //     },
+    //     {
+    //       score: 0.8500008583068848,
+    //       id: '3177',
+    //       title: 'Following the Spread of Coronavirus',
+    //       claps: 215,
+    //       publication: 'Towards Data Science'
+    //     },
+    //     {
+    //       score: 0.8116300106048584,
+    //       id: '5641',
+    //       title: 'Why The Coronavirus Mortality Rate is Misleading',
+    //       claps: 2900,
+    //       publication: 'Towards Data Science'
+    //     },
+    //     {
+    //       score: 0.7555683851242065,
+    //       id: '4275',
+    //       title: 'How Can AI Help Fight Coronavirus?',
+    //       claps: 255,
+    //       publication: 'The Startup'
+    //     }
+    //   ]
+    // }
+    // 
 
     // Perform a query
     res = await client.query({
-        collection_name: "medium_articles_2020",
+        collection_name: collectionName,
         filter: 'claps > 100 and publication in ["The Startup", "Towards Data Science"]',
-        limit: 3,
         output_fields: ["title", "claps", "publication"],
+        limit: 5,
     })
     
     console.log(res)
 
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   data: [
+    //     { '$meta': [Object], id: '0' },
+    //     { '$meta': [Object], id: '1' },
+    //     { '$meta': [Object], id: '2' },
+    //     { '$meta': [Object], id: '3' }
+    //   ]
+    // }
+    // 
+
     // Get an entity by id
     res = await client.get({
-        collection_name: "medium_articles_2020",
+        collection_name: collectionName,
         ids: [0],
         output_fields: ['id', 'title']
     });
     
     console.log(res)
 
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   data: [ { id: '0', '$meta': [Object] } ]
+    // }
+    // 
+
     // Get a set of entities by their IDs
     res = await client.get({
-        collection_name: "medium_articles_2020",
+        collection_name: collectionName,
         ids: [0, 1, 2],
         output_fields: ['id', 'title']
     });
     
     console.log(res)
 
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   data: [
+    //     { '$meta': [Object], id: '0' },
+    //     { '$meta': [Object], id: '1' },
+    //     { '$meta': [Object], id: '2' }
+    //   ]
+    // }
+    // 
+
     // Delete an entity by its ID
     res = await client.delete({
-        collection_name: "medium_articles_2020",
+        collection_name: collectionName,
         ids: [0]
     });
     
     console.log(res);
 
+    // Output
+    // 
+    // {
+    //   succ_index: [],
+    //   err_index: [],
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   IDs: {},
+    //   acknowledged: false,
+    //   insert_cnt: '0',
+    //   delete_cnt: '1',
+    //   upsert_cnt: '0',
+    //   timestamp: '445316444575760390'
+    // }
+    // 
+
     // Delete a set of entities by their IDs
     res = await client.delete({
-        collection_name: "medium_articles_2020",
+        collection_name: collectionName,
         ids: [1, 2, 3]
     });
     
     console.log(res);
 
+    // Output
+    // 
+    // {
+    //   succ_index: [],
+    //   err_index: [],
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   IDs: {},
+    //   acknowledged: false,
+    //   insert_cnt: '0',
+    //   delete_cnt: '3',
+    //   upsert_cnt: '0',
+    //   timestamp: '445316444588605441'
+    // }
+    // 
+
     // Drop collection
     res = await client.dropCollection({
-        collection_name: "medium_articles_2020"
+        collection_name: collectionName
     });
     
     console.log(res);
+
+    // Output
+    // 
+    // { error_code: 'Success', reason: '', code: 0 }
+    // 
 
 }
 

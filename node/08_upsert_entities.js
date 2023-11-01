@@ -7,7 +7,7 @@ const collectionName = "medium_articles_2020"
 const data_file = `./medium_articles_2020_dpr.json`
 
 async function main() {
-    // Connect to the cluster
+    // 1. Connect to the cluster
     const client = new MilvusClient({address, token})
     
     // 2. Define fields
@@ -28,13 +28,34 @@ async function main() {
             data_type: DataType.FloatVector,
             dim: 768
         },
+        {
+            name: "link",
+            data_type: DataType.VarChar,
+            max_length: 512
+        },
+        {
+            name: "reading_time",
+            data_type: DataType.Int64
+        },
+        {
+            name: "publication",
+            data_type: DataType.VarChar,
+            max_length: 512
+        },
+        {
+            name: "claps",
+            data_type: DataType.Int64
+        },
+        {
+            name: "responses",
+            data_type: DataType.Int64
+        }
     ]
     
     // 3. Create collection
     res = await client.createCollection({
         collection_name: collectionName,
-        fields: fields,
-        enable_dynamic_field: true
+        fields: fields
     })
 
     console.log(res)
@@ -51,7 +72,7 @@ async function main() {
         index_type: "IVF_FLAT",
         metric_type: "L2",
         params: {
-            nlist: 1024
+            nlist: 16384
         }
     })
 
@@ -66,15 +87,16 @@ async function main() {
         collection_name: collectionName
     })
 
-    console.log(res)    
-
+    console.log(res)
+    
     // Output
     // 
     // { error_code: 'Success', reason: '', code: 0 }
     // 
 
     // 5. Insert vectors
-    const data = JSON.parse(fs.readFileSync(data_file, {encoding: "utf-8"}))
+    
+    const data = JSON.parse(fs.readFileSync(data_file))
 
     // read rows
     const rows = data["rows"]
@@ -97,9 +119,9 @@ async function main() {
     // 
 
     //insert vectors
-    res = await client.insert({
+    res = await client.upsert({
         collection_name: collectionName,
-        data: rows
+        data: rows.slice(1, 1000)
     })
 
     console.log(res)
@@ -117,61 +139,20 @@ async function main() {
     //     72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
     //     84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
     //     96, 97, 98, 99,
-    //     ... 5879 more items
+    //     ... 899 more items
     //   ],
     //   err_index: [],
     //   status: { error_code: 'Success', reason: '', code: 0 },
     //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
     //   acknowledged: false,
-    //   insert_cnt: '5979',
-    //   delete_cnt: '0',
-    //   upsert_cnt: '0',
-    //   timestamp: '445316728739856387'
+    //   insert_cnt: '999',
+    //   delete_cnt: '999',
+    //   upsert_cnt: '999',
+    //   timestamp: '445315186586025986'
     // }
     // 
 
-    await sleep(5000)
-
-    // 6. Coduct an ANN search
-
-    res = await client.search({
-        collection_name: collectionName,
-        vector: rows[0].title_vector,
-        limit: 3,
-        filter: "claps > 30 and reading_time < 10",
-        output_fields: ["title", "link"]
-    });
-    
-    console.log(res);
-
-    // Output
-    // 
-    // {
-    //   status: { error_code: 'Success', reason: '', code: 0 },
-    //   results: [
-    //     {
-    //       score: 0.36103832721710205,
-    //       id: '5607',
-    //       link: 'https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586',
-    //       title: 'The Hidden Side Effect of the Coronavirus'
-    //     },
-    //     {
-    //       score: 0.37674015760421753,
-    //       id: '5641',
-    //       link: 'https://towardsdatascience.com/why-the-coronavirus-mortality-rate-is-misleading-cc63f571b6a6',
-    //       title: 'Why The Coronavirus Mortality Rate is Misleading'
-    //     },
-    //     {
-    //       score: 0.416297972202301,
-    //       id: '3441',
-    //       link: 'https://medium.com/swlh/coronavirus-shows-what-ethical-amazon-could-look-like-7c80baf2c663',
-    //       title: 'Coronavirus shows what ethical Amazon could look like'
-    //     }
-    //   ]
-    // }
-    // 
-
-    // 7. Get collection info
+    // 6. Get collection info
 
     res = await client.describeCollection({
         collection_name: collectionName
@@ -182,22 +163,27 @@ async function main() {
     // Output
     // 
     // {
-    //   virtual_channel_names: [ 'by-dev-rootcoord-dml_11_445311585782773304v0' ],
+    //   virtual_channel_names: [ 'by-dev-rootcoord-dml_11_445311585782742977v0' ],
     //   physical_channel_names: [ 'by-dev-rootcoord-dml_11' ],
     //   aliases: [],
     //   start_positions: [],
     //   properties: [],
     //   status: { error_code: 'Success', reason: '', code: 0 },
     //   schema: {
-    //     fields: [ [Object], [Object], [Object] ],
+    //     fields: [
+    //       [Object], [Object],
+    //       [Object], [Object],
+    //       [Object], [Object],
+    //       [Object], [Object]
+    //     ],
     //     name: 'medium_articles_2020',
     //     description: '',
     //     autoID: false,
-    //     enable_dynamic_field: true
+    //     enable_dynamic_field: false
     //   },
-    //   collectionID: '445311585782773304',
-    //   created_timestamp: '445316708672733190',
-    //   created_utc_timestamp: '1698748430911',
+    //   collectionID: '445311585782742977',
+    //   created_timestamp: '445315186310774787',
+    //   created_utc_timestamp: '1698742623561',
     //   shards_num: 1,
     //   consistency_level: 'Bounded',
     //   collection_name: 'medium_articles_2020',
@@ -206,18 +192,19 @@ async function main() {
     // }
     // 
 
-    // 8. Drop collection
+    // 7. Drop collection
 
     res = await client.dropCollection({
         collection_name: collectionName
     })     
     
-    console.log(res);  
+    console.log(res);
 
     // Output
     // 
     // { error_code: 'Success', reason: '', code: 0 }
     // 
+
 }
 
 main()

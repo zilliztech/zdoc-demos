@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@zilliz/milvus2-sdk-node": "^2.3.2"
+    "@zilliz/milvus2-sdk-node": "^2.3.2",
+    "commander": "^11.1.0"
   }
 }

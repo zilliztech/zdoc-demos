@@ -1,4 +1,4 @@
-import os
+import os, re
 import argparse
 import sys
 import json
@@ -10,8 +10,8 @@ def format_line(line, comment=True, debug=False):
         if debug:
             print(line)
         obj = json.loads(line)
-        obj = reduce_array_length(obj, 20)
-        if "{" not in line and max([ len(str(x)) for x in obj ]) < 30:
+        obj = reduce_array_length(obj, 10)
+        if "{" not in line and len(obj) > 0 and max([ len(str(x)) for x in obj ]) < 17:
             line = json.dumps(obj)
         else:
             line = json.dumps(obj, indent=4)
@@ -39,34 +39,48 @@ def reduce_array_length(obj, length):
     return obj
 
 
+def remove_outputs(script):
+    regex = r"^# Output\n^#\s*\n(?:#\s*.*\n)*"
+    script = re.sub(regex, '', script, flags=re.MULTILINE)
+    script = re.sub(r"\n{3,}", "\n\n", script, flags=re.MULTILINE)
+    return script
+
 if __name__ == '__main__':
     parameters = {}
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', help='target file to run')
     parser.add_argument('-t', help='use test python')
     parser.add_argument('-d', help='debug', action='store_true')
+    parser.add_argument('-e', help='use env')
+    parser.add_argument('-r', help='remove outputs', action='store_true')
     args = parser.parse_args()
     target = args.f
+    env = args.e
+    remove_comments = args.r
 
-    with open('{}/../.env'.format(os.path.dirname(__file__)), 'r') as f:
+    with open('{}/../{}'.format(os.path.dirname(__file__), args.e), 'r') as f:
         for line in f.readlines():
             key, value = line.split('=')
             parameters[key] = value.strip()
 
     with open(target, 'r') as f:
         script = f.read()
-        for parameter in parameters.keys():
-            script = '\n'.join([ x.replace(parameter, parameters[parameter][1:-1]) for x in script.split('\n') ])
+        
+    if remove_comments:
+        script = remove_outputs(script)
 
-        if args.t:
-            addons = '''# Use PyMilvus in development
+    for parameter in parameters.keys():
+        script = '\n'.join([ x.replace(parameter, parameters[parameter][1:-1]) for x in script.split('\n') ])
+
+    if args.t:
+        addons = '''# Use PyMilvus in development
 # Should be replaced with `from pymilvus import *` in production
 from pathlib import Path
 import sys
 sys.path.insert(0, str(Path("{}")))
 \n'''.format(args.t)
 
-            script = addons + script
+        script = addons + script
             
     stdout = sys.stdout
     sys.stdout = StringIO()
