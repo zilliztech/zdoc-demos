@@ -34,23 +34,6 @@ type Dynamic struct {
 	Responses   int64  `json:"responses" milvus:"name:responses"`
 }
 
-type SearchParameters struct {
-	nprobe float64
-}
-
-func (s SearchParameters) Params() map[string]interface{} {
-	parameters := make(map[string]interface{})
-	parameters["nprobe"] = s.nprobe
-
-	return parameters
-}
-
-func (s SearchParameters) AddRadius(radius float64) {
-}
-
-func (s SearchParameters) AddRangeFilter(rangeFilter float64) {
-}
-
 func main() {
 	CLUSTER_ENDPOINT := "YOUR_CLUSTER_ENDPOINT"
 	TOKEN := "YOUR_CLUSTER_TOKEN"
@@ -221,4 +204,32 @@ func main() {
 	if err != nil {
 		log.Fatal("Failed to drop collection:", err.Error())
 	}
+}
+
+func resultsToJSON(results []client.SearchResult, outputFields []string) string {
+	var result []map[string]interface{}
+	for _, r := range results {
+		result = append(result, map[string]interface{}{
+			"counts":    r.ResultCount,
+			"ids":       r.IDs,
+			"fields":    fieldsToJSON(r.Fields, outputFields),
+			"distances": r.Scores,
+		})
+	}
+
+	jsonData, _ := json.Marshal(result)
+	return string(jsonData)
+}
+
+func fieldsToJSON(fields client.ResultSet, outputFields []string) string {
+	var result []map[string]interface{}
+
+	for _, f := range outputFields {
+		result = append(result, map[string]interface{}{
+			f: fields.GetColumn(f),
+		})
+	}
+
+	jsonData, _ := json.Marshal(result)
+	return string(jsonData)
 }

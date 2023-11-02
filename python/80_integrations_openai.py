@@ -19,9 +19,6 @@ COUNT = 100
 
 # 5. Set up the connection parameters for your Zilliz Cloud cluster.
 URI = 'YOUR_CLUSTER_ENDPOINT'
-
-# For serverless clusters, use your API key as the token.
-# For dedicated clusters, use a colon (:) concatenating your username and password as the token.
 TOKEN = 'YOUR_CLUSTER_TOKEN'
 
 # 6. Set up the OpenAI engine and API key to use.

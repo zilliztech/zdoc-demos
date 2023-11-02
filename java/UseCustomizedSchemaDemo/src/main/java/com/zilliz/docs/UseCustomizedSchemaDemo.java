@@ -42,6 +42,8 @@ public final class UseCustomizedSchemaDemo  {
     public static void main(String[] args) {
         String clusterEndpoint = "YOUR_CLUSTER_ENDPOINT";
         String token = "YOUR_CLUSTER_TOKEN";
+        String collectionName = "medium_articles";
+        String data_file = System.getProperty("user.dir") + "/medium_articles_2020_dpr.json";
 
         // 1. Connect to Zilliz Cloud cluster
         ConnectParam connectParam = ConnectParam.newBuilder()
@@ -52,6 +54,12 @@ public final class UseCustomizedSchemaDemo  {
         MilvusServiceClient client = new MilvusServiceClient(connectParam);
 
         System.out.println("Connected to Zilliz Cloud!");
+
+
+        // Output:
+        // Connected to Zilliz Cloud!
+
+
 
         // 2. Define fields
 
@@ -119,16 +127,20 @@ public final class UseCustomizedSchemaDemo  {
         R<RpcStatus> collection = client.createCollection(createCollectionParam);
 
         if (collection.getException() != null) {
-            System.out.println("Failed to create collection: " + collection.getException().getMessage());
+            System.err.println("Failed to create collection: " + collection.getException().getMessage());
             return;
         }
 
         System.out.println("Collection created!");
 
+        // Output:
+        // Collection created!
+
+
         // 4. Create index
 
         CreateIndexParam createIndexParam = CreateIndexParam.newBuilder()
-            .withCollectionName("medium_articles")
+            .withCollectionName(collectionName)
             .withFieldName("title_vector")
             .withIndexName("title_vector_index")
             .withIndexType(IndexType.AUTOINDEX)
@@ -138,75 +150,91 @@ public final class UseCustomizedSchemaDemo  {
         R<RpcStatus> res = client.createIndex(createIndexParam);
 
         if (res.getException() != null) {
-            System.out.println("Failed to create index: " + res.getException().getMessage());
+            System.err.println("Failed to create index: " + res.getException().getMessage());
             return;
         }
 
         System.out.println("Index created!");
 
+        // Output:
+        // Index created!
+
+
+
         // 5. Load collection
 
         LoadCollectionParam loadCollectionParam = LoadCollectionParam.newBuilder()
-            .withCollectionName("medium_articles")
+            .withCollectionName(collectionName)
             .build();
 
         R<RpcStatus> loadCollectionRes = client.loadCollection(loadCollectionParam);
 
         if (loadCollectionRes.getException() != null) {
-            System.out.println("Failed to load collection: " + loadCollectionRes.getException().getMessage());
+            System.err.println("Failed to load collection: " + loadCollectionRes.getException().getMessage());
             return;
         }
 
         System.out.println("Collection loaded!");
+
+        // Output:
+        // Collection loaded!
+
 
         // 6. Insert vectors
 
         String content;
 
         // read a local file
-        Path file = Path.of("../../medium_articles_2020_dpr.json");
+        Path file = Path.of(data_file);
         try {
             content = Files.readString(file);
         } catch (Exception e) {
-            System.out.println("Failed to read file: " + e.getMessage());
+            System.err.println("Failed to read file: " + e.getMessage());
             return;
         }
 
         System.out.println("Successfully read file");
 
+        // Output:
+        // Successfully read file
+
+
+
         // Load dataset
         JSONObject dataset = JSON.parseObject(content);
         List<JSONObject> rows = getRows(dataset.getJSONArray("rows"), 100);
-        List<Field> fields = getFields(dataset.getJSONArray("rows"), 100);
+        
+        // Also, you can get fields from dataset and insert them
+        // List<Field> fields = getFields(dataset.getJSONArray("rows"), 100);
 
         InsertParam insertParam = InsertParam.newBuilder()
-            .withCollectionName("medium_articles")
-            .withFields(fields)
+            .withCollectionName(collectionName)
+            .withRows(rows)
+            // .withFields(fields)
             .build();
 
         R<MutationResult> insertResponse = client.insert(insertParam);
 
         if (insertResponse.getStatus() != R.Status.Success.getCode()) {
-            System.out.println(insertResponse.getMessage());
+            System.err.println(insertResponse.getMessage());
         }
 
         MutationResultWrapper mutationResultWrapper = new MutationResultWrapper(insertResponse.getData());
 
         System.out.println("Successfully insert entities: " + mutationResultWrapper.getInsertCount());   
+
+
+        // Output:
+        // Successfully insert entities: 100
         
-        // Flush the inserted entities
-        ArrayList<String> collectionNames = new ArrayList<String>();
-        collectionNames.add("medium_articles");
-        FlushParam flushParam = FlushParam.newBuilder()
-            .withCollectionNames(collectionNames)
-            .build();
-
-        R<FlushResponse> flushResponse = client.flush(flushParam);
-
-        if (flushResponse.getException() != null) {
-            System.out.println("Failed to flush: " + flushResponse.getException().getMessage());
-            return;
-        }   
+        // wait for a while
+        try {
+            // pause execution for 5 seconds
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            // handle the exception
+            Thread.currentThread().interrupt();
+        } 
 
         // 7. Search vectors
 
@@ -221,7 +249,7 @@ public final class UseCustomizedSchemaDemo  {
         // Search vectors in a collection
 
         SearchParam searchParam = SearchParam.newBuilder()
-            .withCollectionName("medium_articles")
+            .withCollectionName(collectionName)
             .withVectorFieldName("title_vector")
             .withVectors(queryVectors)
             .withTopK(5)   
@@ -235,35 +263,51 @@ public final class UseCustomizedSchemaDemo  {
         R<SearchResults> response = client.search(searchParam);
 
         SearchResultsWrapper wrapper = new SearchResultsWrapper(response.getData().getResults());
-        System.out.println("Search results");
+
+        List<List<JSONObject>> results = new ArrayList<>();
 
         for (int i = 0; i < queryVectors.size(); ++i) {
             List<SearchResultsWrapper.IDScore> scores = wrapper.getIDScore(i);
             List<String> titles = (List<String>) wrapper.getFieldData("title", i);
             List<String> links = (List<String>) wrapper.getFieldData("link", i);
+            List<JSONObject> entities = new ArrayList<>();
             for (int j = 0; j < scores.size(); ++j) {
                 SearchResultsWrapper.IDScore score = scores.get(j);
-                System.out.println("Top " + j + " ID:" + score.getLongID() + " Distance:" + score.getScore());
-                System.out.println("Title: " + titles.get(j));
-                System.out.println("Link: " + links.get(j));
+                JSONObject entity = new JSONObject();
+                entity.put("id", score.getLongID());
+                entity.put("distance", score.getScore());
+                entity.put("title", titles.get(j));
+                entity.put("link", links.get(j));
+                entities.add(entity);
             }
-            System.out.print("=====================================\n");
+
+            results.add(entities);
         } 
+
+        System.out.println(results);
+
+        // Output:
+        // [[{"distance":0.8547761,"link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f","id":445337000188150698,"title":"Finding optimal NBA physiques using data visualization with Python"}, {"distance":0.8702323,"link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc","id":445337000188150679,"title":"Understanding Natural Language Processing: how AI understands our languages"}, {"distance":0.91095924,"link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801","id":445337000188150678,"title":"Rage Quitting Cancer Research"}, {"distance":0.98407775,"link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d","id":445337000188150672,"title":"Data Cleaning in Python: the Ultimate Guide (2020)"}, {"distance":1.091625,"link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e","id":445337000188150668,"title":"Top 10 In-Demand programming languages to learn in 2020"}]]
+
 
         // Drop collection
 
         DropCollectionParam dropCollectionParam = DropCollectionParam.newBuilder()
-            .withCollectionName("medium_articles")
+            .withCollectionName(collectionName)
             .build();
 
         R<RpcStatus> dropCollectionRes = client.dropCollection(dropCollectionParam);
 
         if (dropCollectionRes.getException() != null) {
-            System.out.println("Failed to drop collection: " + dropCollectionRes.getException().getMessage());
+            System.err.println("Failed to drop collection: " + dropCollectionRes.getException().getMessage());
             return;
         }
 
         System.out.println("Successfully drop collection");
+
+        // Output:
+        // Successfully drop collection
+
     }
 
     public static List<JSONObject> getRows(JSONArray dataset, int counts) {
