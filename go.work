@@ -1,0 +1,8 @@
+go 1.19
+
+use (
+	./go/enable_dynamic_schema
+	./go/use_customized_schema
+	./go/use_json_field
+	./go/use_partition_key
+)
