@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/milvus-io/milvus-sdk-go/v2/client"
 	"github.com/milvus-io/milvus-sdk-go/v2/entity"
@@ -26,34 +27,16 @@ type Dataset struct {
 	Rows []Row `json:"rows"`
 }
 
-type SearchParameters struct {
-	nprobe float64
-}
-
-func (s SearchParameters) Params() map[string]interface{} {
-	parameters := make(map[string]interface{})
-	parameters["nprobe"] = s.nprobe
-
-	return parameters
-}
-
-func (s SearchParameters) AddRadius(radius float64) {
-}
-
-func (s SearchParameters) AddRangeFilter(rangeFilter float64) {
-}
-
 func main() {
-	CLUSTER_ENDPOINT := "YOUR_CLUSTER_ENDPOINT"
-	TOKEN := "YOUR_CLUSTER_TOKEN"
+	CLUSTER_ENDPOINT := "http://localhost:19530"
+	TOKEN := "root:Milvus"
 	COLLNAME := "medium_articles_2020"
 
 	// 1. Connect to cluster
 
 	connParams := client.Config{
-		Address:       CLUSTER_ENDPOINT,
-		APIKey:        TOKEN,
-		EnableTLSAuth: true,
+		Address: CLUSTER_ENDPOINT,
+		APIKey:  TOKEN,
 	}
 
 	conn, err := client.NewClient(context.Background(), connParams)
@@ -65,6 +48,7 @@ func main() {
 	// 2. Create collection
 
 	// Define fields
+
 	id := entity.NewField().
 		WithName("id").
 		WithDataType(entity.FieldTypeInt64).
@@ -124,7 +108,7 @@ func main() {
 		log.Fatal("Failed to create collection:", err.Error())
 	}
 
-	// Create index
+	// 3. Create index for clusters
 	index, err := entity.NewIndexAUTOINDEX(entity.MetricType("L2"))
 
 	if err != nil {
@@ -139,14 +123,14 @@ func main() {
 		log.Fatal("Failed to create the index:", err.Error())
 	}
 
-	// Load collection
+	// 4. Load collection
 	loadCollErr := conn.LoadCollection(context.Background(), COLLNAME, false)
 
 	if loadCollErr != nil {
 		log.Fatal("Failed to load collection:", loadCollErr.Error())
 	}
 
-	// Get load progress
+	// 5. Get load progress
 	progress, err := conn.GetLoadingProgress(context.Background(), COLLNAME, nil)
 
 	if err != nil {
@@ -155,7 +139,7 @@ func main() {
 
 	fmt.Println("Loading progress:", progress)
 
-	// Read the dataset
+	// 6. Read the dataset
 	file, err := os.ReadFile("../../medium_articles_2020_dpr.json")
 	if err != nil {
 		log.Fatal("Failed to read file:", err.Error())
@@ -183,6 +167,11 @@ func main() {
 	}
 
 	fmt.Println("Inserted entities: ", col.Len())
+
+	time.Sleep(5 * time.Second)
+
+	// 7. Search
+
 	fmt.Println("Start searching ...")
 
 	vectors := []entity.Vector{}
@@ -193,21 +182,24 @@ func main() {
 		vectors = append(vectors, vector)
 	}
 
-	var sp entity.SearchParam = SearchParameters{1024}
+	sp, _ := entity.NewIndexAUTOINDEXSearchParam(1)
 
 	limit := client.WithLimit(10)
 	offset := client.WithOffset(0)
+	topK := 5
+
+	outputFields := []string{"title", "claps", "reading_time"}
 
 	res, err := conn.Search(
 		context.Background(),               // context
 		COLLNAME,                           // collectionName
 		[]string{},                         // partitionNames
 		"claps > 30 and reading_time < 10", // expr
-		[]string{"claps", "reading_time"},  // outputFields
+		outputFields,                       // outputfields
 		vectors,                            // vectors
 		"title_vector",                     // vectorField
 		entity.MetricType("L2"),            // metricType
-		5,                                  // topK
+		topK,                               // topK
 		sp,                                 // sp
 		limit,                              // opts
 		offset,                             // opts
@@ -217,24 +209,12 @@ func main() {
 		log.Fatal("Failed to insert rows:", err.Error())
 	}
 
-	for i, result := range res {
-		log.Println("Result counts", i, ":", result.ResultCount)
+	fmt.Println(res)
 
-		ids := result.IDs.FieldData().GetScalars().GetLongData().GetData()
-		scores := result.Scores
-		titles := result.Fields.GetColumn("title").FieldData().GetScalars().GetStringData().GetData()
-		publications := result.Fields.GetColumn("publication").FieldData().GetScalars().GetStringData().GetData()
-
-		for i, record := range ids {
-			log.Println("ID:", record, "Score:", scores[i], "Title:", titles[i], "Publication:", publications[i])
-		}
-	}
-
-	// Drop collection
+	// 8. Drop collection
 	err = conn.DropCollection(context.Background(), COLLNAME)
 
 	if err != nil {
 		log.Fatal("Failed to drop collection:", err.Error())
 	}
-
 }
