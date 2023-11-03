@@ -1,7 +1,7 @@
 import os, csv, random, time
 import openai
 
-from pymilvus import MilvusClient, DataType, CollectionSchema, FieldSchema
+from pymilvus import connections, DataType, CollectionSchema, FieldSchema, Collection, utility
 
 # Set up arguments
 
@@ -27,10 +27,15 @@ openai.api_key = 'YOUR_OPENAI_API_KEY'  # Use your own Open AI API Key here
 
 # Connect to Zilliz Cloud and create a collection
 
-client = MilvusClient(uri=URI, token=TOKEN)
+connections.connect(
+    alias='default',
+    # Public endpoint obtained from Zilliz Cloud
+    uri=URI,
+    token=TOKEN
+)
 
-if COLLECTION_NAME in client.list_collections():
-    client.drop_collection(COLLECTION_NAME)
+if COLLECTION_NAME in utility.list_collections():
+    utility.drop_collection(COLLECTION_NAME)
 
 fields = [
     FieldSchema(name='id', dtype=DataType.INT64, descrition='Ids', is_primary=True, auto_id=False),
@@ -40,17 +45,23 @@ fields = [
 
 schema = CollectionSchema(fields=fields, description='Title collection')
 
+collection = Collection(
+    name=COLLECTION_NAME,
+    schema=schema,
+)
+
 index_params = {
     'metric_type': 'L2',
     'index_type': 'AUTOINDEX',
     'params': {'nlist': 1024}
 }
 
-client.create_collection_with_schema(
-    collection_name=COLLECTION_NAME, 
-    schema=schema, 
+collection.create_index(
+    field_name='embedding',
     index_params=index_params
 )
+
+collection.load()
 
 # Load the csv file and extract embeddings from the text
 
@@ -75,20 +86,16 @@ for idx, text in enumerate(random.sample(sorted(csv_load(FILE)), k=COUNT)):
         'title': (text[:198] + '..') if len(text) > 200 else text,
         'embedding': embed(text)
     }
-    client.insert(collection_name=COLLECTION_NAME, data=ins)
+    collection.insert(data=ins)
     time.sleep(3)
     inserted.append(ins)
 
-# Flush the data to disk 
-# Zilliz Cloud automatically flushes the data to disk once a segment is full. 
-# You do not always need to call this method.
-client.flush(COLLECTION_NAME)
-
 # Search for similar titles
 def search(text):
-    res = client.search(
-        collection_name=COLLECTION_NAME,
+    res = collection.search(
         data=[embed(text)],
+        anns_field='embedding',
+        param={},
         output_fields=['title'],
         limit=5,
     )
@@ -114,6 +121,11 @@ for x in search_terms:
     result.append('Search term: ' + x)
     for x in search(x):
         result.append(x)
-    result.append()
+    # result.append()
 
 print('\n'.join(result))
+
+# Output
+#
+# Search term: self-improvement
+

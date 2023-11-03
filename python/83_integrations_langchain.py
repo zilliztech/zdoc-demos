@@ -84,6 +84,12 @@ docs = vector_store.similarity_search(query)
 
 print(len(docs))
 
+# Output
+#
+# 4
+
+
+
 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0) 
 retriever = vector_store.as_retriever()
 
@@ -103,3 +109,8 @@ rag_chain = (
 )
 
 print(rag_chain.invoke("Explain IVF_FLAT in Milvus."))
+
+# Output
+#
+# content='IVF_FLAT is an index mechanism in Milvus that divides a vector space into clusters. It compares the distances between a target vector and the centers of all clusters to find the nearest clusters. Then, it compares the distances between the target vector and the vectors in the selected clusters to find the nearest vectors. IVF_FLAT demonstrates performance advantages when the number of vectors exceeds the value of nlist. Thanks for asking!'
+

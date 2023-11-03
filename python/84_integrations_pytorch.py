@@ -1,19 +1,19 @@
 # Use PyMilvus in development
 # Should be replaced with `from pymilvus import *` in production
-from pathlib import Path
-import sys
-sys.path.append(str(Path("/Users/anthony/Documents/play/refine_milvus/pymilvus")))
+# from pathlib import Path
+# import sys
+# sys.path.append(str(Path("/Users/anthony/Documents/play/refine_milvus/pymilvus")))
 
-import gdown 
+import gdown
 import zipfile
 import glob
 import torch
-import time
+import time, os
 from torchvision import transforms
 from PIL import Image
 from tqdm import tqdm
 from matplotlib import pyplot as plt
-from pymilvus import MilvusClient, DataType, CollectionSchema, FieldSchema
+from pymilvus import connections, DataType, CollectionSchema, FieldSchema, Collection, utility
 
 # Set up arguments
 
@@ -29,16 +29,18 @@ TOP_K = 3
 
 # 4. Set up the connection parameters for your Zilliz Cloud cluster.
 URI = 'YOUR_CLUSTER_ENDPOINT'
-
-# For serverless clusters, use your API key as the token.
-# For dedicated clusters, use a colon (:) concatenating your username and password as the token.
 TOKEN = 'YOUR_CLUSTER_TOKEN'
 
 # Connect to Zilliz Cloud and create a collection
-client = MilvusClient(uri=URI, token=TOKEN)
+connections.connect(
+    alias='default',
+    # Public endpoint obtained from Zilliz Cloud
+    uri=URI,
+    token=TOKEN
+)
 
-if COLLECTION_NAME in client.list_collections():
-    client.drop_collection(COLLECTION_NAME)
+if COLLECTION_NAME in utility.list_collections():
+    utility.drop_collection(COLLECTION_NAME)
 
 fields = [
     FieldSchema(name='id', dtype=DataType.INT64, is_primary=True, auto_id=True),
@@ -48,28 +50,34 @@ fields = [
 
 schema = CollectionSchema(fields=fields)
 
+collection = Collection(
+    name=COLLECTION_NAME,
+    schema=schema,
+)
+
 index_params = {
     'index_type': 'AUTOINDEX',
     'metric_type': 'L2',
     'params': {}
 }
 
-client.create_collection_with_schema(
-    collection_name=COLLECTION_NAME, 
-    schema=schema, 
+collection.create_index(
+    field_name='image_embedding', 
     index_params=index_params
 )
+
+collection.load()
 
 # Prepare data
 # url = 'https://drive.google.com/uc?id=1OYDHLEy992qu5C4C8HV5uDIkOWRTAR1_'
 # output = '../paintings.zip'
 # gdown.download(url, output)
 
-with zipfile.ZipFile("../paintings.zip","r") as zip_ref:
+with zipfile.ZipFile("{}/../paintings.zip".format(os.path.dirname(__file__)),"r") as zip_ref:
     zip_ref.extractall("../paintings")
 
 # Get the filepaths of the images
-paths = glob.glob('../paintings/paintings/**/*.jpg', recursive=True)
+paths = glob.glob('{}/../paintings/paintings/**/*.jpg'.format(os.path.dirname(__file__)), recursive=True)
 print(len(paths))
 
 # Load the embedding model with the last layer removed
@@ -93,7 +101,7 @@ def embed(data):
             'filepath': x[0],
             'image_embedding': x[1]
         } for x in zip(data[1], output.tolist()) ]
-        client.insert(COLLECTION_NAME, data)
+        collection.insert(data)
 
 data_batch = [[],[]]
 
@@ -110,11 +118,10 @@ for path in tqdm(paths):
 if len(data_batch[0]) != 0:
     embed(data_batch)
 
-# Call a flush to index any unsealed segments.
-client.flush(COLLECTION_NAME)
+time.sleep(5)
 
 # Get the filepaths of the search images
-search_paths = glob.glob('../paintings/test_paintings/**/*.jpg', recursive=True)
+search_paths = glob.glob('{}../paintings/test_paintings/**/*.jpg'.format(os.path.dirname(__file__)), recursive=True)
 print(len(search_paths))
 
 # Embed the search images
@@ -137,7 +144,7 @@ for path in search_paths:
 
 embeds = embed(data_batch[0])
 start = time.time()
-res = client.search(COLLECTION_NAME, embeds, limit=TOP_K, output_fields=['filepath'])
+res = collection.search(embeds, anns_field='image_embedding', param={"metric_type": "L2", "params": {"nprobe": 10}}, limit=TOP_K, output_fields=['filepath'])
 finish = time.time()
 
 # Show the image results
