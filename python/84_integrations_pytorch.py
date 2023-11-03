@@ -10,6 +10,7 @@ import glob
 import torch
 import time, os
 from torchvision import transforms
+from torchvision.models import ResNet50_Weights
 from PIL import Image
 from tqdm import tqdm
 from matplotlib import pyplot as plt
@@ -69,9 +70,9 @@ collection.create_index(
 collection.load()
 
 # Prepare data
-# url = 'https://drive.google.com/uc?id=1OYDHLEy992qu5C4C8HV5uDIkOWRTAR1_'
-# output = '../paintings.zip'
-# gdown.download(url, output)
+url = 'https://drive.google.com/uc?id=1OYDHLEy992qu5C4C8HV5uDIkOWRTAR1_'
+output = '../paintings.zip'
+gdown.download(url, output)
 
 with zipfile.ZipFile("{}/../paintings.zip".format(os.path.dirname(__file__)),"r") as zip_ref:
     zip_ref.extractall("../paintings")
@@ -80,8 +81,14 @@ with zipfile.ZipFile("{}/../paintings.zip".format(os.path.dirname(__file__)),"r"
 paths = glob.glob('{}/../paintings/paintings/**/*.jpg'.format(os.path.dirname(__file__)), recursive=True)
 print(len(paths))
 
+# Output
+#
+# 4978
+
+
+
 # Load the embedding model with the last layer removed
-model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet50', pretrained=True)
+model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet50', weights=ResNet50_Weights.DEFAULT)
 model = torch.nn.Sequential(*(list(model.children())[:-1]))
 model.eval()
 
@@ -121,8 +128,14 @@ if len(data_batch[0]) != 0:
 time.sleep(5)
 
 # Get the filepaths of the search images
-search_paths = glob.glob('{}../paintings/test_paintings/**/*.jpg'.format(os.path.dirname(__file__)), recursive=True)
+search_paths = glob.glob('{}/../paintings/test_paintings/**/*.jpg'.format(os.path.dirname(__file__)), recursive=True)
 print(len(search_paths))
+
+# Output
+#
+# 2
+
+
 
 # Embed the search images
 def embed(data):
@@ -155,9 +168,9 @@ for hits_i, hits in enumerate(res):
     axarr[hits_i][0].set_axis_off()
     axarr[hits_i][0].set_title('Search Time: ' + str(finish - start))
     for hit_i, hit in enumerate(hits):
-        axarr[hits_i][hit_i + 1].imshow(Image.open(hit['entity']['filepath']))
+        axarr[hits_i][hit_i + 1].imshow(Image.open(hit.entity.get('filepath')))
         axarr[hits_i][hit_i + 1].set_axis_off()
-        axarr[hits_i][hit_i + 1].set_title('Distance: ' + str(hit['distance']))
+        axarr[hits_i][hit_i + 1].set_title('Distance: ' + str(hit.distance))
 
 # Save the search result in a separate image file alongside your script.
 plt.savefig('search_result.png')

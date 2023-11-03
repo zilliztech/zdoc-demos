@@ -1,4 +1,4 @@
-import os, json
+import os, json, time
 from pymilvus import connections, FieldSchema, CollectionSchema, DataType, Collection, utility
 
 CLUSTER_ENDPOINT="YOUR_CLUSTER_ENDPOINT" # Set your cluster endpoint
@@ -10,8 +10,8 @@ connections.connect(
   alias='default', 
   #  Public endpoint obtained from Zilliz Cloud
   uri=CLUSTER_ENDPOINT,
-  secure=True,
-  token=TOKEN, # Username and password specified when you created this cluster
+  # API key or a colon-separated cluster username and password
+  token=TOKEN, 
 )
 
 # 2. Define fields

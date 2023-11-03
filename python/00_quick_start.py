@@ -1,4 +1,4 @@
-import os, json
+import os, json, time
 from pymilvus import MilvusClient
 
 CLUSTER_ENDPOINT="YOUR_CLUSTER_ENDPOINT" # Set your cluster endpoint
@@ -10,9 +10,7 @@ DATASET_PATH="{}/../medium_articles_2020_dpr.json".format(os.path.dirname(__file
 # Replace uri and API key with your own
 client = MilvusClient(
     uri=CLUSTER_ENDPOINT, # Cluster endpoint obtained from the console
-    # - For a serverless cluster, use an API key as the token.
-    # - For a dedicated cluster, use the cluster credentials as the token
-    token=TOKEN
+    token=TOKEN # API key or a colon-separated cluster username and password
 )
 
 # Create a collection
@@ -105,7 +103,7 @@ print(res)
 #
 # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, "(180 more items hidden)"]
 
-
+time.sleep(5)
 
 # Read the dataset
 with open(DATASET_PATH) as f:

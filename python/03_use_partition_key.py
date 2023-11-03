@@ -1,4 +1,4 @@
-import json
+import json, time
 from pymilvus import connections, FieldSchema, CollectionSchema, DataType, Collection, utility
 
 CLUSTER_ENDPOINT="YOUR_CLUSTER_ENDPOINT" # Set your cluster endpoint
@@ -10,8 +10,8 @@ connections.connect(
   alias='default', 
   #  Public endpoint obtained from Zilliz Cloud
   uri=CLUSTER_ENDPOINT,
-  secure=True,
-  token=TOKEN, # Username and password specified when you created this cluster
+  # API key or a colon-separated cluster username and password
+  token=TOKEN, 
 )
 
 # 1. Define fields
@@ -346,8 +346,7 @@ print(f"Data inserted successfully! Inserted rows: {results.insert_count}")
 # Data inserted successfully! Inserted rows: 5979
 
 
-
-collection.flush()
+time.sleep(5)
 
 # 8. Search data
 # Metric type should be the same as

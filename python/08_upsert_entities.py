@@ -9,7 +9,7 @@ DATASET_PATH="{}/../medium_articles_2020_dpr.json".format(os.path.dirname(__file
 # 0. Connect to cluster
 connections.connect(
     uri=CLUSTER_ENDPOINT, # Public endpoint obtained from Zilliz Cloud
-    token=TOKEN, # Username and password specified when you created this cluster
+    token=TOKEN, # API key or a colon-separated cluster username and password
 )
 
 # 1. Define fields

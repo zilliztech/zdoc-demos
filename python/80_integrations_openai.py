@@ -95,7 +95,7 @@ def search(text):
     res = collection.search(
         data=[embed(text)],
         anns_field='embedding',
-        param={},
+        param={"metric_type": "L2", "params": {"nprobe": 10}},
         output_fields=['title'],
         limit=5,
     )
@@ -105,7 +105,7 @@ def search(text):
     for hits in res:
         for hit in hits:
             row = []
-            row.extend([hit['id'], hit['distance'], hit['entity']['title']])
+            row.extend([hit.id, hit.distance, hit.entity.get('title')])
             ret.append(row)
 
     return ret
@@ -115,17 +115,25 @@ search_terms = [
     'landscape',
 ]
 
-result = []
-
 for x in search_terms:
-    result.append('Search term: ' + x)
+    print('Search term: ', x)
     for x in search(x):
-        result.append(x)
-    # result.append()
-
-print('\n'.join(result))
+        print(x)
+    print()
 
 # Output
 #
-# Search term: self-improvement
+# Search term:  self-improvement
+# [9, 0.40222519636154175, 'Awakening Intuition: Using Your Mind-Body Network for Insight and Healing']
+# [66, 0.40565189719200134, 'The War of Art: Break Through the Blocks & Win Your Inner Creative Battles']
+# [73, 0.4130449891090393, 'The Organized Student: Teaching Children the Skills for Success in School and Beyond']
+# [34, 0.41660943627357483, 'The Consolation of Philosophy']
+# [61, 0.4331777095794678, 'Orientalism']
+
+# Search term:  landscape
+# [61, 0.3965946137905121, 'Orientalism']
+# [24, 0.4071578085422516, 'Andreas Gursky']
+# [1, 0.4108707904815674, 'The Art of Warfare']
+# [45, 0.4112565815448761, 'Sunshine']
+# [39, 0.41171979904174805, 'Wonderful Life: The Burgess Shale and the Nature of History']
 

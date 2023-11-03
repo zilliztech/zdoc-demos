@@ -6,9 +6,6 @@ import pandas as pd
 DATASET_PATH = "{}/../New_Medium_Data.csv".format(os.path.dirname(__file__))
 OUTPUT_PATH = "{}/../output".format(os.path.dirname(__file__))
 
-## Running this requires PyMilvus 2.2.16
-## Create a virtualenv and install that.
-
 from pymilvus import (
     FieldSchema, CollectionSchema, DataType,
     LocalBulkWriter,

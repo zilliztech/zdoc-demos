@@ -139,13 +139,6 @@ def search(text, top_k = 5):
         output_fields=['original_question', 'answer']  # Include the original question and answer in the result
     )
 
-    # ret = []
-    # for hit in results[0]:
-    #     row = []
-    #     row.extend([hit['entity']['answer'], hit['distance'], hit['entity']['original_question'] ])  # Get the answer, distance, and original question for the results
-    #     ret.append(row)
-    # return ret
-
     distances = results[0].distances
     entities = [ x.entity.to_dict()['entity'] for x in results[0] ]
 
