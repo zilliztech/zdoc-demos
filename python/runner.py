@@ -21,7 +21,9 @@ def format_line(line, comment=True, debug=False):
 
     else:
         if comment:
-            line = line.split()
+            if debug:
+                print(line)
+            line = '\n'.join([ '# '+x for x in line.splitlines()])
 
     return line
 

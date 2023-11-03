@@ -1,19 +1,20 @@
 # Use PyMilvus in development
 # Should be replaced with `from pymilvus import *` in production
-from pathlib import Path
-import sys
-sys.path.append(str(Path("/Users/anthony/Documents/play/refine_milvus/pymilvus")))
+# from pathlib import Path
+# import sys
+# sys.path.append(str(Path("/Users/anthony/Documents/play/refine_milvus/pymilvus")))
 
-from pymilvus import MilvusClient, DataType, CollectionSchema, FieldSchema
+from pymilvus import connections, DataType, CollectionSchema, FieldSchema, Collection, utility
 import cohere
 import pandas
 import numpy as np
 from tqdm import tqdm
+import time, os
 
 # Set up arguments
 
 # 1. Set the The SQuAD dataset url.
-FILE = 'https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v2.0.json' 
+FILE = "{}/../train-v2.0.json".format(os.path.dirname(__file__)) 
 
 # 2. Set up the name of the collection to be created.
 COLLECTION_NAME = 'question_answering_db'
@@ -53,12 +54,23 @@ simplified_records = simplified_records.sample(n=min(COUNT, len(simplified_recor
 # Check if the length of the cleaned dataset matches COUNT
 print(len(simplified_records))
 
+# Output
+#
+# 5000
+
+
+
 # Connect to Zilliz Cloud and create a collection
 
-client = MilvusClient(uri=URI, token=TOKEN)
+connections.connect(
+    alias='default',
+    # Public endpoint obtained from Zilliz Cloud
+    uri=URI,
+    token=TOKEN
+)
 
-if COLLECTION_NAME in client.list_collections():
-    client.drop_collection(COLLECTION_NAME)
+if COLLECTION_NAME in utility.list_collections():
+    utility.drop_collection(COLLECTION_NAME)
 
 fields = [
     FieldSchema(name='id', dtype=DataType.INT64, is_primary=True, auto_id=True),
@@ -69,17 +81,23 @@ fields = [
 
 schema = CollectionSchema(fields=fields)
 
+collection = Collection(
+    name=COLLECTION_NAME,
+    schema=schema,
+)
+
 index_params = {
     'metric_type': 'L2',
     'index_type': 'AUTOINDEX',
     'params': {'nlist': 1024}
 }
 
-client.create_collection_with_schema(
-    collection_name=COLLECTION_NAME, 
-    schema=schema, 
+collection.create_index(
+    field_name='original_question_embedding', 
     index_params=index_params
 )
+
+collection.load()
 
 # Set up a Cohere client
 cohere_client = cohere.Client(COHERE_API_KEY)
@@ -103,10 +121,9 @@ for batch in tqdm(np.array_split(simplified_records, (COUNT/BATCH_SIZE) + 1)):
         } for i, x in enumerate(questions)
     ]
 
-    client.insert(collection_name=COLLECTION_NAME, data=data)
+    collection.insert(data=data)
 
-# Flush at end to make sure all rows are sent for indexing
-client.flush(COLLECTION_NAME)
+time.sleep(10)
 
 # Search the cluster for an answer to a question text
 def search(text, top_k = 5):
@@ -114,28 +131,106 @@ def search(text, top_k = 5):
     # AUTOINDEX does not require any search params 
     search_params = {}
 
-    results = client.search(
-        collection_name=COLLECTION_NAME,
+    results = collection.search(
         data = embed([text]),  # Embeded the question
+        anns_field='original_question_embedding',
+        param=search_params,
         limit = top_k,  # Limit to top_k results per search
         output_fields=['original_question', 'answer']  # Include the original question and answer in the result
     )
 
-    ret = []
-    for hit in results[0]:
-        row = []
-        row.extend([hit['entity']['answer'], hit['distance'], hit['entity']['original_question'] ])  # Get the answer, distance, and original question for the results
-        ret.append(row)
+    # ret = []
+    # for hit in results[0]:
+    #     row = []
+    #     row.extend([hit['entity']['answer'], hit['distance'], hit['entity']['original_question'] ])  # Get the answer, distance, and original question for the results
+    #     ret.append(row)
+    # return ret
+
+    distances = results[0].distances
+    entities = [ x.entity.to_dict()['entity'] for x in results[0] ]
+
+    ret = [ {
+        "answer": x[1]["answer"],
+        "distance": x[0],
+        "original_question": x[1]['original_question']
+    } for x in zip(distances, entities)]
+
     return ret
+            
 
 # Ask these questions
 search_questions = ['What kills bacteria?', 'What\'s the biggest dog?']
 
 # Print out the results in order of [answer, similarity score, original question]
-for question in search_questions:
-    print('Question:', question)
-    print('\nAnswer,', 'Distance,', 'Original Question')
-    for result in search(question):
-        print(result)
-    print()
+
+ret = [ { "question": x, "candidates": search(x) } for x in search_questions ]
+
+print(ret)
+
+# Output
+#
+# [
+#     {
+#         "question": "What kills bacteria?",
+#         "candidates": [
+#             {
+#                 "answer": "farming",
+#                 "distance": 25.10422134399414,
+#                 "original_question": "What makes bacteria resistant to antibiotic treatment?"
+#             },
+#             {
+#                 "answer": "converting nitrogen gas to nitrogenous compounds",
+#                 "distance": 25.26958465576172,
+#                 "original_question": "What do bacteria do in soil?"
+#             },
+#             {
+#                 "answer": "slowing down the multiplication of bacteria or killing the bacteria",
+#                 "distance": 26.225540161132812,
+#                 "original_question": "How do antibiotics work?"
+#             },
+#             {
+#                 "answer": "Phage therapy",
+#                 "distance": 30.04580307006836,
+#                 "original_question": "What has been talked about to treat resistant bacteria?"
+#             },
+#             {
+#                 "answer": "antibiotic target",
+#                 "distance": 32.077369689941406,
+#                 "original_question": "What can be absent from the bacterial genome?"
+#             }
+#         ]
+#     },
+#     {
+#         "question": "What's the biggest dog?",
+#         "candidates": [
+#             {
+#                 "answer": "English Mastiff",
+#                 "distance": 12.71607780456543,
+#                 "original_question": "What breed was the largest dog known to have lived?"
+#             },
+#             {
+#                 "answer": "part of the family",
+#                 "distance": 27.21062469482422,
+#                 "original_question": "Most people today describe their dogs as what?"
+#             },
+#             {
+#                 "answer": "77.5 million",
+#                 "distance": 28.54041290283203,
+#                 "original_question": "How many people in the United States are said to own dog?"
+#             },
+#             {
+#                 "answer": "Rico",
+#                 "distance": 28.770610809326172,
+#                 "original_question": "What is the name of the dog that could ID over 200 things?"
+#             },
+#             {
+#                 "answer": "about six",
+#                 "distance": 31.739566802978516,
+#                 "original_question": "What is the average number of pups in a litter?"
+#             }
+#         ]
+#     }
+# ]
+
+
     
