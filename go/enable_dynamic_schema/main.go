@@ -6,9 +6,14 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"reflect"
+	"strings"
+	"time"
 
 	"github.com/milvus-io/milvus-sdk-go/v2/client"
 	"github.com/milvus-io/milvus-sdk-go/v2/entity"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type Row struct {
@@ -42,9 +47,8 @@ func main() {
 	// 1. Connect to cluster
 
 	connParams := client.Config{
-		Address:       CLUSTER_ENDPOINT,
-		APIKey:        TOKEN,
-		EnableTLSAuth: true,
+		Address: CLUSTER_ENDPOINT,
+		APIKey:  TOKEN,
 	}
 
 	conn, err := client.NewClient(context.Background(), connParams)
@@ -89,7 +93,7 @@ func main() {
 		log.Fatal("Failed to create collection:", err.Error())
 	}
 
-	// Create index
+	// 3. Create index for cluster
 	index, err := entity.NewIndexAUTOINDEX(entity.MetricType("L2"))
 
 	if err != nil {
@@ -104,14 +108,14 @@ func main() {
 		log.Fatal("Failed to create the index:", err.Error())
 	}
 
-	// Load collection
+	// 4. Load collection
 	loadCollErr := conn.LoadCollection(context.Background(), COLLNAME, false)
 
 	if loadCollErr != nil {
 		log.Fatal("Failed to load collection:", loadCollErr.Error())
 	}
 
-	// Get load progress
+	// 5. Get load progress
 	progress, err := conn.GetLoadingProgress(context.Background(), COLLNAME, nil)
 
 	if err != nil {
@@ -120,7 +124,7 @@ func main() {
 
 	fmt.Println("Loading progress:", progress)
 
-	// Read the dataset
+	// 6. Read the dataset
 	file, err := os.ReadFile("../../medium_articles_2020_dpr.json")
 	if err != nil {
 		log.Fatal("Failed to read file:", err.Error())
@@ -133,6 +137,8 @@ func main() {
 	}
 
 	fmt.Println("Dataset loaded, row number: ", len(data.Rows))
+
+	// 7. Insert data
 	fmt.Println("Start inserting ...")
 
 	rows := make([]interface{}, 0, 1)
@@ -149,6 +155,10 @@ func main() {
 
 	fmt.Println("Inserted entities: ", col.Len())
 
+	time.Sleep(5 * time.Second)
+
+	// 8. Search
+
 	fmt.Println("Start searching ...")
 
 	vectors := []entity.Vector{}
@@ -159,21 +169,23 @@ func main() {
 		vectors = append(vectors, vector)
 	}
 
-	var sp entity.SearchParam = SearchParameters{1024}
+	sp, _ := entity.NewIndexAUTOINDEXSearchParam(1)
 
 	limit := client.WithLimit(10)
 	offset := client.WithOffset(0)
+	topK := 5
+	outputFields := []string{"id", "title", "claps", "reading_time"}
 
 	res, err := conn.Search(
 		context.Background(),               // context
 		COLLNAME,                           // collectionName
 		[]string{},                         // partitionNames
 		"claps > 30 and reading_time < 10", // expr
-		[]string{"claps", "reading_time"},  // outputFields
+		outputFields,                       // outputFields
 		vectors,                            // vectors
 		"title_vector",                     // vectorField
 		entity.MetricType("L2"),            // metricType
-		5,                                  // topK
+		topK,                               // topK
 		sp,                                 // sp
 		limit,                              // opts
 		offset,                             // opts
@@ -183,22 +195,9 @@ func main() {
 		log.Fatal("Failed to insert rows:", err.Error())
 	}
 
-	for i, result := range res {
-		log.Println("Result counts", i, ":", sr.ResultCount)
+	fmt.Println(resultsToJSON(res))
 
-		ids := sr.IDs.FieldData().GetScalars().GetLongData().GetData()
-		scores := sr.Scores
-		titles := sr.Fields.GetColumn("title").FieldData().GetScalars().GetStringData().GetData()
-		dynamics := sr.Fields.GetColumn("claps").FieldData().GetScalars().GetJsonData().GetData()
-
-		for i, record := range ids {
-			json.Unmarshal(dynamics[i], &dynamic)
-
-			log.Println("ID:", record, "Score:", scores[i], "Title:", titles[i], "Claps:", dynamic.Claps, "Reading time:", dynamic.ReadingTime)
-		}
-	}
-
-	// Drop collection
+	// 9. Drop collection
 	err = conn.DropCollection(context.Background(), COLLNAME)
 
 	if err != nil {
@@ -206,30 +205,107 @@ func main() {
 	}
 }
 
-func resultsToJSON(results []client.SearchResult, outputFields []string) string {
+func resultsToJSON(results []client.SearchResult) string {
 	var result []map[string]interface{}
 	for _, r := range results {
 		result = append(result, map[string]interface{}{
 			"counts":    r.ResultCount,
-			"ids":       r.IDs,
-			"fields":    fieldsToJSON(r.Fields, outputFields),
+			"fields":    fieldsToJSON(results, true),
+			"rows":      fieldsToJSON(results, false),
 			"distances": r.Scores,
 		})
 	}
 
-	jsonData, _ := json.Marshal(result)
+	jsonData, _ := json.MarshalIndent(result, "", "  ")
 	return string(jsonData)
 }
 
-func fieldsToJSON(fields client.ResultSet, outputFields []string) string {
-	var result []map[string]interface{}
+func fieldsToJSON(results []client.SearchResult, inFields bool) []map[string]interface{} {
+	var fields []map[string]interface{}
+	var rows []map[string]interface{}
+	var ret []map[string]interface{}
+	for _, r := range results {
+		for _, f := range r.Fields {
+			field := make(map[string]interface{})
+			name := f.Name()
+			dynamic := f.FieldData().GetIsDynamic()
+			var data []interface{}
 
-	for _, f := range outputFields {
-		result = append(result, map[string]interface{}{
-			f: fields.GetColumn(f),
-		})
+			if dynamic {
+				data = dynamicToJSON(f, name)
+			} else {
+				data = typeSwitch(f)
+			}
+
+			for i, v := range data {
+				if len(rows) < i+1 {
+					row := make(map[string]interface{})
+					row[name] = v
+					rows = append(rows, row)
+				} else {
+					rows[i][name] = v
+				}
+			}
+
+			field[name] = data
+			fields = append(fields, field)
+		}
 	}
 
-	jsonData, _ := json.Marshal(result)
-	return string(jsonData)
+	if inFields {
+		ret = fields
+	} else {
+		ret = rows
+	}
+
+	return ret
+}
+
+func dynamicToJSON(c entity.Column, name string) []interface{} {
+	var fields []interface{}
+	data := c.FieldData().GetScalars().GetJsonData().Data
+	for _, d := range data {
+		var dynamic Dynamic
+		if err := json.Unmarshal(d, &dynamic); err != nil {
+			log.Fatal(err.Error())
+		}
+
+		r := reflect.ValueOf(dynamic)
+		value := reflect.Indirect(r).FieldByName(snakeToCamel(name))
+
+		if value.IsValid() {
+			fields = append(fields, value.Interface())
+		} else {
+			log.Printf("Field %s not found", name)
+		}
+	}
+	return fields
+}
+
+func typeSwitch(c entity.Column) []interface{} {
+	ctype := c.FieldData().GetType().String()
+
+	var data []interface{}
+	switch ctype {
+	case "Int64":
+		longData := c.FieldData().GetScalars().GetLongData().Data
+		for _, d := range longData {
+			data = append(data, d)
+		}
+	case "VarChar":
+		stringData := c.FieldData().GetScalars().GetStringData().Data
+		for _, d := range stringData {
+			data = append(data, d)
+		}
+	}
+	// You should add more types here
+	return data
+}
+
+func snakeToCamel(s string) string {
+	words := strings.FieldsFunc(s, func(r rune) bool { return r == '_' })
+	for i := 0; i < len(words); i++ {
+		words[i] = cases.Title(language.English).String(words[i])
+	}
+	return strings.Join(words, "")
 }

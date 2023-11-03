@@ -21,14 +21,16 @@ def format_line(line, comment=True, debug=False):
 
     else:
         if comment:
-            line = '# ' + line
+            line = line.split()
 
     return line
 
 def replace_quote(line):
     line = re.sub(r"\b'\b", "|||", line)
     line = line.replace("'", '"')
+    line = re.sub(r'\b"\b', "<<<", line)
     line = line.replace("|||", "'")
+    line = line.replace("<<<", '"')
 
     return line
 
