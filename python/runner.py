@@ -6,7 +6,7 @@ from io import StringIO
 
 def format_line(line, comment=True, debug=False):
     if "{" in line or "[" in line:
-        line = line.replace("'", '"').replace("True", "true").replace("False", "false").replace("None", "null")
+        line = replace_quote(line).replace("True", "true").replace("False", "false").replace("None", "null")
         if debug:
             print(line)
         obj = json.loads(line)
@@ -22,6 +22,13 @@ def format_line(line, comment=True, debug=False):
     else:
         if comment:
             line = '# ' + line
+
+    return line
+
+def replace_quote(line):
+    line = re.sub(r"\b'\b", "|||", line)
+    line = line.replace("'", '"')
+    line = line.replace("|||", "'")
 
     return line
 
