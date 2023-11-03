@@ -1,13 +1,14 @@
 # Use PyMilvus in development
 # Should be replaced with `from pymilvus import *` in production
-from pathlib import Path
-import sys
-sys.path.append(str(Path("/Users/anthony/Documents/play/refine_milvus/pymilvus")))
+# from pathlib import Path
+# import sys
+# sys.path.append(str(Path("/Users/anthony/Documents/play/refine_milvus/pymilvus")))
 
-from pymilvus import MilvusClient, DataType, CollectionSchema, FieldSchema
+from pymilvus import connections, DataType, CollectionSchema, FieldSchema, Collection, utility
 from datasets import load_dataset_builder, load_dataset, Dataset
 from transformers import AutoTokenizer, AutoModel
 from torch import clamp, sum
+import time
 
 # Set up arguments
 
@@ -31,17 +32,19 @@ LIMIT = 100
 
 # 6. Set up the connection parameters for your Zilliz Cloud cluster.
 URI = 'YOUR_CLUSTER_ENDPOINT'
-
-# For serverless clusters, use your API key as the token.
-# For dedicated clusters, use a colon (:) concatenating your username and password as the token.
 TOKEN = 'YOUR_CLUSTER_TOKEN'
 
 # Connect to Zilliz Cloud and create a collection
 
-client = MilvusClient(uri=URI, token=TOKEN)
+connections.connect(
+    alias='default',
+    # Public endpoint obtained from Zilliz Cloud
+    uri=URI,
+    token=TOKEN
+)
 
-if COLLECTION_NAME in client.list_collections():
-    client.drop_collection(COLLECTION_NAME)
+if COLLECTION_NAME in utility.list_collections():
+    utility.drop_collection(COLLECTION_NAME)
 
 fields = [
     FieldSchema(name='id', dtype=DataType.INT64, is_primary=True, auto_id=True),
@@ -52,17 +55,23 @@ fields = [
 
 schema = CollectionSchema(fields=fields)
 
+collection = Collection(
+    name=COLLECTION_NAME,
+    schema=schema,
+)
+
 index_params = {
     'metric_type': 'L2',
     'index_type': 'AUTOINDEX',
     'params': {'nlist': 1024}
 }
 
-client.create_collection_with_schema(
-    collection_name=COLLECTION_NAME, 
-    schema=schema, 
+collection.create_index(
+    field_name='original_question_embedding',
     index_params=index_params
 )
+
+collection.load()
 
 # Load the dataset and extract a subset
 
@@ -137,14 +146,11 @@ def insert_function(batch):
         } for i, x in enumerate(batch['question'])
     ]
 
-    client.insert(collection_name=COLLECTION_NAME, data=insertable)
+    collection.insert(data=insertable)
 
 data_dataset.map(insert_function, batched=True, batch_size=64)
 
-# Flush the data to disk 
-# Zilliz Cloud automatically flushes the data to disk once a segment is full. 
-# You do not always need to call this method.
-client.flush(COLLECTION_NAME)
+time.sleep(5)
 
 questions = {'question':['When did the premier league start?', 'Where did people learn russian?']}
 question_dataset = Dataset.from_dict(questions)
@@ -154,9 +160,10 @@ question_dataset.set_format('torch', columns=['input_ids', 'token_type_ids', 'at
 question_dataset = question_dataset.map(embed, remove_columns=['input_ids', 'token_type_ids', 'attention_mask'], batched = True, batch_size=INFERENCE_BATCH_SIZE)
 
 def search(batch):
-    res = client.search(
-        collection_name=COLLECTION_NAME,
+    res = collection.search(
         data=batch['question_embedding'].tolist(),
+        anns_field='original_question_embedding',
+        param={},
         output_fields=['answer', 'original_question'], 
         limit = LIMIT
     )
@@ -165,19 +172,21 @@ def search(batch):
     overall_answer = []
     overall_original_question = []
     for hits in res:
-        ids = []
-        distance = []
-        answer = []
-        original_question = []
-        for hit in hits:
-            ids.append(hit['id'])
-            distance.append(hit['distance'])
-            answer.append(hit['entity']['answer'])
-            original_question.append(hit['entity']['original_question'])
-        overall_id.append(ids)
-        overall_distance.append(distance)
-        overall_answer.append(answer)
-        overall_original_question.append(original_question)
+        # ids = []
+        # distance = []
+        # answer = []
+        # original_question = []
+
+        # for hit in hits:
+        #     ids.append(hit['id'])
+        #     distance.append(hit['distance'])
+        #     answer.append(hit['entity']['answer'])
+        #     original_question.append(hit['entity']['original_question'])
+
+        overall_id.append(hits.ids)
+        overall_distance.append(hits.distances)
+        overall_answer.append([ x.entity.get("answer") for x in hits])
+        overall_original_question.append([ x.entity.get("original_question") for x in hits])
     return {
         'id': overall_id,
         'distance': overall_distance,
@@ -185,10 +194,10 @@ def search(batch):
         'original_question': overall_original_question
     }
 question_dataset = question_dataset.map(search, batched=True, batch_size = 1)
-for x in question_dataset:
-    print()
-    print('Question:')
-    print(x['question'])
-    print('Answer, Distance, Original Question')
-    for x in zip(x['answer'], x['distance'], x['original_question']):
-        print(x)
+
+ret = [ { 
+    "question": x["question"], 
+    "candidates": { "answer": x["answer"], "distance": x["distance"], "original_question": x["original_question"]}
+} for x in question_dataset]
+
+print(ret)
