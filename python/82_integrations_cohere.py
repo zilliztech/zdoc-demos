@@ -54,6 +54,12 @@ simplified_records = simplified_records.sample(n=min(COUNT, len(simplified_recor
 # Check if the length of the cleaned dataset matches COUNT
 print(len(simplified_records))
 
+# Output
+#
+# 5000
+
+
+
 # Connect to Zilliz Cloud and create a collection
 
 connections.connect(
@@ -119,7 +125,6 @@ for batch in tqdm(np.array_split(simplified_records, (COUNT/BATCH_SIZE) + 1)):
 
 time.sleep(10)
 
-
 # Search the cluster for an answer to a question text
 def search(text, top_k = 5):
 
@@ -161,4 +166,71 @@ search_questions = ['What kills bacteria?', 'What\'s the biggest dog?']
 ret = [ { "question": x, "candidates": search(x) } for x in search_questions ]
 
 print(ret)
+
+# Output
+#
+# [
+#     {
+#         "question": "What kills bacteria?",
+#         "candidates": [
+#             {
+#                 "answer": "farming",
+#                 "distance": 25.10422134399414,
+#                 "original_question": "What makes bacteria resistant to antibiotic treatment?"
+#             },
+#             {
+#                 "answer": "converting nitrogen gas to nitrogenous compounds",
+#                 "distance": 25.26958465576172,
+#                 "original_question": "What do bacteria do in soil?"
+#             },
+#             {
+#                 "answer": "slowing down the multiplication of bacteria or killing the bacteria",
+#                 "distance": 26.225540161132812,
+#                 "original_question": "How do antibiotics work?"
+#             },
+#             {
+#                 "answer": "Phage therapy",
+#                 "distance": 30.04580307006836,
+#                 "original_question": "What has been talked about to treat resistant bacteria?"
+#             },
+#             {
+#                 "answer": "antibiotic target",
+#                 "distance": 32.077369689941406,
+#                 "original_question": "What can be absent from the bacterial genome?"
+#             }
+#         ]
+#     },
+#     {
+#         "question": "What's the biggest dog?",
+#         "candidates": [
+#             {
+#                 "answer": "English Mastiff",
+#                 "distance": 12.71607780456543,
+#                 "original_question": "What breed was the largest dog known to have lived?"
+#             },
+#             {
+#                 "answer": "part of the family",
+#                 "distance": 27.21062469482422,
+#                 "original_question": "Most people today describe their dogs as what?"
+#             },
+#             {
+#                 "answer": "77.5 million",
+#                 "distance": 28.54041290283203,
+#                 "original_question": "How many people in the United States are said to own dog?"
+#             },
+#             {
+#                 "answer": "Rico",
+#                 "distance": 28.770610809326172,
+#                 "original_question": "What is the name of the dog that could ID over 200 things?"
+#             },
+#             {
+#                 "answer": "about six",
+#                 "distance": 31.739566802978516,
+#                 "original_question": "What is the average number of pups in a litter?"
+#             }
+#         ]
+#     }
+# ]
+
+
     

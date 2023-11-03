@@ -195,9 +195,16 @@ def search(batch):
     }
 question_dataset = question_dataset.map(search, batched=True, batch_size = 1)
 
-ret = [ { 
-    "question": x["question"], 
-    "candidates": { "answer": x["answer"], "distance": x["distance"], "original_question": x["original_question"]}
-} for x in question_dataset]
+ret = "aaa"
+
+for x in question_dataset:
+    ret += "\n\n"
+    ret += "Question:\n"
+    ret += x["question"] + "\n"
+    ret += "Answer, Distance, Original Question\n"
+    for x in zip(x["answer"], x["distance"], x["original_question"]):
+        ret += str(x)
+
+    print(ret)
 
 print(ret)

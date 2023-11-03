@@ -61,6 +61,8 @@ collection.create_index(
     index_params=index_params
 )
 
+collection.load()
+
 # Load the csv file and extract embeddings from the text
 
 def csv_load(file):
@@ -87,11 +89,6 @@ for idx, text in enumerate(random.sample(sorted(csv_load(FILE)), k=COUNT)):
     collection.insert(data=ins)
     time.sleep(3)
     inserted.append(ins)
-
-# Flush the data to disk 
-# Zilliz Cloud automatically flushes the data to disk once a segment is full. 
-# You do not always need to call this method.
-# collection.flush()
 
 # Search for similar titles
 def search(text):
