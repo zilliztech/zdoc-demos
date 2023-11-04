@@ -1,9 +1,3 @@
-# Use PyMilvus in development
-# Should be replaced with `from pymilvus import *` in production
-# from pathlib import Path
-# import sys
-# sys.path.append(str(Path("/Users/anthony/Documents/play/refine_milvus/pymilvus")))
-
 import gdown
 import zipfile
 import glob

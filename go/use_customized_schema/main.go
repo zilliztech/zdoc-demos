@@ -6,14 +6,10 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"reflect"
-	"strings"
 	"time"
 
 	"github.com/milvus-io/milvus-sdk-go/v2/client"
 	"github.com/milvus-io/milvus-sdk-go/v2/entity"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 )
 
 type Row struct {
@@ -248,14 +244,7 @@ func fieldsToJSON(results []client.SearchResult, inFields bool) []map[string]int
 		for _, f := range r.Fields {
 			field := make(map[string]interface{})
 			name := f.Name()
-			dynamic := f.FieldData().GetIsDynamic()
-			var data []interface{}
-
-			if dynamic {
-				data = dynamicToJSON(f, name)
-			} else {
-				data = typeSwitch(f)
-			}
+			data := typeSwitch(f)
 
 			for i, v := range data {
 				if len(rows) < i+1 {
@@ -281,27 +270,6 @@ func fieldsToJSON(results []client.SearchResult, inFields bool) []map[string]int
 	return ret
 }
 
-func dynamicToJSON(c entity.Column, name string) []interface{} {
-	var fields []interface{}
-	data := c.FieldData().GetScalars().GetJsonData().Data
-	for _, d := range data {
-		var dynamic Dynamic
-		if err := json.Unmarshal(d, &dynamic); err != nil {
-			log.Fatal(err.Error())
-		}
-
-		r := reflect.ValueOf(dynamic)
-		value := reflect.Indirect(r).FieldByName(snakeToCamel(name))
-
-		if value.IsValid() {
-			fields = append(fields, value.Interface())
-		} else {
-			log.Printf("Field %s not found", name)
-		}
-	}
-	return fields
-}
-
 func typeSwitch(c entity.Column) []interface{} {
 	ctype := c.FieldData().GetType().String()
 
@@ -320,12 +288,4 @@ func typeSwitch(c entity.Column) []interface{} {
 	}
 	// You should add more types here
 	return data
-}
-
-func snakeToCamel(s string) string {
-	words := strings.FieldsFunc(s, func(r rune) bool { return r == '_' })
-	for i := 0; i < len(words); i++ {
-		words[i] = cases.Title(language.English).String(words[i])
-	}
-	return strings.Join(words, "")
 }
