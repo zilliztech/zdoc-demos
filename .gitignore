@@ -6,6 +6,8 @@ node_modules
 package-lock.json
 .vscode/*
 target
+movies.zip
+movies/*
 
 output/*
 

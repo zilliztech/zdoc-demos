@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/milvus-io/milvus-sdk-go/v2/client"
 	"github.com/milvus-io/milvus-sdk-go/v2/entity"
@@ -30,30 +31,16 @@ type SearchParameters struct {
 	nprobe float64
 }
 
-func (s SearchParameters) Params() map[string]interface{} {
-	parameters := make(map[string]interface{})
-	parameters["nprobe"] = s.nprobe
-
-	return parameters
-}
-
-func (s SearchParameters) AddRadius(radius float64) {
-}
-
-func (s SearchParameters) AddRangeFilter(rangeFilter float64) {
-}
-
 func main() {
 	CLUSTER_ENDPOINT := "YOUR_CLUSTER_ENDPOINT"
-	TOKEN := "YOUR_CLUSTER_TOKEN"
+	TOKEN := "root:Milvus"
 	COLLNAME := "medium_articles_2020"
 
 	// 1. Connect to cluster
 
 	connParams := client.Config{
-		Address:       CLUSTER_ENDPOINT,
-		APIKey:        TOKEN,
-		EnableTLSAuth: true,
+		Address: CLUSTER_ENDPOINT,
+		APIKey:  TOKEN,
 	}
 
 	conn, err := client.NewClient(context.Background(), connParams)
@@ -126,7 +113,7 @@ func main() {
 		log.Fatal("Failed to create collection:", err.Error())
 	}
 
-	// Create index
+	// 3. Create index for cluster
 	index, err := entity.NewIndexAUTOINDEX(entity.MetricType("L2"))
 
 	if err != nil {
@@ -141,14 +128,14 @@ func main() {
 		log.Fatal("Failed to create the index:", err.Error())
 	}
 
-	// Load collection
+	// 4. Load collection
 	loadCollErr := conn.LoadCollection(context.Background(), COLLNAME, false)
 
 	if loadCollErr != nil {
 		log.Fatal("Failed to load collection:", loadCollErr.Error())
 	}
 
-	// Get load progress
+	// 5. Get load progress
 	progress, err := conn.GetLoadingProgress(context.Background(), COLLNAME, nil)
 
 	if err != nil {
@@ -157,7 +144,7 @@ func main() {
 
 	fmt.Println("Loading progress:", progress)
 
-	// Read the dataset
+	// 6. Read the dataset
 	file, err := os.ReadFile("../../medium_articles_2020_dpr.json")
 	if err != nil {
 		log.Fatal("Failed to read file:", err.Error())
@@ -170,6 +157,9 @@ func main() {
 	}
 
 	fmt.Println("Dataset loaded, row number: ", len(data.Rows))
+
+	// 7. Insert data
+
 	fmt.Println("Start inserting ...")
 
 	rows := make([]interface{}, 0, 1)
@@ -185,6 +175,11 @@ func main() {
 	}
 
 	fmt.Println("Inserted entities: ", col.Len())
+
+	time.Sleep(5 * time.Second)
+
+	// 8. Search
+
 	fmt.Println("Start searching ...")
 
 	vectors := []entity.Vector{}
@@ -195,41 +190,108 @@ func main() {
 		vectors = append(vectors, vector)
 	}
 
-	var sp entity.SearchParam = SearchParameters{1024}
+	sp, _ := entity.NewIndexAUTOINDEXSearchParam(1)
 
 	limit := client.WithLimit(10)
 	offset := client.WithOffset(0)
+	topK := 5
+	outputFields := []string{"title", "claps", "publication", "responses", "reading_time"}
 	expr := "(publication == \"Towards Data Science\") and ((claps > 1500 and responses > 15) or (10 < reading_time < 15))"
 
 	res, err := conn.Search(
-		context.Background(),              // context
-		COLLNAME,                          // collectionName
-		[]string{},                        // partitionNames
-		expr,                              // expr
-		[]string{"claps", "reading_time"}, // outputFields
-		vectors,                           // vectors
-		"title_vector",                    // vectorField
-		entity.MetricType("L2"),           // metricType
-		5,                                 // topK
-		sp,                                // sp
-		limit,                             // opts
-		offset,                            // opts
+		context.Background(),    // context
+		COLLNAME,                // collectionName
+		[]string{},              // partitionNames
+		expr,                    // expr
+		outputFields,            // outputFields
+		vectors,                 // vectors
+		"title_vector",          // vectorField
+		entity.MetricType("L2"), // metricType
+		topK,                    // topK
+		sp,                      // sp
+		limit,                   // opts
+		offset,                  // opts
 	)
 
 	if err != nil {
 		log.Fatal("Failed to insert rows:", err.Error())
 	}
 
-	for _, result := range res {
-		fmt.Println("Number of found entities:", result.ResultCount)
-		fmt.Println("Scores: ", result.Scores)
-		fmt.Println("IDs: ", result.IDs)
-	}
+	fmt.Println(resultsToJSON(res))
 
-	// Drop collection
+	// 9. Drop collection
 	err = conn.DropCollection(context.Background(), COLLNAME)
 
 	if err != nil {
 		log.Fatal("Failed to drop collection:", err.Error())
 	}
+}
+
+func resultsToJSON(results []client.SearchResult) string {
+	var result []map[string]interface{}
+	for _, r := range results {
+		result = append(result, map[string]interface{}{
+			"counts":    r.ResultCount,
+			"fields":    fieldsToJSON(results, true),
+			"rows":      fieldsToJSON(results, false),
+			"distances": r.Scores,
+		})
+	}
+
+	jsonData, _ := json.MarshalIndent(result, "", "  ")
+	return string(jsonData)
+}
+
+func fieldsToJSON(results []client.SearchResult, inFields bool) []map[string]interface{} {
+	var fields []map[string]interface{}
+	var rows []map[string]interface{}
+	var ret []map[string]interface{}
+	for _, r := range results {
+		for _, f := range r.Fields {
+			field := make(map[string]interface{})
+			name := f.Name()
+			data := typeSwitch(f)
+
+			for i, v := range data {
+				if len(rows) < i+1 {
+					row := make(map[string]interface{})
+					row[name] = v
+					rows = append(rows, row)
+				} else {
+					rows[i][name] = v
+				}
+			}
+
+			field[name] = data
+			fields = append(fields, field)
+		}
+	}
+
+	if inFields {
+		ret = fields
+	} else {
+		ret = rows
+	}
+
+	return ret
+}
+
+func typeSwitch(c entity.Column) []interface{} {
+	ctype := c.FieldData().GetType().String()
+
+	var data []interface{}
+	switch ctype {
+	case "Int64":
+		longData := c.FieldData().GetScalars().GetLongData().Data
+		for _, d := range longData {
+			data = append(data, d)
+		}
+	case "VarChar":
+		stringData := c.FieldData().GetScalars().GetStringData().Data
+		for _, d := range stringData {
+			data = append(data, d)
+		}
+	}
+	// You should add more types here
+	return data
 }
