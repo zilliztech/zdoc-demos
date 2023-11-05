@@ -9,6 +9,7 @@ import io.milvus.param.collection.CreateCollectionParam;
 import io.milvus.param.collection.DropCollectionParam;
 import io.milvus.grpc.DataType;
 import io.milvus.grpc.FlushResponse;
+import io.milvus.param.dml.UpsertParam;
 import io.milvus.param.dml.InsertParam;
 import io.milvus.param.dml.InsertParam.Field;
 import io.milvus.grpc.MutationResult;
@@ -31,8 +32,8 @@ import java.nio.file.Path;
 /**
  * Hello world!
  */
-public final class UseCustomizedSchemaDemo  {
-    private UseCustomizedSchemaDemo () {
+public final class UpsertEntities {
+    private UpsertEntities() {
     }
 
     /**
@@ -55,7 +56,6 @@ public final class UseCustomizedSchemaDemo  {
 
         System.out.println("Connected to Zilliz Cloud!");
 
-
         // Output:
         // Connected to Zilliz Cloud!
 
@@ -67,7 +67,8 @@ public final class UseCustomizedSchemaDemo  {
             .withName("id")
             .withDataType(DataType.Int64)
             .withPrimaryKey(true)
-            .withAutoID(true)
+            // Upsert does not support autoID
+            .withAutoID(false)
             .build();
 
         FieldType title = FieldType.newBuilder()
@@ -136,7 +137,6 @@ public final class UseCustomizedSchemaDemo  {
         // Output:
         // Collection created!
 
-
         // 4. Create index
 
         CreateIndexParam createIndexParam = CreateIndexParam.newBuilder()
@@ -160,7 +160,6 @@ public final class UseCustomizedSchemaDemo  {
         // Index created!
 
 
-
         // 5. Load collection
 
         LoadCollectionParam loadCollectionParam = LoadCollectionParam.newBuilder()
@@ -180,7 +179,7 @@ public final class UseCustomizedSchemaDemo  {
         // Collection loaded!
 
 
-        // 6. Insert vectors
+        // 6. Upsert vectors
 
         String content;
 
@@ -199,7 +198,6 @@ public final class UseCustomizedSchemaDemo  {
         // Successfully read file
 
 
-
         // Load dataset
         JSONObject dataset = JSON.parseObject(content);
         List<JSONObject> rows = getRows(dataset.getJSONArray("rows"), 100);
@@ -207,25 +205,25 @@ public final class UseCustomizedSchemaDemo  {
         // Also, you can get fields from dataset and insert them
         // List<Field> fields = getFields(dataset.getJSONArray("rows"), 100);
 
-        InsertParam insertParam = InsertParam.newBuilder()
+        UpsertParam upsertParam = UpsertParam.newBuilder()
             .withCollectionName(collectionName)
             .withRows(rows)
             // .withFields(fields)
             .build();
 
-        R<MutationResult> insertResponse = client.insert(insertParam);
+        R<MutationResult> upsertResponse = client.upsert(upsertParam);
 
-        if (insertResponse.getStatus() != R.Status.Success.getCode()) {
-            System.err.println(insertResponse.getMessage());
+        if (upsertResponse.getStatus() != R.Status.Success.getCode()) {
+            System.err.println(upsertResponse.getMessage());
         }
 
-        MutationResultWrapper mutationResultWrapper = new MutationResultWrapper(insertResponse.getData());
+        MutationResultWrapper mutationResultWrapper = new MutationResultWrapper(upsertResponse.getData());
 
-        System.out.println("Successfully insert entities: " + mutationResultWrapper.getInsertCount());   
-
+        System.out.println("Successfully insert entities: " + mutationResultWrapper.getInsertCount());  
 
         // Output:
         // Successfully insert entities: 100
+
         
         // wait for a while
         try {
@@ -287,7 +285,7 @@ public final class UseCustomizedSchemaDemo  {
         System.out.println(results);
 
         // Output:
-        // [[{"distance":0.8547761,"link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f","id":445337000188150698,"title":"Finding optimal NBA physiques using data visualization with Python"}, {"distance":0.8702323,"link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc","id":445337000188150679,"title":"Understanding Natural Language Processing: how AI understands our languages"}, {"distance":0.91095924,"link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801","id":445337000188150678,"title":"Rage Quitting Cancer Research"}, {"distance":0.98407775,"link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d","id":445337000188150672,"title":"Data Cleaning in Python: the Ultimate Guide (2020)"}, {"distance":1.091625,"link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e","id":445337000188150668,"title":"Top 10 In-Demand programming languages to learn in 2020"}]]
+        // [[{"distance":0.8547761,"link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f","id":99,"title":"Finding optimal NBA physiques using data visualization with Python"}, {"distance":0.8702323,"link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc","id":80,"title":"Understanding Natural Language Processing: how AI understands our languages"}, {"distance":0.91095924,"link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801","id":79,"title":"Rage Quitting Cancer Research"}, {"distance":0.98407775,"link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d","id":73,"title":"Data Cleaning in Python: the Ultimate Guide (2020)"}, {"distance":1.091625,"link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e","id":69,"title":"Top 10 In-Demand programming languages to learn in 2020"}]]
 
 
         // 8. Drop collection
@@ -315,14 +313,15 @@ public final class UseCustomizedSchemaDemo  {
         for (int i = 0; i < counts; i++) {
             JSONObject row = dataset.getJSONObject(i);
             List<Float> vectors = row.getJSONArray("title_vector").toJavaList(Float.class);
+            Long id = row.getLong("id");
             Long reading_time = row.getLong("reading_time");
             Long claps = row.getLong("claps");
             Long responses = row.getLong("responses");
+            row.put("id", id);
             row.put("title_vector", vectors);
             row.put("reading_time", reading_time);
             row.put("claps", claps);
             row.put("responses", responses);
-            row.remove("id");
             rows.add(row);
         }
         return rows;

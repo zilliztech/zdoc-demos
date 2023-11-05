@@ -19,7 +19,7 @@ Before running the demos in the `python` folder, ensure that you have run the fo
 
 To run the demos, do as following in the `python` folder:
 
-- Fill in necessary parameters, such as `YOUR_CLUSTER_ENDPOINT` and `YOUR_CLUSTER_TOKEN` in the file.
+- Fill in the necessary parameters, such as `YOUR_CLUSTER_ENDPOINT` and `YOUR_CLUSTER_TOKEN` in the file.
 
 - Run the following command in the terminal.
 
@@ -27,6 +27,8 @@ To run the demos, do as following in the `python` folder:
     # replace this with the one you are interested in.
     > python 00_quick_start.py 
     ```
+
+#### Doc content
 
 <table>
     <thead>
@@ -74,7 +76,7 @@ To run the demos, do as following in the `python` folder:
             <td>Ready</td>            
         </tr>
         <tr>
-            <td rowspan=2><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
+            <td rowspan=2><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">Use JSON Fields</a></td>
             <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/04_use_json_field.py">python/04_use_json_field.py</a></td>
             <td>Ready</td>
         </tr>
@@ -107,7 +109,120 @@ To run the demos, do as following in the `python` folder:
             <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/07_use_bulk_import.ipynb">python/07_use_bulk_import.ipynb</a></td>
             <td>Ready</td>            
         </tr>
+        <tr>
+            <td rowspan="2"><a href="https://docs.zilliz.com/docs/upsert-entities">Upsert Entities</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/08_upsert_entities.py">python/08_upsert_entities.py</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/08_upsert_entities.ipynb">python/08_upsert_entities.ipynb</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td rowspan="2"><a href="https://docs.zilliz.com/docs/search-query-iterators">Search & Query with Iterators</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/09_search_query_iterators.py">python/09_search_query_iterators.py</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/09_search_query_iterators.ipynb">python/09_search_query_iterators.ipynb</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td rowspan="2"><a href="https://docs.zilliz.com/docs/search-query-advanced-ops">Search & Query with Advanced Ops</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/10_search_query_advanced_ops.py">python/10_search_query_advanced_ops.py</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/10_search_query_advanced_ops.ipynb">python/10_search_query_advanced_ops.ipynb</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td rowspan="2"><a href="https://docs.zilliz.com/docs/conduct-range-search">Conduct a Range Search</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/11_conduct_a_range_search.py">python/11_conduct_a_range_search.py</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/11_conduct_a_range_search.ipynb">python/11_conduct_a_range_search.ipynb</a></td>
+            <td>Ready</td>
+        </tr>
     </tbody>
+</table>
+
+#### Integrations
+
+<table>
+    <thead>
+        <tr>
+            <th>Case</th>
+            <th>Code File</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="2"><a href="https://docs.zilliz.com/docs/quick-start-1">Integartions with OpenAI</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/80_integrations_openai.py">python/80_integrations_openai.py</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/80_integrations_openai.ipynb">python/80_integrations_openai.ipynb</a></td>
+            <td>Ready</td>
+        </tr>   
+        <tr>
+            <td rowspan="2"><a href="https://docs.zilliz.com/docs/quick-start-1">Integartions with HuggingFace</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/81_integrations_huggingface.py">python/81_integrations_huggingface.py</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/81_integrations_huggingface.ipynb">python/81_integrations_huggingface.ipynb</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td rowspan="2"><a href="https://docs.zilliz.com/docs/quick-start-1">Integartions with Cohere</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/82_integrations_cohere.py">python/82_integrations_cohere.py</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/82_integrations_cohere.ipynb">python/82_integrations_cohere.ipynb</a></td>
+            <td>Ready</td>
+        </tr>    
+        <tr>
+            <td rowspan="2"><a href="https://docs.zilliz.com/docs/quick-start-1">Integartions with Langchain</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/83_integrations_langchain.py">python/83_integrations_langchain.py</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/83_integrations_langchain.ipynb">python/83_integrations_langchain.ipynb</a></td>
+            <td>Ready</td>
+        </tr>  
+        <tr>
+            <td rowspan="2"><a href="https://docs.zilliz.com/docs/quick-start-1">Integartions with PyTorch</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/84_integrations_pytorch.py">python/84_integrations_pytorch.py</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/84_integrations_pytorch.ipynb">python/84_integrations_pytorch.ipynb</a></td>
+            <td>Ready</td>
+        </tr>  
+        <tr>
+            <td rowspan="2"><a href="https://docs.zilliz.com/docs/quick-start-1">Integartions with LLamaIndex</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/85_integrations_llamaindex.py">python/85_integrations_llamaindex.py</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/85_integrations_llamaindex.ipynb">python/85_integrations_llamaindex.ipynb</a></td>
+            <td>Ready</td>
+        </tr>   
+        <tr>
+            <td rowspan="2"><a href="https://docs.zilliz.com/docs/quick-start-1">Integartions with SentenceTransformers</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/86_integrations_sentencetransformers.py">python/86_integrations_sentencetransformers.py</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/python/86_integrations_sentencetransformers.ipynb">python/86_integrations_sentencetransformers.ipynb</a></td>
+            <td>Ready</td>
+        </tr>   
+    </tbody>    
 </table>
 
 
@@ -122,7 +237,7 @@ To run the demos in the `java` folder, run the following commands:
     ```shell
     # replace the folder with the one you are interested in.
     > cd java/quick_start 
-    > mvn compile exec:java -Dexec.mainClass="com.zilliz.docs.QuickStartDemo"
+    > mvn clean compile exec:java
     ```
 
 <table>
@@ -136,27 +251,42 @@ To run the demos in the `java` folder, run the following commands:
     <tbody>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/quick-start-1">Quick start</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/quick_start/src/main/java/com/zilliz/docs/QuickStartDemo.java">java/quick_start</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/QuickStartDemo/src/main/java/com/zilliz/docs/QuickStartDemo.java">java/QuickStartDemo</a></td>
             <td>Ready</td>
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use-customized-schema">Use Customized Schema</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/use_customized_schema/src/main/java/com/zilliz/docs/UseCustomizedSchemaDemo.java">java/use_customized_schema</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/UseCustomizedSchemaDemo/src/main/java/com/zilliz/docs/UseCustomizedSchemaDemo.java">java/use_customized_schema</a></td>
             <td>Ready</td>
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/enable_dynamic_schema">Enable Dynamic Schema</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/enable_dynamic_schema/src/main/java/com/zilliz/docs/EnableDynamicSchemaDemo.java">java/enable_dynamic_schema</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/EnableDynamicSchemaDemo/src/main/java/com/zilliz/docs/EnableDynamicSchemaDemo.java">java/EnableDynamicSchemaDemo</td>
             <td>Ready</td>
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/use_partition_key">Use Partition Key</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/use_partition_key/src/main/java/com/zilliz/docs/UsePartitionKeyDemo.java">java/use_partition_key</td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/UsePartitionKeyDemo/src/main/java/com/zilliz/docs/UsePartitionKeyDemo.java">java/UsePartitionKeyDemo</td>
             <td>Ready</td>
         </tr>
         <tr>
-            <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/use_json_field/src/main/java/com/zilliz/docs/UseJsonFieldDemo.java">java/use_json_field</td>
+            <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">Use JSON Fields</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/UseJsonFieldDemo/src/main/java/com/zilliz/docs/UseJsonFieldDemo.java">java/UseJsonFieldDemo</td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://docs.zilliz.com/docs/upsert_entities">Upsert Entities</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/UpsertEntities/src/main/java/com/zilliz/docs/UpsertEntities.java">java/UpsertEntities</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://docs.zilliz.com/docs/search-query-advanced-ops">Search & Query with Advanced Ops</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/SearchQueryWithAdvancedOpsDemo/src/main/java/com/zilliz/docs/SearchQueryWithAdvancedOpsDemo.java">java/SearchQueryWithAdvancedOpsDemo</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://docs.zilliz.com/docs/conduct-range-search">Conduct a Range Search</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/ConductaRangeSearchDemo/src/main/java/com/zilliz/docs/ConductaRangeSearchDemo.java">java/ConductaRangeSearchDemo</a></td>
             <td>Ready</td>
         </tr>
     </tbody>
@@ -212,8 +342,23 @@ To run the demos, do the following in the `node` folder:
             <td>Ready</td>
         </tr>
         <tr>
-            <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
+            <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">Use JSON Fields</a></td>
             <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/node/04_use_json_field.js">node/04_use_json_field.js</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://docs.zilliz.com/docs/search-query-advanced-ops">Upsert Entities</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/node/08_upsert_entities.js">node/08_upsert_entities.js</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://docs.zilliz.com/docs/search-query-advanced-ops">Search & Query with Advanced Ops</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/node/10_search_query_advanced_ops.js">node/10_search_query_advanced_ops.js</a></td>
+            <td>Ready</td>
+        </tr>
+        <tr>
+            <td><a href="https://docs.zilliz.com/docs/conduct-range-search">Conduct a Range Search</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/node/11_conduct_a_range_search.js">node/11_conduct_a_range_search.js</a></td>
             <td>Ready</td>
         </tr>
     </tbody>
@@ -266,7 +411,7 @@ To run the demos, do the following in the `go` project folder:
             <td>Ready</td>
         </tr>
         <tr>
-            <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">JavaScript Object Notation (JSON)</a></td>
+            <td><a href="https://docs.zilliz.com/docs/javascript-object-notation-json-1">Use JSON Fields</a></td>
             <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/go/use_json_field/main.go">go/use_json_field/main.go</a></td>
             <td>Ready</td>
         </tr>

@@ -1,4 +1,4 @@
-import gdown, zipfile, time, csv
+import gdown, zipfile, time, csv, os
 from tqdm import tqdm
 from pymilvus import connections, DataType, FieldSchema, CollectionSchema, Collection, utility
 from sentence_transformers import SentenceTransformer
@@ -16,11 +16,12 @@ BATCH_SIZE = 128
 TOP_K = 3
 
 url = 'https://drive.google.com/uc?id=11ISS45aO2ubNCGaC3Lvd3D7NT8Y7MeO8'
-output = './movies.zip'
-gdown.download(url, output)
+zipball = '{}/../movies.zip'.format(os.path.dirname(__file__))
+output_folder = '{}/../movies'.format(os.path.dirname(__file__))
+gdown.download(url, zipball)
 
-with zipfile.ZipFile("./movies.zip","r") as zip_ref:
-    zip_ref.extractall("./movies")
+with zipfile.ZipFile(zipball,"r") as zip_ref:
+    zip_ref.extractall(output_folder)
 
 # Connect to Milvus Database
 connections.connect(
@@ -79,7 +80,7 @@ data_batch = [[],[]]
 with open('../movies/plots.csv') as f:
     total = len(f.readlines()) / BATCH_SIZE
 
-for title, plot in tqdm(csv_load('./movies/plots.csv'), total=total):
+for title, plot in tqdm(csv_load('{}/plots.csv'.format(output_folder)), total=total):
     data_batch[0].append(title)
     data_batch[1].append(plot)
     if len(data_batch[0]) % BATCH_SIZE == 0:

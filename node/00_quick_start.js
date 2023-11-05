@@ -25,6 +25,7 @@ async function main () {
     // { error_code: 'Success', reason: '', code: 0 }
     // 
 
+
     // Describe the created collection
     res = await client.describeCollection({
         collection_name: collectionName
@@ -35,8 +36,8 @@ async function main () {
     // Output
     // 
     // {
-    //   virtual_channel_names: [ 'by-dev-rootcoord-dml_11_445311585782767873v0' ],
-    //   physical_channel_names: [ 'by-dev-rootcoord-dml_11' ],
+    //   virtual_channel_names: [ 'by-dev-rootcoord-dml_0_445337000187266398v0' ],
+    //   physical_channel_names: [ 'by-dev-rootcoord-dml_0' ],
     //   aliases: [],
     //   start_positions: [],
     //   properties: [],
@@ -48,9 +49,9 @@ async function main () {
     //     autoID: false,
     //     enable_dynamic_field: true
     //   },
-    //   collectionID: '445311585782767873',
-    //   created_timestamp: '445316436082294790',
-    //   created_utc_timestamp: '1698747391061',
+    //   collectionID: '445337000187266398',
+    //   created_timestamp: '445337085300965381',
+    //   created_utc_timestamp: '1698826161579',
     //   shards_num: 1,
     //   consistency_level: 'Bounded',
     //   collection_name: 'medium_articles_2020',
@@ -58,6 +59,7 @@ async function main () {
     //   num_partitions: '1'
     // }
     // 
+
 
     // Insert a record
     res = await client.insert({
@@ -87,9 +89,10 @@ async function main () {
     //   insert_cnt: '1',
     //   delete_cnt: '0',
     //   upsert_cnt: '0',
-    //   timestamp: '445316437170454533'
+    //   timestamp: '445337086401708038'
     // }
     // 
+
 
     // Read a few records from the dataset
     const data = JSON.parse(fs.readFileSync(data_file, 'utf8'));
@@ -180,6 +183,7 @@ async function main () {
     //   }
     // ]
     // 
+
     
     res = await client.insert({
         collection_name: collectionName,
@@ -210,9 +214,10 @@ async function main () {
     //   insert_cnt: '5979',
     //   delete_cnt: '0',
     //   upsert_cnt: '0',
-    //   timestamp: '445316442229571586'
+    //   timestamp: '445337091304325121'
     // }
     // 
+
 
     await new Promise(resolve => setTimeout(resolve, 5000));
 
@@ -259,6 +264,7 @@ async function main () {
     // }
     // 
 
+
     // Conduct an ANN search with filters
     res = await client.search({
         collection_name: collectionName,
@@ -278,34 +284,35 @@ async function main () {
     //     {
     //       score: 1,
     //       id: '0',
-    //       title: 'The Reported Mortality Rate of Coronavirus Is Not Important',
     //       claps: 1100,
-    //       publication: 'The Startup'
+    //       publication: 'The Startup',
+    //       title: 'The Reported Mortality Rate of Coronavirus Is Not Important'
     //     },
     //     {
     //       score: 0.8500008583068848,
     //       id: '3177',
-    //       title: 'Following the Spread of Coronavirus',
     //       claps: 215,
-    //       publication: 'Towards Data Science'
+    //       publication: 'Towards Data Science',
+    //       title: 'Following the Spread of Coronavirus'
     //     },
     //     {
     //       score: 0.8116300106048584,
     //       id: '5641',
-    //       title: 'Why The Coronavirus Mortality Rate is Misleading',
     //       claps: 2900,
-    //       publication: 'Towards Data Science'
+    //       publication: 'Towards Data Science',
+    //       title: 'Why The Coronavirus Mortality Rate is Misleading'
     //     },
     //     {
     //       score: 0.7555683851242065,
     //       id: '4275',
-    //       title: 'How Can AI Help Fight Coronavirus?',
     //       claps: 255,
-    //       publication: 'The Startup'
+    //       publication: 'The Startup',
+    //       title: 'How Can AI Help Fight Coronavirus?'
     //     }
     //   ]
     // }
     // 
+
 
     // Perform a query
     res = await client.query({
@@ -330,6 +337,7 @@ async function main () {
     // }
     // 
 
+
     // Get an entity by id
     res = await client.get({
         collection_name: collectionName,
@@ -347,6 +355,7 @@ async function main () {
     // }
     // 
 
+
     // Get a set of entities by their IDs
     res = await client.get({
         collection_name: collectionName,
@@ -361,12 +370,13 @@ async function main () {
     // {
     //   status: { error_code: 'Success', reason: '', code: 0 },
     //   data: [
-    //     { '$meta': [Object], id: '0' },
-    //     { '$meta': [Object], id: '1' },
-    //     { '$meta': [Object], id: '2' }
+    //     { id: '0', '$meta': [Object] },
+    //     { id: '1', '$meta': [Object] },
+    //     { id: '2', '$meta': [Object] }
     //   ]
     // }
     // 
+
 
     // Delete an entity by its ID
     res = await client.delete({
@@ -387,9 +397,10 @@ async function main () {
     //   insert_cnt: '0',
     //   delete_cnt: '1',
     //   upsert_cnt: '0',
-    //   timestamp: '445316444575760390'
+    //   timestamp: '445337093833752585'
     // }
     // 
+
 
     // Delete a set of entities by their IDs
     res = await client.delete({
@@ -410,9 +421,10 @@ async function main () {
     //   insert_cnt: '0',
     //   delete_cnt: '3',
     //   upsert_cnt: '0',
-    //   timestamp: '445316444588605441'
+    //   timestamp: '445337093833752590'
     // }
     // 
+
 
     // Drop collection
     res = await client.dropCollection({
@@ -425,6 +437,7 @@ async function main () {
     // 
     // { error_code: 'Success', reason: '', code: 0 }
     // 
+
 
 }
 
