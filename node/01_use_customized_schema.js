@@ -65,6 +65,7 @@ async function main() {
     // { error_code: 'Success', reason: '', code: 0 }
     // 
 
+
     // 4. Create index
     res = await client.createIndex({
         collection_name: collectionName,
@@ -83,6 +84,7 @@ async function main() {
     // { error_code: 'Success', reason: '', code: 0 }
     // 
 
+
     res = await client.loadCollection({
         collection_name: collectionName
     })
@@ -93,6 +95,7 @@ async function main() {
     // 
     // { error_code: 'Success', reason: '', code: 0 }
     // 
+
 
     // 5. Insert vectors
     const data = JSON.parse(fs.readFileSync(data_file, "utf8"))
@@ -116,6 +119,7 @@ async function main() {
     //   'responses'
     // ]
     // 
+
 
     //insert vectors
     res = await client.insert({
@@ -147,9 +151,10 @@ async function main() {
     //   insert_cnt: '5979',
     //   delete_cnt: '0',
     //   upsert_cnt: '0',
-    //   timestamp: '445316631681040387'
+    //   timestamp: '445454001749622786'
     // }
     // 
+
 
     await sleep(5000)
 
@@ -204,6 +209,98 @@ async function main() {
     // }
     // 
 
+
+    res = await client.search({
+        collection_name: collectionName,
+        vectors: [rows[0].title_vector, rows[1].title_vector],
+        limit: 5,
+        filter: "claps > 30 and reading_time < 10",
+        output_fields: ["title", "link"]
+    });
+    
+    console.log(res);
+
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   results: [
+    //     [ [Object], [Object], [Object], [Object], [Object] ],
+    //     [ [Object], [Object], [Object], [Object], [Object] ]
+    //   ]
+    // }
+    // 
+
+    res = await client.query({
+        collection_name: collectionName,
+        filter: "claps > 30 and reading_time < 10",
+        output_fields: ["title", "link"],
+        limit: 5
+    });
+
+    console.log(res);
+
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   data: [
+    //     {
+    //       title: 'How Can We Best Switch in Python?',
+    //       link: 'https://medium.com/swlh/how-can-we-best-switch-in-python-458fb33f7835',
+    //       id: '2'
+    //     },
+    //     {
+    //       title: 'Maternity leave shouldn’t set women back',
+    //       link: 'https://medium.com/swlh/maternity-leave-shouldnt-set-women-back-5019dd3129d8',
+    //       id: '3'
+    //     },
+    //     {
+    //       title: 'Python NLP Tutorial: Information Extraction and Knowledge Graphs',
+    //       link: 'https://medium.com/swlh/python-nlp-tutorial-information-extraction-and-knowledge-graphs-43a2a4c4556c',
+    //       id: '4'
+    //     },
+    //     {
+    //       title: 'Guide to Nest JS-RabbitMQ Microservices',
+    //       link: 'https://medium.com/swlh/guide-to-nest-js-rabbitmq-microservices-e1e8655d2853',
+    //       id: '5'
+    //     },
+    //     {
+    //       title: 'Science Monday: Can You Drink As Much Water As Tom Brady?',
+    //       link: 'https://medium.com/swlh/science-monday-can-you-drink-as-much-water-as-tom-brady-1a45cb802be8',
+    //       id: '6'
+    //     }
+    //   ]
+    // }
+    // 
+
+    res = await client.get({
+        collection_name: collectionName,
+        ids: [rows[0].id, rows[1].id],
+        output_fields: ["title", "link"]
+    })
+
+    console.log(res);
+
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   data: [
+    //     {
+    //       title: 'The Reported Mortality Rate of Coronavirus Is Not Important',
+    //       link: 'https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912',
+    //       id: '0'
+    //     },
+    //     {
+    //       title: 'Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else',
+    //       link: 'https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a',
+    //       id: '1'
+    //     }
+    //   ]
+    // }
+    // 
+
     // 7. Get collection info
 
     res = await client.describeCollection({
@@ -215,8 +312,8 @@ async function main() {
     // Output
     // 
     // {
-    //   virtual_channel_names: [ 'by-dev-rootcoord-dml_11_445311585782771678v0' ],
-    //   physical_channel_names: [ 'by-dev-rootcoord-dml_11' ],
+    //   virtual_channel_names: [ 'by-dev-rootcoord-dml_3_445453895050862940v0' ],
+    //   physical_channel_names: [ 'by-dev-rootcoord-dml_3' ],
     //   aliases: [],
     //   start_positions: [],
     //   properties: [],
@@ -233,9 +330,9 @@ async function main() {
     //     autoID: false,
     //     enable_dynamic_field: false
     //   },
-    //   collectionID: '445311585782771678',
-    //   created_timestamp: '445316626739625989',
-    //   created_utc_timestamp: '1698748118361',
+    //   collectionID: '445453895050862940',
+    //   created_timestamp: '445453996874006532',
+    //   created_utc_timestamp: '1699272143837',
     //   shards_num: 1,
     //   consistency_level: 'Bounded',
     //   collection_name: 'medium_articles_2020',
@@ -243,6 +340,7 @@ async function main() {
     //   num_partitions: '1'
     // }
     // 
+
 
     // 8. Drop collection
 
@@ -256,6 +354,7 @@ async function main() {
     // 
     // { error_code: 'Success', reason: '', code: 0 }
     // 
+
 }
 
 main()
