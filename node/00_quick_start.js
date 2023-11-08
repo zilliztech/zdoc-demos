@@ -26,6 +26,7 @@ async function main () {
     // 
 
 
+
     // Describe the created collection
     res = await client.describeCollection({
         collection_name: collectionName
@@ -36,7 +37,7 @@ async function main () {
     // Output
     // 
     // {
-    //   virtual_channel_names: [ 'by-dev-rootcoord-dml_0_445337000187266398v0' ],
+    //   virtual_channel_names: [ 'by-dev-rootcoord-dml_0_445453895051083575v0' ],
     //   physical_channel_names: [ 'by-dev-rootcoord-dml_0' ],
     //   aliases: [],
     //   start_positions: [],
@@ -49,9 +50,9 @@ async function main () {
     //     autoID: false,
     //     enable_dynamic_field: true
     //   },
-    //   collectionID: '445337000187266398',
-    //   created_timestamp: '445337085300965381',
-    //   created_utc_timestamp: '1698826161579',
+    //   collectionID: '445453895051083575',
+    //   created_timestamp: '445473159642873859',
+    //   created_utc_timestamp: '1699345243999',
     //   shards_num: 1,
     //   consistency_level: 'Bounded',
     //   collection_name: 'medium_articles_2020',
@@ -59,6 +60,7 @@ async function main () {
     //   num_partitions: '1'
     // }
     // 
+
 
 
     // Insert a record
@@ -89,9 +91,10 @@ async function main () {
     //   insert_cnt: '1',
     //   delete_cnt: '0',
     //   upsert_cnt: '0',
-    //   timestamp: '445337086401708038'
+    //   timestamp: '445473160639545348'
     // }
     // 
+
 
 
     // Read a few records from the dataset
@@ -184,6 +187,7 @@ async function main () {
     // ]
     // 
 
+
     
     res = await client.insert({
         collection_name: collectionName,
@@ -214,16 +218,18 @@ async function main () {
     //   insert_cnt: '5979',
     //   delete_cnt: '0',
     //   upsert_cnt: '0',
-    //   timestamp: '445337091304325121'
+    //   timestamp: '445473165803520001'
     // }
     // 
 
 
-    await new Promise(resolve => setTimeout(resolve, 5000));
 
-    // Conduct an ANN search
+    await new Promise(resolve => setTimeout(resolve, 10000));
+
+    // single vector search
     res = await client.search({
         collection_name: collectionName,
+        // highlight-next-line
         vector: client_data[0].vector,
         output_fields: ['title', 'link'],
         limit: 5,
@@ -265,12 +271,37 @@ async function main () {
     // 
 
 
-    // Conduct an ANN search with filters
+    // bulk vector search
+    res = await client.search({
+        collection_name: collectionName,
+        // highlight-next-line
+        vectors: [ client_data[0].vector, client_data[1].vector ],
+        output_fields: ['title', 'link'],
+        limit: 5,
+    })
+    
+    console.log(res)
+
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   results: [
+    //     [ [Object], [Object], [Object], [Object] ],
+    //     [ [Object], [Object], [Object], [Object], [Object] ]
+    //   ]
+    // }
+    // 
+
+
+    // search with filters
     res = await client.search({
         collection_name: collectionName,
         vector: client_data[0].vector,
-        output_fields: ["title", "claps", "publication"],
-        filter: 'claps > 100 and publication in ["The Startup", "Towards Data Science"]',
+        // highlight-start
+        filter: "10 < reading_time < 15",
+        output_fields: ["title", "reading_time"],        
+        // highlight-end
         limit: 5,
     })
     
@@ -284,30 +315,328 @@ async function main () {
     //     {
     //       score: 1,
     //       id: '0',
-    //       claps: 1100,
-    //       publication: 'The Startup',
-    //       title: 'The Reported Mortality Rate of Coronavirus Is Not Important'
+    //       title: 'The Reported Mortality Rate of Coronavirus Is Not Important',
+    //       reading_time: 13
     //     },
+    //     {
+    //       score: 0.7706888914108276,
+    //       id: '5780',
+    //       title: 'Heart Disease Risk Assessment Using Machine Learning',
+    //       reading_time: 12
+    //     },
+    //     {
+    //       score: 0.7372192144393921,
+    //       id: '4331',
+    //       title: 'Common Pipenv Errors',
+    //       reading_time: 11
+    //     },
+    //     {
+    //       score: 0.7160055637359619,
+    //       id: '2803',
+    //       title: 'How Does US Healthcare Compare With Healthcare Around the World?',
+    //       reading_time: 12
+    //     }
+    //   ]
+    // }
+    // 
+
+
+    res = await client.search({
+        collection_name: collectionName,
+        vector: client_data[0].vector,
+        // highlight-start
+        filter: 'claps > 1500 and responses > 15',
+        output_fields: ['title', 'claps', 'responses'],       
+        // highlight-end
+        limit: 5,
+    })
+    
+    console.log(res)
+
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   results: [
+    //     {
+    //       score: 0.8116300106048584,
+    //       id: '5641',
+    //       responses: 47,
+    //       title: 'Why The Coronavirus Mortality Rate is Misleading',
+    //       claps: 2900
+    //     },
+    //     {
+    //       score: 0.6613576412200928,
+    //       id: '1394',
+    //       responses: 212,
+    //       title: 'Remote Work Is Not Here to Stay',
+    //       claps: 2600
+    //     },
+    //     {
+    //       score: 0.6581544280052185,
+    //       id: '4573',
+    //       responses: 40,
+    //       title: 'Apple May Lose the Developer Crowd',
+    //       claps: 1800
+    //     },
+    //     {
+    //       score: 0.6399664878845215,
+    //       id: '1810',
+    //       responses: 155,
+    //       title: 'Facebook’s New Remote Salary Policy is “Barbaric”',
+    //       claps: 10700
+    //     },
+    //     {
+    //       score: 0.6333904266357422,
+    //       id: '5682',
+    //       responses: 29,
+    //       title: 'Neumorphism — the zombie trend',
+    //       claps: 2800
+    //     }
+    //   ]
+    // }
+    // 
+
+    res = await client.search({
+        collection_name: collectionName,
+        vector: client_data[0].vector,
+        // highlight-start
+        filter: 'publication == "Towards Data Science"',
+        output_fields: ["title", "publication"],      
+        // highlight-end
+        limit: 5,
+    })
+    
+    console.log(res)
+
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   results: [
     //     {
     //       score: 0.8500008583068848,
     //       id: '3177',
-    //       claps: 215,
-    //       publication: 'Towards Data Science',
-    //       title: 'Following the Spread of Coronavirus'
+    //       title: 'Following the Spread of Coronavirus',
+    //       publication: 'Towards Data Science'
     //     },
     //     {
     //       score: 0.8116300106048584,
     //       id: '5641',
-    //       claps: 2900,
-    //       publication: 'Towards Data Science',
-    //       title: 'Why The Coronavirus Mortality Rate is Misleading'
+    //       title: 'Why The Coronavirus Mortality Rate is Misleading',
+    //       publication: 'Towards Data Science'
+    //     },
+    //     {
+    //       score: 0.7819530963897705,
+    //       id: '938',
+    //       title: 'Mortality Rate As an Indicator of an Epidemic Outbreak',
+    //       publication: 'Towards Data Science'
+    //     },
+    //     {
+    //       score: 0.7706888914108276,
+    //       id: '5780',
+    //       title: 'Heart Disease Risk Assessment Using Machine Learning',
+    //       publication: 'Towards Data Science'
+    //     },
+    //     {
+    //       score: 0.7686221599578857,
+    //       id: '3072',
+    //       title: 'Can we learn anything from the progression of influenza to analyze the COVID-19 pandemic better?',
+    //       publication: 'Towards Data Science'
+    //     }
+    //   ]
+    // }
+    // 
+
+    res = await client.search({
+        collection_name: collectionName,
+        vector: client_data[0].vector,
+        // highlight-start
+        filter: 'publication not in ["Towards Data Science", "Personal Growth"]',
+        output_fields: ["title", "publication"],    
+        // highlight-end
+        limit: 5,
+    })
+    
+    console.log(res)
+
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   results: [
+    //     {
+    //       score: 1,
+    //       id: '0',
+    //       title: 'The Reported Mortality Rate of Coronavirus Is Not Important',
+    //       publication: 'The Startup'
+    //     },
+    //     {
+    //       score: 0.8194807767868042,
+    //       id: '5607',
+    //       title: 'The Hidden Side Effect of the Coronavirus',
+    //       publication: 'The Startup'
+    //     },
+    //     {
+    //       score: 0.7918509244918823,
+    //       id: '3441',
+    //       title: 'Coronavirus shows what ethical Amazon could look like',
+    //       publication: 'The Startup'
     //     },
     //     {
     //       score: 0.7555683851242065,
     //       id: '4275',
-    //       claps: 255,
-    //       publication: 'The Startup',
-    //       title: 'How Can AI Help Fight Coronavirus?'
+    //       title: 'How Can AI Help Fight Coronavirus?',
+    //       publication: 'The Startup'
+    //     }
+    //   ]
+    // }
+    // 
+
+    res = await client.search({
+        collection_name: collectionName,
+        vector: client_data[0].vector,
+        // highlight-start
+        filter: 'title like "Top%"',
+        output_fields: ["title", "link"],  
+        // highlight-end
+        limit: 5,
+    })
+    
+    console.log(res)
+
+    // Output
+    // 
+    // { status: { error_code: 'Success', reason: '', code: 0 }, results: [] }
+    // 
+
+    res = await client.search({
+        collection_name: collectionName,
+        vector: client_data[0].vector,
+        // highlight-start
+        filter: '(publication == "Towards Data Science") and ((claps > 1500 and responses > 15) or (10 < reading_time < 15))',
+        output_fields: ["title", "publication", "claps", "responses", "reading_time"],     
+        // highlight-end
+        limit: 5,
+    })
+    
+    console.log(res)
+
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   results: [
+    //     {
+    //       score: 0.8116300106048584,
+    //       id: '5641',
+    //       publication: 'Towards Data Science',
+    //       claps: 2900,
+    //       responses: 47,
+    //       reading_time: 9,
+    //       title: 'Why The Coronavirus Mortality Rate is Misleading'
+    //     },
+    //     {
+    //       score: 0.7706888914108276,
+    //       id: '5780',
+    //       publication: 'Towards Data Science',
+    //       claps: 15,
+    //       responses: 0,
+    //       reading_time: 12,
+    //       title: 'Heart Disease Risk Assessment Using Machine Learning'
+    //     },
+    //     {
+    //       score: 0.7372192144393921,
+    //       id: '4331',
+    //       publication: 'Towards Data Science',
+    //       claps: 20,
+    //       responses: 1,
+    //       reading_time: 11,
+    //       title: 'Common Pipenv Errors'
+    //     },
+    //     {
+    //       score: 0.7061258554458618,
+    //       id: '2587',
+    //       publication: 'Towards Data Science',
+    //       claps: 61,
+    //       responses: 0,
+    //       reading_time: 12,
+    //       title: 'Data quality impact on the dataset'
+    //     },
+    //     {
+    //       score: 0.6995357275009155,
+    //       id: '1965',
+    //       publication: 'Towards Data Science',
+    //       claps: 47,
+    //       responses: 0,
+    //       reading_time: 11,
+    //       title: 'Domestic Violence — The Shadow Pandemic of Covid19'
+    //     }
+    //   ]
+    // }
+    // 
+
+    res = await client.search({
+        collection_name: collectionName,
+        vector: client_data[0].vector,
+        // highlight-start
+        filter: '(publication == "Towards Data Science") and ((claps > 1500 and responses > 15) or (10 < reading_time < 15))',
+        output_fields: ["title", "publication", "claps", "responses", "reading_time"],     
+        // highlight-end
+        limit: 5,
+    })
+    
+    console.log(res)
+
+    // Output
+    // 
+    // {
+    //   status: { error_code: 'Success', reason: '', code: 0 },
+    //   results: [
+    //     {
+    //       score: 0.8116300106048584,
+    //       id: '5641',
+    //       responses: 47,
+    //       reading_time: 9,
+    //       title: 'Why The Coronavirus Mortality Rate is Misleading',
+    //       publication: 'Towards Data Science',
+    //       claps: 2900
+    //     },
+    //     {
+    //       score: 0.7706888914108276,
+    //       id: '5780',
+    //       responses: 0,
+    //       reading_time: 12,
+    //       title: 'Heart Disease Risk Assessment Using Machine Learning',
+    //       publication: 'Towards Data Science',
+    //       claps: 15
+    //     },
+    //     {
+    //       score: 0.7372192144393921,
+    //       id: '4331',
+    //       responses: 1,
+    //       reading_time: 11,
+    //       title: 'Common Pipenv Errors',
+    //       publication: 'Towards Data Science',
+    //       claps: 20
+    //     },
+    //     {
+    //       score: 0.7061258554458618,
+    //       id: '2587',
+    //       responses: 0,
+    //       reading_time: 12,
+    //       title: 'Data quality impact on the dataset',
+    //       publication: 'Towards Data Science',
+    //       claps: 61
+    //     },
+    //     {
+    //       score: 0.6995357275009155,
+    //       id: '1965',
+    //       responses: 0,
+    //       reading_time: 11,
+    //       title: 'Domestic Violence — The Shadow Pandemic of Covid19',
+    //       publication: 'Towards Data Science',
+    //       claps: 47
     //     }
     //   ]
     // }
@@ -317,8 +646,8 @@ async function main () {
     // Perform a query
     res = await client.query({
         collection_name: collectionName,
-        filter: 'claps > 100 and publication in ["The Startup", "Towards Data Science"]',
-        output_fields: ["title", "claps", "publication"],
+        filter: '(publication == "Towards Data Science") and ((claps > 1500 and responses > 15) or (10 < reading_time < 15))',
+        output_fields: ["title", "publication", "claps", "responses", "reading_time"],
         limit: 5,
     })
     
@@ -329,20 +658,21 @@ async function main () {
     // {
     //   status: { error_code: 'Success', reason: '', code: 0 },
     //   data: [
-    //     { '$meta': [Object], id: '0' },
-    //     { '$meta': [Object], id: '1' },
-    //     { '$meta': [Object], id: '2' },
-    //     { '$meta': [Object], id: '3' }
+    //     { '$meta': [Object], id: '69' },
+    //     { '$meta': [Object], id: '73' },
+    //     { '$meta': [Object], id: '75' },
+    //     { '$meta': [Object], id: '79' },
+    //     { '$meta': [Object], id: '80' }
     //   ]
     // }
     // 
+
 
 
     // Get an entity by id
     res = await client.get({
         collection_name: collectionName,
-        ids: [0],
-        output_fields: ['id', 'title']
+        ids: [1],
     });
     
     console.log(res)
@@ -351,16 +681,16 @@ async function main () {
     // 
     // {
     //   status: { error_code: 'Success', reason: '', code: 0 },
-    //   data: [ { id: '0', '$meta': [Object] } ]
+    //   data: [ { id: '1' } ]
     // }
     // 
+
 
 
     // Get a set of entities by their IDs
     res = await client.get({
         collection_name: collectionName,
-        ids: [0, 1, 2],
-        output_fields: ['id', 'title']
+        ids: [1, 2, 3],
     });
     
     console.log(res)
@@ -369,13 +699,10 @@ async function main () {
     // 
     // {
     //   status: { error_code: 'Success', reason: '', code: 0 },
-    //   data: [
-    //     { id: '0', '$meta': [Object] },
-    //     { id: '1', '$meta': [Object] },
-    //     { id: '2', '$meta': [Object] }
-    //   ]
+    //   data: [ { id: '1' }, { id: '2' }, { id: '3' } ]
     // }
     // 
+
 
 
     // Delete an entity by its ID
@@ -397,9 +724,10 @@ async function main () {
     //   insert_cnt: '0',
     //   delete_cnt: '1',
     //   upsert_cnt: '0',
-    //   timestamp: '445337093833752585'
+    //   timestamp: '445473168870604807'
     // }
     // 
+
 
 
     // Delete a set of entities by their IDs
@@ -421,8 +749,33 @@ async function main () {
     //   insert_cnt: '0',
     //   delete_cnt: '3',
     //   upsert_cnt: '0',
-    //   timestamp: '445337093833752590'
+    //   timestamp: '445473168870604812'
     // }
+    // 
+
+
+    res = client.delete({
+        collection_name: collectionName,
+        ids: [0]
+    });
+
+    console.log(res);
+
+    // Output
+    // 
+    // Promise { <pending> }
+    // 
+
+    res = client.delete({
+        collection_name: collectionName,
+        ids: [1, 2, 3]
+    });
+
+    console.log(res)
+
+    // Output
+    // 
+    // Promise { <pending> }
     // 
 
 
@@ -437,6 +790,7 @@ async function main () {
     // 
     // { error_code: 'Success', reason: '', code: 0 }
     // 
+
 
 
 }

@@ -81,123 +81,46 @@ print(progress)
 # Prepare a list of rows
 with open(DATASET_PATH) as f:
     data = json.load(f)
-    rows = data['rows']
 
-print(rows[:3])
+print(data["rows"][0])
 
 # Output
 #
-# [
-#     {
-#         "id": 0,
-#         "title": "The Reported Mortality Rate of Coronavirus Is Not Important",
-#         "title_vector": [
-#             0.041732933,
-#             0.013779674,
-#             -0.027564144,
-#             -0.013061441,
-#             0.009748648,
-#             0.00082446384,
-#             -0.00071647146,
-#             0.048612226,
-#             -0.04836573,
-#             -0.04567751,
-#             0.018008126,
-#             0.0063936645,
-#             -0.011913628,
-#             0.030776596,
-#             -0.018274948,
-#             0.019929802,
-#             0.020547243,
-#             0.032735646,
-#             -0.031652678,
-#             -0.033816382,
-#             "(748 more items hidden)"
-#         ],
-#         "link": "https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912",
-#         "reading_time": 13,
-#         "publication": "The Startup",
-#         "claps": 1100,
-#         "responses": 18
-#     },
-#     {
-#         "id": 1,
-#         "title": "Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else",
-#         "title_vector": [
-#             0.0039737443,
-#             0.003020432,
-#             -0.0006188639,
-#             0.03913546,
-#             -0.00089768134,
-#             0.021238148,
-#             0.014454661,
-#             0.025742851,
-#             0.0022063442,
-#             -0.051130578,
-#             -0.0010897011,
-#             0.038453076,
-#             0.011593861,
-#             -0.046852026,
-#             0.0064208573,
-#             0.010120634,
-#             -0.023668954,
-#             0.041229635,
-#             0.008146385,
-#             -0.023367394,
-#             "(748 more items hidden)"
-#         ],
-#         "link": "https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a",
-#         "reading_time": 14,
-#         "publication": "The Startup",
-#         "claps": 726,
-#         "responses": 3
-#     },
-#     {
-#         "id": 2,
-#         "title": "How Can We Best Switch in Python?",
-#         "title_vector": [
-#             0.031961977,
-#             0.00047043373,
-#             -0.018263113,
-#             0.027324716,
-#             -0.0054595284,
-#             -0.014779159,
-#             0.017511465,
-#             0.030381083,
-#             -0.018930407,
-#             -0.03372473,
-#             -0.009049301,
-#             0.05401713,
-#             -0.030117748,
-#             -0.05029242,
-#             -0.004565209,
-#             -0.013697411,
-#             0.0091306195,
-#             0.020263411,
-#             0.022377398,
-#             -0.013710004,
-#             "(748 more items hidden)"
-#         ],
-#         "link": "https://medium.com/swlh/how-can-we-best-switch-in-python-458fb33f7835",
-#         "reading_time": 6,
-#         "publication": "The Startup",
-#         "claps": 500,
-#         "responses": 7
-#     }
-# ]
+# {
+#     "id": 0,
+#     "title": "The Reported Mortality Rate of Coronavirus Is Not Important",
+#     "title_vector": [
+#         0.041732933,
+#         0.013779674,
+#         -0.027564144,
+#         -0.013061441,
+#         0.009748648,
+#         0.00082446384,
+#         -0.00071647146,
+#         0.048612226,
+#         -0.04836573,
+#         -0.04567751,
+#         "(758 more items hidden)"
+#     ],
+#     "link": "https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912",
+#     "reading_time": 13,
+#     "publication": "The Startup",
+#     "claps": 1100,
+#     "responses": 18
+# }
 
 
 
 # Prepare a list of columns
 with open(DATASET_PATH) as f:
-    keys = list(rows[0].keys())
+    keys = list(data["rows"][0].keys())
     columns = [ [] for x in keys ]
-    for row in rows:
+    for row in data["rows"]:
         for x in keys:
             columns[keys.index(x)].append(row[x])
 
     columns_demo = [ [] for x in keys ]
-    for row in rows[:3]:
+    for row in data["rows"][:2]:
         for x in keys:
             columns_demo[keys.index(x)].append(row[x])
 
@@ -208,13 +131,11 @@ print(columns_demo)
 # [
 #     [
 #         0,
-#         1,
-#         2
+#         1
 #     ],
 #     [
 #         "The Reported Mortality Rate of Coronavirus Is Not Important",
-#         "Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else",
-#         "How Can We Best Switch in Python?"
+#         "Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else"
 #     ],
 #     [
 #         [
@@ -228,17 +149,7 @@ print(columns_demo)
 #             0.048612226,
 #             -0.04836573,
 #             -0.04567751,
-#             0.018008126,
-#             0.0063936645,
-#             -0.011913628,
-#             0.030776596,
-#             -0.018274948,
-#             0.019929802,
-#             0.020547243,
-#             0.032735646,
-#             -0.031652678,
-#             -0.033816382,
-#             "(748 more items hidden)"
+#             "(758 more items hidden)"
 #         ],
 #         [
 #             0.0039737443,
@@ -251,73 +162,35 @@ print(columns_demo)
 #             0.025742851,
 #             0.0022063442,
 #             -0.051130578,
-#             -0.0010897011,
-#             0.038453076,
-#             0.011593861,
-#             -0.046852026,
-#             0.0064208573,
-#             0.010120634,
-#             -0.023668954,
-#             0.041229635,
-#             0.008146385,
-#             -0.023367394,
-#             "(748 more items hidden)"
-#         ],
-#         [
-#             0.031961977,
-#             0.00047043373,
-#             -0.018263113,
-#             0.027324716,
-#             -0.0054595284,
-#             -0.014779159,
-#             0.017511465,
-#             0.030381083,
-#             -0.018930407,
-#             -0.03372473,
-#             -0.009049301,
-#             0.05401713,
-#             -0.030117748,
-#             -0.05029242,
-#             -0.004565209,
-#             -0.013697411,
-#             0.0091306195,
-#             0.020263411,
-#             0.022377398,
-#             -0.013710004,
-#             "(748 more items hidden)"
+#             "(758 more items hidden)"
 #         ]
 #     ],
 #     [
 #         "https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912",
-#         "https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a",
-#         "https://medium.com/swlh/how-can-we-best-switch-in-python-458fb33f7835"
+#         "https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a"
 #     ],
 #     [
 #         13,
-#         14,
-#         6
+#         14
 #     ],
 #     [
-#         "The Startup",
 #         "The Startup",
 #         "The Startup"
 #     ],
 #     [
 #         1100,
-#         726,
-#         500
+#         726
 #     ],
 #     [
 #         18,
-#         3,
-#         7
+#         3
 #     ]
 # ]
 
 
 
 # 7. Insert data
-results = collection.insert(rows)
+results = collection.insert(data["rows"])
 # results = collection.insert(columns) # also works
 
 print(f"Data inserted successfully! Inserted rows: {results.insert_count}")
@@ -326,10 +199,12 @@ print(f"Data inserted successfully! Inserted rows: {results.insert_count}")
 #
 # Data inserted successfully! Inserted rows: 5979
 
+
+
 # If you have prepared your data in columns, you can do as follows:
 # results = collection.insert(columns)
 
-time.sleep(5)
+time.sleep(10)
 
 # 8. Search data
 # Metric type should be the same as
@@ -339,42 +214,18 @@ search_params = {
     "metric_type": "L2"
 }
 
+# single vector search
+
 results = collection.search(
-    data=[rows[0]['title_vector']],
+    # highlight-next-line
+    data=[data["rows"][0]['title_vector']],
     anns_field="title_vector",
     param=search_params,
     output_fields=["title", "link"],
     limit=5
 )
 
-# Get all returned IDs
-# results[0] indicates the result 
-# of the first query vector in the 'data' list
-ids = results[0].ids
-
-print(ids)
-
-# Output
-#
-# [0, 3177, 5607, 5641, 3441]
-
-
-
-# Get the distance from 
-# all returned vectors to the query vector.
-distances = results[0].distances
-
-print(distances)
-
-# Output
-#
-# [0.0, 0.29999837279319763, 0.36103835701942444, 0.37674015760421753, 0.4162980318069458]
-
-
-
-# Get the values of the output fields
-# specified in the search request
-entities = [ x.entity.to_dict()["entity"] for x in results[0] ]
+entities = [ x.entity.to_dict() for x in results[0] ]
 
 print(entities)
 
@@ -382,27 +233,422 @@ print(entities)
 #
 # [
 #     {
-#         "title": "The Reported Mortality Rate of Coronavirus Is Not Important",
-#         "link": "https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912"
+#         "id": 0,
+#         "distance": 0.0,
+#         "entity": {
+#             "title": "The Reported Mortality Rate of Coronavirus Is Not Important",
+#             "link": "https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912"
+#         }
 #     },
 #     {
-#         "title": "Following the Spread of Coronavirus",
-#         "link": "https://towardsdatascience.com/following-the-spread-of-coronavirus-23626940c125"
+#         "id": 3177,
+#         "distance": 0.29999834299087524,
+#         "entity": {
+#             "title": "Following the Spread of Coronavirus",
+#             "link": "https://towardsdatascience.com/following-the-spread-of-coronavirus-23626940c125"
+#         }
 #     },
 #     {
-#         "title": "The Hidden Side Effect of the Coronavirus",
-#         "link": "https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586"
-#     },
-#     {
-#         "title": "Why The Coronavirus Mortality Rate is Misleading",
-#         "link": "https://towardsdatascience.com/why-the-coronavirus-mortality-rate-is-misleading-cc63f571b6a6"
-#     },
-#     {
-#         "title": "Coronavirus shows what ethical Amazon could look like",
-#         "link": "https://medium.com/swlh/coronavirus-shows-what-ethical-amazon-could-look-like-7c80baf2c663"
+#         "id": 5607,
+#         "distance": 0.36103832721710205,
+#         "entity": {
+#             "title": "The Hidden Side Effect of the Coronavirus",
+#             "link": "https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586"
+#         }
 #     }
 # ]
 
+
+
+# bulk vector search
+
+results = collection.search(
+    # highlight-next-line
+    data=[data["rows"][0]['title_vector'], data["rows"][1]['title_vector']],
+    anns_field="title_vector",
+    param=search_params,
+    output_fields=["title", "link"],
+    limit=5
+)
+
+entities = [ list(map(lambda y: y.entity.to_dict(), x)) for x in results ]
+
+print(entities)
+
+# Output
+#
+# [
+#     [
+#         {
+#             "id": 0,
+#             "distance": 0.0,
+#             "entity": {
+#                 "title": "The Reported Mortality Rate of Coronavirus Is Not Important",
+#                 "link": "https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912"
+#             }
+#         },
+#         {
+#             "id": 3177,
+#             "distance": 0.29999834299087524,
+#             "entity": {
+#                 "title": "Following the Spread of Coronavirus",
+#                 "link": "https://towardsdatascience.com/following-the-spread-of-coronavirus-23626940c125"
+#             }
+#         },
+#         {
+#             "id": 5607,
+#             "distance": 0.36103832721710205,
+#             "entity": {
+#                 "title": "The Hidden Side Effect of the Coronavirus",
+#                 "link": "https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586"
+#             }
+#         }
+#     ],
+#     [
+#         {
+#             "id": 1,
+#             "distance": 0.0,
+#             "entity": {
+#                 "title": "Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else",
+#                 "link": "https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a"
+#             }
+#         },
+#         {
+#             "id": 5571,
+#             "distance": 0.19530069828033447,
+#             "entity": {
+#                 "title": "Dashboards in Python Using Dash \u2014 Creating a Data Table using Data from Reddit",
+#                 "link": "https://medium.com/swlh/dashboards-in-python-using-dash-creating-a-data-table-using-data-from-reddit-1d6c0cecb4bd"
+#             }
+#         },
+#         {
+#             "id": 3244,
+#             "distance": 0.4073413610458374,
+#             "entity": {
+#                 "title": "OCR Engine Comparison \u2014 Tesseract vs. EasyOCR",
+#                 "link": "https://medium.com/swlh/ocr-engine-comparison-tesseract-vs-easyocr-729be893d3ae"
+#             }
+#         }
+#     ]
+# ]
+
+
+
+# search with filters
+
+results = collection.search(
+    data=[data["rows"][0]['title_vector']],
+    anns_field="title_vector",
+    param=search_params,
+    # highlight-start
+    expr="10 < reading_time < 15",
+    output_fields=["title", "reading_time"],
+    # highlight-end
+    limit=5
+)
+
+entities = [ x.entity.to_dict() for x in results[0] ]
+
+print(entities)
+
+# Output
+#
+# [
+#     {
+#         "id": 0,
+#         "distance": 0.0,
+#         "entity": {
+#             "title": "The Reported Mortality Rate of Coronavirus Is Not Important",
+#             "reading_time": 13
+#         }
+#     },
+#     {
+#         "id": 5780,
+#         "distance": 0.4586222767829895,
+#         "entity": {
+#             "title": "Heart Disease Risk Assessment Using Machine Learning",
+#             "reading_time": 12
+#         }
+#     },
+#     {
+#         "id": 5503,
+#         "distance": 0.5037479400634766,
+#         "entity": {
+#             "title": "New Data Shows a Lower Covid-19 Fatality Rate",
+#             "reading_time": 13
+#         }
+#     }
+# ]
+
+
+
+results = collection.search(
+    data=[data["rows"][0]['title_vector']],
+    anns_field="title_vector",
+    param=search_params,
+    # highlight-start
+    expr='claps > 1500 and responses > 15',
+    output_fields=['title', 'claps', 'responses'],
+    # highlight-end
+    limit=5
+)
+
+entities = [ x.entity.to_dict() for x in results[0] ]
+
+print(entities)
+
+# Output
+#
+# [
+#     {
+#         "id": 5641,
+#         "distance": 0.37674015760421753,
+#         "entity": {
+#             "claps": 2900,
+#             "responses": 47,
+#             "title": "Why The Coronavirus Mortality Rate is Misleading"
+#         }
+#     },
+#     {
+#         "id": 1394,
+#         "distance": 0.6772846579551697,
+#         "entity": {
+#             "claps": 2600,
+#             "responses": 212,
+#             "title": "Remote Work Is Not Here to Stay"
+#         }
+#     },
+#     {
+#         "id": 4573,
+#         "distance": 0.6836910247802734,
+#         "entity": {
+#             "claps": 1800,
+#             "responses": 40,
+#             "title": "Apple May Lose the Developer Crowd"
+#         }
+#     }
+# ]
+
+
+
+results = collection.search(
+    data=[data["rows"][0]['title_vector']],
+    anns_field="title_vector",
+    param=search_params,
+    # highlight-start
+    expr='publication == "Towards Data Science"',
+    output_fields=["title", "publication"],
+    # highlight-end
+    limit=5
+)
+
+entities = [ x.entity.to_dict() for x in results[0] ]
+
+print(entities)
+
+# Output
+#
+# [
+#     {
+#         "id": 3177,
+#         "distance": 0.29999834299087524,
+#         "entity": {
+#             "title": "Following the Spread of Coronavirus",
+#             "publication": "Towards Data Science"
+#         }
+#     },
+#     {
+#         "id": 5641,
+#         "distance": 0.37674015760421753,
+#         "entity": {
+#             "title": "Why The Coronavirus Mortality Rate is Misleading",
+#             "publication": "Towards Data Science"
+#         }
+#     },
+#     {
+#         "id": 938,
+#         "distance": 0.436093807220459,
+#         "entity": {
+#             "title": "Mortality Rate As an Indicator of an Epidemic Outbreak",
+#             "publication": "Towards Data Science"
+#         }
+#     }
+# ]
+
+
+
+results = collection.search(
+    data=[data["rows"][0]['title_vector']],
+    anns_field="title_vector",
+    param=search_params,
+    # highlight-start
+    expr='publication not in ["Towards Data Science", "Personal Growth"]',
+    output_fields=["title", "publication"],
+    # highlight-end
+    limit=5
+)
+
+entities = [ x.entity.to_dict() for x in results[0] ]
+
+print(entities)
+
+# Output
+#
+# [
+#     {
+#         "id": 0,
+#         "distance": 0.0,
+#         "entity": {
+#             "publication": "The Startup",
+#             "title": "The Reported Mortality Rate of Coronavirus Is Not Important"
+#         }
+#     },
+#     {
+#         "id": 5607,
+#         "distance": 0.36103832721710205,
+#         "entity": {
+#             "publication": "The Startup",
+#             "title": "The Hidden Side Effect of the Coronavirus"
+#         }
+#     },
+#     {
+#         "id": 3441,
+#         "distance": 0.416297972202301,
+#         "entity": {
+#             "publication": "The Startup",
+#             "title": "Coronavirus shows what ethical Amazon could look like"
+#         }
+#     }
+# ]
+
+
+
+results = collection.search(
+    data=[data["rows"][0]['title_vector']],
+    anns_field="title_vector",
+    param=search_params,
+    # highlight-start
+    expr='title like "Top%"',
+    output_fields=["title", "link"],
+    # highlight-end
+    limit=5
+)
+
+entities = [ x.entity.to_dict() for x in results[0] ]
+
+print(entities)
+
+# Output
+#
+# []
+
+
+
+results = collection.search(
+    data=[data["rows"][0]['title_vector']],
+    anns_field="title_vector",
+    param=search_params,
+    # highlight-start
+    expr='(publication == "Towards Data Science") and ((claps > 1500 and responses > 15) or (10 < reading_time < 15))',
+    output_fields=["title", "publication", "claps", "responses", "reading_time"],
+    # highlight-end
+    limit=5
+)
+
+entities = [ x.entity.to_dict() for x in results[0] ]
+
+print(entities)
+
+# Output
+#
+# [
+#     {
+#         "id": 5641,
+#         "distance": 0.37674015760421753,
+#         "entity": {
+#             "title": "Why The Coronavirus Mortality Rate is Misleading",
+#             "publication": "Towards Data Science",
+#             "claps": 2900,
+#             "responses": 47,
+#             "reading_time": 9
+#         }
+#     },
+#     {
+#         "id": 5780,
+#         "distance": 0.4586222767829895,
+#         "entity": {
+#             "title": "Heart Disease Risk Assessment Using Machine Learning",
+#             "publication": "Towards Data Science",
+#             "claps": 15,
+#             "responses": 0,
+#             "reading_time": 12
+#         }
+#     },
+#     {
+#         "id": 5503,
+#         "distance": 0.5037479400634766,
+#         "entity": {
+#             "title": "New Data Shows a Lower Covid-19 Fatality Rate",
+#             "publication": "Towards Data Science",
+#             "claps": 161,
+#             "responses": 3,
+#             "reading_time": 13
+#         }
+#     }
+# ]
+
+
+
+# query
+
+results = collection.query(
+    expr='(publication == "Towards Data Science") and ((claps > 1500 and responses > 15) or (10 < reading_time < 15))',
+    output_fields=["title", "publication", "claps", "responses", "reading_time"],
+    limit=5
+)
+
+print(results)
+
+# Output
+#
+# [
+#     {
+#         "responses": 18,
+#         "reading_time": 21,
+#         "id": 69,
+#         "title": "Top 10 In-Demand programming languages to learn in 2020",
+#         "publication": "Towards Data Science",
+#         "claps": 3000
+#     },
+#     {
+#         "responses": 7,
+#         "reading_time": 12,
+#         "id": 73,
+#         "title": "Data Cleaning in Python: the Ultimate Guide (2020)",
+#         "publication": "Towards Data Science",
+#         "claps": 1500
+#     },
+#     {
+#         "responses": 0,
+#         "reading_time": 11,
+#         "id": 75,
+#         "title": "Top Trends of Graph Machine Learning in 2020",
+#         "publication": "Towards Data Science",
+#         "claps": 1100
+#     }
+# ]
+
+
+
+# delete
+
+results = collection.delete(expr='id in [1, 2, 3]')
+
+print(results)
+
+# Output
+#
+# (insert count: 0, delete count: 3, upsert count: 0, timestamp: 445474758328320001, success count: 0, err count: 0)
 
 
 
