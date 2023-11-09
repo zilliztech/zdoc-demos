@@ -187,7 +187,7 @@ search_params = {
 res = collection.search(
     data=[query_vector],
     anns_field="title_vector",
-    param={"metric_type": "L2", "params": {"nprobe": 10}},
+    param=search_params,
     output_fields=["title", "link"],
     limit=100,
 )
@@ -200,17 +200,17 @@ print(ids)
 #
 # [
 #     [
-#         0,
-#         3177,
-#         5607,
-#         5641,
-#         3441,
-#         938,
-#         5780,
-#         3072,
-#         4328,
-#         4275,
-#         "(40 more items hidden)"
+#         1846,
+#         2906,
+#         4411,
+#         3503,
+#         4397,
+#         4969,
+#         2705,
+#         3185,
+#         5532,
+#         1969,
+#         "(90 more items hidden)"
 #     ]
 # ]
 
@@ -224,17 +224,17 @@ print(distances)
 #
 # [
 #     [
-#         0.0,
-#         0.29999834299087524,
-#         0.36103832721710205,
-#         0.37674015760421753,
-#         0.416297972202301,
-#         0.436093807220459,
-#         0.4586222767829895,
-#         0.46275579929351807,
-#         0.48078253865242004,
-#         0.48886317014694214,
-#         "(40 more items hidden)"
+#         0.8001112341880798,
+#         0.8001610040664673,
+#         0.8003642559051514,
+#         0.8004330992698669,
+#         0.8004655838012695,
+#         0.8004793524742126,
+#         0.8005216121673584,
+#         0.8005879521369934,
+#         0.8005922436714172,
+#         0.8007100224494934,
+#         "(90 more items hidden)"
 #     ]
 # ]
 
@@ -255,87 +255,89 @@ print(results)
 #
 # [
 #     {
-#         "id": 0,
-#         "distance": 0.0,
+#         "id": 1846,
+#         "distance": 0.8001112341880798,
 #         "entity": {
-#             "title": "The Reported Mortality Rate of Coronavirus Is Not Important",
-#             "link": "https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912"
+#             "title": "Simple VSCode Setup To Develop C++",
+#             "link": "https://medium.com/swlh/simple-vscode-setup-to-develop-c-7830182ee4d8"
 #         }
 #     },
 #     {
-#         "id": 3177,
-#         "distance": 0.29999834299087524,
+#         "id": 2906,
+#         "distance": 0.8001610040664673,
 #         "entity": {
-#             "title": "Following the Spread of Coronavirus",
-#             "link": "https://towardsdatascience.com/following-the-spread-of-coronavirus-23626940c125"
+#             "title": "Binary cross-entropy and logistic regression",
+#             "link": "https://towardsdatascience.com/binary-cross-entropy-and-logistic-regression-bf7098e75559"
 #         }
 #     },
 #     {
-#         "id": 5607,
-#         "distance": 0.36103832721710205,
+#         "id": 4411,
+#         "distance": 0.8003642559051514,
 #         "entity": {
-#             "title": "The Hidden Side Effect of the Coronavirus",
-#             "link": "https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586"
+#             "title": "Why Passion Is Not Enough in the Working World \u2014 Learn Professionalism Instead",
+#             "link": "https://medium.com/swlh/why-passion-is-not-enough-in-the-working-world-learn-professionalism-instead-d1bdb0acd750"
 #         }
 #     },
 #     {
-#         "id": 5641,
-#         "distance": 0.37674015760421753,
+#         "id": 3503,
+#         "distance": 0.8004330992698669,
 #         "entity": {
-#             "title": "Why The Coronavirus Mortality Rate is Misleading",
-#             "link": "https://towardsdatascience.com/why-the-coronavirus-mortality-rate-is-misleading-cc63f571b6a6"
+#             "title": "Figma to video prototyping \u2014 easy way in 3 steps",
+#             "link": "https://uxdesign.cc/figma-to-video-prototyping-easy-way-in-3-steps-d7ac3770d253"
 #         }
 #     },
 #     {
-#         "id": 3441,
-#         "distance": 0.416297972202301,
+#         "id": 4397,
+#         "distance": 0.8004655838012695,
 #         "entity": {
-#             "title": "Coronavirus shows what ethical Amazon could look like",
-#             "link": "https://medium.com/swlh/coronavirus-shows-what-ethical-amazon-could-look-like-7c80baf2c663"
+#             "title": "An Introduction to Survey Research",
+#             "link": "https://medium.com/swlh/an-introduction-to-survey-research-ba9e9fb9ca57"
 #         }
 #     },
 #     {
-#         "id": 938,
-#         "distance": 0.436093807220459,
+#         "id": 4969,
+#         "distance": 0.8004793524742126,
 #         "entity": {
-#             "title": "Mortality Rate As an Indicator of an Epidemic Outbreak",
-#             "link": "https://towardsdatascience.com/mortality-rate-as-an-indicator-of-an-epidemic-outbreak-704592f3bb39"
+#             "title": "Warning: Your campaign (process) is broken",
+#             "link": "https://medium.com/swlh/warning-your-campaign-process-is-broken-97f3c603f8aa"
 #         }
 #     },
 #     {
-#         "id": 5780,
-#         "distance": 0.4586222767829895,
+#         "id": 2705,
+#         "distance": 0.8005216121673584,
 #         "entity": {
-#             "title": "Heart Disease Risk Assessment Using Machine Learning",
-#             "link": "https://towardsdatascience.com/heart-disease-risk-assessment-using-machine-learning-83335d077dad"
+#             "title": "Exploratory Data Analysis: DataPrep.eda vs Pandas-Profiling",
+#             "link": "https://towardsdatascience.com/exploratory-data-analysis-dataprep-eda-vs-pandas-profiling-7137683fe47f"
 #         }
 #     },
 #     {
-#         "id": 3072,
-#         "distance": 0.46275579929351807,
+#         "id": 3185,
+#         "distance": 0.8005879521369934,
 #         "entity": {
-#             "title": "Can we learn anything from the progression of influenza to analyze the COVID-19 pandemic better?",
-#             "link": "https://towardsdatascience.com/can-we-learn-anything-from-the-progression-of-influenza-to-analyze-the-covid-19-pandemic-better-b20a5b3f4933"
+#             "title": "Modelling Volatile Time Series with LSTM Networks",
+#             "link": "https://towardsdatascience.com/modelling-volatile-time-series-with-lstm-networks-51250fb7cfa3"
 #         }
 #     },
 #     {
-#         "id": 4328,
-#         "distance": 0.48078253865242004,
+#         "id": 5532,
+#         "distance": 0.8005922436714172,
 #         "entity": {
-#             "title": "Ever Wondered How Epidemiologists Simulate COVID-19 Deaths?",
-#             "link": "https://towardsdatascience.com/ever-wondered-how-epidemiologists-simulate-covid-19-deaths-32e3aca7531d"
+#             "title": "Removing \u2018The Wall\u2019 in ML Ops",
+#             "link": "https://towardsdatascience.com/removing-the-wall-in-ml-ops-44dac377b4c6"
 #         }
 #     },
 #     {
-#         "id": 4275,
-#         "distance": 0.48886317014694214,
+#         "id": 1969,
+#         "distance": 0.8007100224494934,
 #         "entity": {
-#             "title": "How Can AI Help Fight Coronavirus?",
-#             "link": "https://medium.com/swlh/how-can-ai-help-fight-coronavirus-60f2182de93a"
+#             "title": "Base Plotting in R",
+#             "link": "https://towardsdatascience.com/base-plotting-in-r-eb365da06b22"
 #         }
 #     },
-#     "(40 more items hidden)"
+#     "(90 more items hidden)"
 # ]
+
+
 
 # 9. drop collection
 
