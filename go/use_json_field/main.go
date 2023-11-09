@@ -46,6 +46,7 @@ func main() {
 	CLUSTER_ENDPOINT := "http://localhost:19530"
 	TOKEN := "root:Milvus"
 	COLLNAME := "medium_articles_2020"
+	DATA_FILE := "../../medium_articles_2020_dpr.json"
 
 	// 1. Connect to cluster
 
@@ -109,6 +110,10 @@ func main() {
 
 	fmt.Println(index.Name())
 
+	// Output: 
+	//
+	// AUTOINDEX
+
 	err = conn.CreateIndex(context.Background(), COLLNAME, "title_vector", index, false)
 
 	if err != nil {
@@ -131,8 +136,12 @@ func main() {
 
 	fmt.Println("Loading progress:", progress)
 
+	// Output: 
+	//
+	// Loading progress: 100
+
 	// 6. Read the dataset
-	file, err := os.ReadFile("../../medium_articles_2020_dpr.json")
+	file, err := os.ReadFile(DATA_FILE)
 	if err != nil {
 		log.Fatal("Failed to read file:", err.Error())
 	}
@@ -169,8 +178,16 @@ func main() {
 
 	fmt.Println("Dataset loaded, row number: ", len(data.Rows))
 
+	// Output: 
+	//
+	// Dataset loaded, row number:  5979
+
 	// 7. Insert data
 	fmt.Println("Start inserting ...")
+
+	// Output: 
+	//
+	// Start inserting ...
 
 	col, err := conn.InsertRows(context.Background(), COLLNAME, "", rows)
 
@@ -180,11 +197,19 @@ func main() {
 
 	fmt.Println("Inserted entities: ", col.Len())
 
+	// Output: 
+	//
+	// Inserted entities:  5979
+
 	time.Sleep(5 * time.Second)
 
 	// 8. Search
 
 	fmt.Println("Start searching ...")
+
+	// Output: 
+	//
+	// Start searching ...
 
 	vectors := []entity.Vector{}
 
@@ -223,6 +248,77 @@ func main() {
 
 	fmt.Println(resultsToJSON(res))
 
+	// Output: 
+	// [
+	// 	{
+	// 		"counts": 5,
+	// 		"distances": [
+	// 			0.36103833,
+	// 			0.37674016,
+	// 			0.41629797,
+	// 			0.4360938,
+	// 			0.48886317
+	// 		],
+	// 		"rows": [
+	// 			{
+	// 				"article_meta": {
+	// 					"link": "https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586",
+	// 					"reading_time": 8,
+	// 					"publication": "The Startup",
+	// 					"claps": 83,
+	// 					"responses": 0
+	// 				},
+	// 				"id": 5607,
+	// 				"title": "The Hidden Side Effect of the Coronavirus"
+	// 			},
+	// 			{
+	// 				"article_meta": {
+	// 					"link": "https://towardsdatascience.com/why-the-coronavirus-mortality-rate-is-misleading-cc63f571b6a6",
+	// 					"reading_time": 9,
+	// 					"publication": "Towards Data Science",
+	// 					"claps": 2900,
+	// 					"responses": 47
+	// 				},
+	// 				"id": 5641,
+	// 				"title": "Why The Coronavirus Mortality Rate is Misleading"
+	// 			},
+	// 			{
+	// 				"article_meta": {
+	// 					"link": "https://medium.com/swlh/coronavirus-shows-what-ethical-amazon-could-look-like-7c80baf2c663",
+	// 					"reading_time": 4,
+	// 					"publication": "The Startup",
+	// 					"claps": 51,
+	// 					"responses": 0
+	// 				},
+	// 				"id": 3441,
+	// 				"title": "Coronavirus shows what ethical Amazon could look like"
+	// 			},
+	// 			{
+	// 				"article_meta": {
+	// 					"link": "https://towardsdatascience.com/mortality-rate-as-an-indicator-of-an-epidemic-outbreak-704592f3bb39",
+	// 					"reading_time": 6,
+	// 					"publication": "Towards Data Science",
+	// 					"claps": 65,
+	// 					"responses": 0
+	// 				},
+	// 				"id": 938,
+	// 				"title": "Mortality Rate As an Indicator of an Epidemic Outbreak"
+	// 			},
+	// 			{
+	// 				"article_meta": {
+	// 					"link": "https://medium.com/swlh/how-can-ai-help-fight-coronavirus-60f2182de93a",
+	// 					"reading_time": 9,
+	// 					"publication": "The Startup",
+	// 					"claps": 255,
+	// 					"responses": 1
+	// 				},
+	// 				"id": 4275,
+	// 				"title": "How Can AI Help Fight Coronavirus?"
+	// 			}
+	// 		]
+	// 	}
+	// ]
+
 	// 9. Drop collection
 	err = conn.DropCollection(context.Background(), COLLNAME)
 
@@ -236,14 +332,14 @@ func resultsToJSON(results []client.SearchResult) string {
 	var result []map[string]interface{}
 	for _, r := range results {
 		result = append(result, map[string]interface{}{
-			"counts":    r.ResultCount,
-			"fields":    fieldsToJSON(results, true),
+			"counts": r.ResultCount,
+			// "fields":    fieldsToJSON(results, true),
 			"rows":      fieldsToJSON(results, false),
 			"distances": r.Scores,
 		})
 	}
 
-	jsonData, _ := json.MarshalIndent(result, "", "  ")
+	jsonData, _ := json.Marshal(result)
 	return string(jsonData)
 }
 

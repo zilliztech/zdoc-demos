@@ -236,24 +236,40 @@ print(entities)
 #         "id": 0,
 #         "distance": 0.0,
 #         "entity": {
-#             "title": "The Reported Mortality Rate of Coronavirus Is Not Important",
-#             "link": "https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912"
+#             "link": "https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912",
+#             "title": "The Reported Mortality Rate of Coronavirus Is Not Important"
 #         }
 #     },
 #     {
 #         "id": 3177,
-#         "distance": 0.29999834299087524,
+#         "distance": 0.29999837279319763,
 #         "entity": {
-#             "title": "Following the Spread of Coronavirus",
-#             "link": "https://towardsdatascience.com/following-the-spread-of-coronavirus-23626940c125"
+#             "link": "https://towardsdatascience.com/following-the-spread-of-coronavirus-23626940c125",
+#             "title": "Following the Spread of Coronavirus"
 #         }
 #     },
 #     {
 #         "id": 5607,
-#         "distance": 0.36103832721710205,
+#         "distance": 0.36103835701942444,
 #         "entity": {
-#             "title": "The Hidden Side Effect of the Coronavirus",
-#             "link": "https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586"
+#             "link": "https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586",
+#             "title": "The Hidden Side Effect of the Coronavirus"
+#         }
+#     },
+#     {
+#         "id": 5641,
+#         "distance": 0.37674015760421753,
+#         "entity": {
+#             "link": "https://towardsdatascience.com/why-the-coronavirus-mortality-rate-is-misleading-cc63f571b6a6",
+#             "title": "Why The Coronavirus Mortality Rate is Misleading"
+#         }
+#     },
+#     {
+#         "id": 3441,
+#         "distance": 0.4162980318069458,
+#         "entity": {
+#             "link": "https://medium.com/swlh/coronavirus-shows-what-ethical-amazon-could-look-like-7c80baf2c663",
+#             "title": "Coronavirus shows what ethical Amazon could look like"
 #         }
 #     }
 # ]
@@ -289,7 +305,7 @@ print(entities)
 #         },
 #         {
 #             "id": 3177,
-#             "distance": 0.29999834299087524,
+#             "distance": 0.29999837279319763,
 #             "entity": {
 #                 "title": "Following the Spread of Coronavirus",
 #                 "link": "https://towardsdatascience.com/following-the-spread-of-coronavirus-23626940c125"
@@ -297,10 +313,26 @@ print(entities)
 #         },
 #         {
 #             "id": 5607,
-#             "distance": 0.36103832721710205,
+#             "distance": 0.36103835701942444,
 #             "entity": {
 #                 "title": "The Hidden Side Effect of the Coronavirus",
 #                 "link": "https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586"
+#             }
+#         },
+#         {
+#             "id": 5641,
+#             "distance": 0.37674015760421753,
+#             "entity": {
+#                 "title": "Why The Coronavirus Mortality Rate is Misleading",
+#                 "link": "https://towardsdatascience.com/why-the-coronavirus-mortality-rate-is-misleading-cc63f571b6a6"
+#             }
+#         },
+#         {
+#             "id": 3441,
+#             "distance": 0.4162980318069458,
+#             "entity": {
+#                 "title": "Coronavirus shows what ethical Amazon could look like",
+#                 "link": "https://medium.com/swlh/coronavirus-shows-what-ethical-amazon-could-look-like-7c80baf2c663"
 #             }
 #         }
 #     ],
@@ -327,6 +359,22 @@ print(entities)
 #             "entity": {
 #                 "title": "OCR Engine Comparison \u2014 Tesseract vs. EasyOCR",
 #                 "link": "https://medium.com/swlh/ocr-engine-comparison-tesseract-vs-easyocr-729be893d3ae"
+#             }
+#         },
+#         {
+#             "id": 3276,
+#             "distance": 0.4157174229621887,
+#             "entity": {
+#                 "title": "How to Import Data to Salesforce Marketing Cloud (ExactTarget) Using Python REST API",
+#                 "link": "https://medium.com/swlh/how-to-import-data-to-salesforce-marketing-cloud-exacttarget-using-python-rest-api-1302a26f89c0"
+#             }
+#         },
+#         {
+#             "id": 1196,
+#             "distance": 0.41766005754470825,
+#             "entity": {
+#                 "title": "How to Automate Multiple Excel Workbooks and Perform Analysis",
+#                 "link": "https://towardsdatascience.com/how-to-automate-multiple-excel-workbooks-and-perform-analysis-13e8aa5a2042"
 #             }
 #         }
 #     ]
@@ -372,10 +420,26 @@ print(entities)
 #     },
 #     {
 #         "id": 5503,
-#         "distance": 0.5037479400634766,
+#         "distance": 0.5037478804588318,
 #         "entity": {
 #             "title": "New Data Shows a Lower Covid-19 Fatality Rate",
 #             "reading_time": 13
+#         }
+#     },
+#     {
+#         "id": 4331,
+#         "distance": 0.5255616307258606,
+#         "entity": {
+#             "title": "Common Pipenv Errors",
+#             "reading_time": 11
+#         }
+#     },
+#     {
+#         "id": 2803,
+#         "distance": 0.5679889917373657,
+#         "entity": {
+#             "title": "How Does US Healthcare Compare With Healthcare Around the World?",
+#             "reading_time": 12
 #         }
 #     }
 # ]
@@ -404,27 +468,45 @@ print(entities)
 #         "id": 5641,
 #         "distance": 0.37674015760421753,
 #         "entity": {
+#             "title": "Why The Coronavirus Mortality Rate is Misleading",
 #             "claps": 2900,
-#             "responses": 47,
-#             "title": "Why The Coronavirus Mortality Rate is Misleading"
+#             "responses": 47
+#         }
+#     },
+#     {
+#         "id": 4701,
+#         "distance": 0.6518568992614746,
+#         "entity": {
+#             "title": "The Discovery of Aliens Would Be Terrible",
+#             "claps": 4300,
+#             "responses": 95
 #         }
 #     },
 #     {
 #         "id": 1394,
-#         "distance": 0.6772846579551697,
+#         "distance": 0.6772847175598145,
 #         "entity": {
+#             "title": "Remote Work Is Not Here to Stay",
 #             "claps": 2600,
-#             "responses": 212,
-#             "title": "Remote Work Is Not Here to Stay"
+#             "responses": 212
 #         }
 #     },
 #     {
 #         "id": 4573,
 #         "distance": 0.6836910247802734,
 #         "entity": {
+#             "title": "Apple May Lose the Developer Crowd",
 #             "claps": 1800,
-#             "responses": 40,
-#             "title": "Apple May Lose the Developer Crowd"
+#             "responses": 40
+#         }
+#     },
+#     {
+#         "id": 4799,
+#         "distance": 0.7143410444259644,
+#         "entity": {
+#             "title": "Sorry, Online Courses Won\u2019t Make you a Data Scientist",
+#             "claps": 5000,
+#             "responses": 45
 #         }
 #     }
 # ]
@@ -451,7 +533,7 @@ print(entities)
 # [
 #     {
 #         "id": 3177,
-#         "distance": 0.29999834299087524,
+#         "distance": 0.29999837279319763,
 #         "entity": {
 #             "title": "Following the Spread of Coronavirus",
 #             "publication": "Towards Data Science"
@@ -470,6 +552,22 @@ print(entities)
 #         "distance": 0.436093807220459,
 #         "entity": {
 #             "title": "Mortality Rate As an Indicator of an Epidemic Outbreak",
+#             "publication": "Towards Data Science"
+#         }
+#     },
+#     {
+#         "id": 5780,
+#         "distance": 0.4586222767829895,
+#         "entity": {
+#             "title": "Heart Disease Risk Assessment Using Machine Learning",
+#             "publication": "Towards Data Science"
+#         }
+#     },
+#     {
+#         "id": 3072,
+#         "distance": 0.46275582909584045,
+#         "entity": {
+#             "title": "Can we learn anything from the progression of influenza to analyze the COVID-19 pandemic better?",
 #             "publication": "Towards Data Science"
 #         }
 #     }
@@ -499,24 +597,40 @@ print(entities)
 #         "id": 0,
 #         "distance": 0.0,
 #         "entity": {
-#             "publication": "The Startup",
-#             "title": "The Reported Mortality Rate of Coronavirus Is Not Important"
+#             "title": "The Reported Mortality Rate of Coronavirus Is Not Important",
+#             "publication": "The Startup"
 #         }
 #     },
 #     {
 #         "id": 5607,
-#         "distance": 0.36103832721710205,
+#         "distance": 0.36103835701942444,
 #         "entity": {
-#             "publication": "The Startup",
-#             "title": "The Hidden Side Effect of the Coronavirus"
+#             "title": "The Hidden Side Effect of the Coronavirus",
+#             "publication": "The Startup"
 #         }
 #     },
 #     {
 #         "id": 3441,
-#         "distance": 0.416297972202301,
+#         "distance": 0.4162980318069458,
 #         "entity": {
-#             "publication": "The Startup",
-#             "title": "Coronavirus shows what ethical Amazon could look like"
+#             "title": "Coronavirus shows what ethical Amazon could look like",
+#             "publication": "The Startup"
+#         }
+#     },
+#     {
+#         "id": 4275,
+#         "distance": 0.48886314034461975,
+#         "entity": {
+#             "title": "How Can AI Help Fight Coronavirus?",
+#             "publication": "The Startup"
+#         }
+#     },
+#     {
+#         "id": 4145,
+#         "distance": 0.4928317666053772,
+#         "entity": {
+#             "title": "Will Coronavirus Impact Freelancers\u2019 Ability to Rent?",
+#             "publication": "The Startup"
 #         }
 #     }
 # ]
@@ -540,7 +654,48 @@ print(entities)
 
 # Output
 #
-# []
+# [
+#     {
+#         "id": 3630,
+#         "distance": 0.749665379524231,
+#         "entity": {
+#             "title": "Topic Modeling in Power BI using PyCaret",
+#             "link": "https://towardsdatascience.com/topic-modeling-in-power-bi-using-pycaret-54422b4e36d6"
+#         }
+#     },
+#     {
+#         "id": 3666,
+#         "distance": 0.7691308259963989,
+#         "entity": {
+#             "title": "Topic Modeling the comment section from a New York Times article",
+#             "link": "https://towardsdatascience.com/topic-modeling-the-comment-section-from-a-new-york-times-article-e4775261530e"
+#         }
+#     },
+#     {
+#         "id": 3288,
+#         "distance": 0.812682032585144,
+#         "entity": {
+#             "title": "Top 4 Myths About App Store Conversion Rate Optimization (CRO)",
+#             "link": "https://medium.com/swlh/top-4-myths-about-app-store-conversion-rate-optimization-cro-c62476901c90"
+#         }
+#     },
+#     {
+#         "id": 1626,
+#         "distance": 0.8307195901870728,
+#         "entity": {
+#             "title": "Top VS Code extensions for Web Developers",
+#             "link": "https://medium.com/swlh/top-vs-code-extensions-for-web-developers-1e038201a8fc"
+#         }
+#     },
+#     {
+#         "id": 3398,
+#         "distance": 0.8489705324172974,
+#         "entity": {
+#             "title": "Top ten mistakes found while performing code reviews",
+#             "link": "https://medium.com/swlh/top-ten-mistakes-found-while-doing-code-reviews-b935ef44e797"
+#         }
+#     }
+# ]
 
 
 
@@ -586,13 +741,35 @@ print(entities)
 #     },
 #     {
 #         "id": 5503,
-#         "distance": 0.5037479400634766,
+#         "distance": 0.5037478804588318,
 #         "entity": {
 #             "title": "New Data Shows a Lower Covid-19 Fatality Rate",
 #             "publication": "Towards Data Science",
 #             "claps": 161,
 #             "responses": 3,
 #             "reading_time": 13
+#         }
+#     },
+#     {
+#         "id": 4331,
+#         "distance": 0.5255616307258606,
+#         "entity": {
+#             "title": "Common Pipenv Errors",
+#             "publication": "Towards Data Science",
+#             "claps": 20,
+#             "responses": 1,
+#             "reading_time": 11
+#         }
+#     },
+#     {
+#         "id": 2587,
+#         "distance": 0.5877483487129211,
+#         "entity": {
+#             "title": "Data quality impact on the dataset",
+#             "publication": "Towards Data Science",
+#             "claps": 61,
+#             "responses": 0,
+#             "reading_time": 12
 #         }
 #     }
 # ]
@@ -613,28 +790,44 @@ print(results)
 #
 # [
 #     {
-#         "responses": 18,
 #         "reading_time": 21,
 #         "id": 69,
 #         "title": "Top 10 In-Demand programming languages to learn in 2020",
 #         "publication": "Towards Data Science",
-#         "claps": 3000
+#         "claps": 3000,
+#         "responses": 18
 #     },
 #     {
-#         "responses": 7,
 #         "reading_time": 12,
 #         "id": 73,
 #         "title": "Data Cleaning in Python: the Ultimate Guide (2020)",
 #         "publication": "Towards Data Science",
-#         "claps": 1500
+#         "claps": 1500,
+#         "responses": 7
 #     },
 #     {
-#         "responses": 0,
 #         "reading_time": 11,
 #         "id": 75,
 #         "title": "Top Trends of Graph Machine Learning in 2020",
 #         "publication": "Towards Data Science",
-#         "claps": 1100
+#         "claps": 1100,
+#         "responses": 0
+#     },
+#     {
+#         "reading_time": 12,
+#         "id": 79,
+#         "title": "Rage Quitting Cancer Research",
+#         "publication": "Towards Data Science",
+#         "claps": 331,
+#         "responses": 3
+#     },
+#     {
+#         "reading_time": 13,
+#         "id": 80,
+#         "title": "Understanding Natural Language Processing: how AI understands our languages",
+#         "publication": "Towards Data Science",
+#         "claps": 109,
+#         "responses": 0
 #     }
 # ]
 
@@ -648,7 +841,7 @@ print(results)
 
 # Output
 #
-# (insert count: 0, delete count: 3, upsert count: 0, timestamp: 445474758328320001, success count: 0, err count: 0)
+# (insert count: 0, delete count: 3, upsert count: 0, timestamp: 445491462765543426, success count: 0, err count: 0)
 
 
 

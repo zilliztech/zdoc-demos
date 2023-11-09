@@ -64,6 +64,8 @@ public final class SearchQueryWithAdvancedOpsDemo {
 
 
 
+
+
         // 2. Create cluster
         
         FieldType id = FieldType.newBuilder()
@@ -114,6 +116,8 @@ public final class SearchQueryWithAdvancedOpsDemo {
 
 
 
+
+
         // 3. Index and load the collection
 
         // Create index
@@ -139,6 +143,8 @@ public final class SearchQueryWithAdvancedOpsDemo {
 
         // Output:
         // Successfully created index
+
+
 
 
 
@@ -173,6 +179,8 @@ public final class SearchQueryWithAdvancedOpsDemo {
 
 
 
+
+
         // 4. Read a local file
         Path file = Path.of(data_file);
         try {
@@ -189,11 +197,13 @@ public final class SearchQueryWithAdvancedOpsDemo {
 
 
 
+
+
         // Load dataset
         JSONObject dataset = JSON.parseObject(content);
 
         // In addition to the original data, we also need to add some tags fields.
-        // The tags fields are used to demonstrate the use of the advanced expression.
+        // The tags fields are used to demonstrate the use of the advanced expressions.
         // For details, examine the getRows function
         List<JSONObject> rows = getRows(dataset.getJSONArray("rows"), 5979);        
 
@@ -214,6 +224,8 @@ public final class SearchQueryWithAdvancedOpsDemo {
 
         // Output:
         // Successfully insert entities: 5979
+
+
 
 
 
@@ -255,6 +267,8 @@ public final class SearchQueryWithAdvancedOpsDemo {
 
 
 
+
+
         // 6. Count the entities with filters
 
         List<String> outputFields2 = new ArrayList<>();
@@ -283,6 +297,9 @@ public final class SearchQueryWithAdvancedOpsDemo {
         // The collection contains exactly 4304 entities!
 
 
+
+
+
         
         // 7. Search with advanced filters
 
@@ -290,13 +307,13 @@ public final class SearchQueryWithAdvancedOpsDemo {
         String expr_1 = "JSON_CONTAINS(article_meta[\"tags_1\"], 16)";
         
         // matches all articles with tags_2 having the member [5, 3, 39, 8]
-        String expr_2 = "JSON_CONTAINS(article_meta[\"tags_2\"], [5, 3, 39, 8])";
+        // String expr_2 = "JSON_CONTAINS(article_meta[\"tags_2\"], [5, 3, 39, 8])";
         
         // matches all articles with tags_1 having a member from [5, 3, 39, 8]
-        String expr_3 = "JSON_CONTAINS_ANY(article_meta[\"tags_1\"], [5, 3, 39, 8])";
+        // String expr_3 = "JSON_CONTAINS_ANY(article_meta[\"tags_1\"], [5, 3, 39, 8])";
         
         // matches all articles with tags_1 having all members from [2, 4, 6]
-        String expr_4 = "JSON_CONTAINS_ALL(article_meta[\"tags_1\"], [2, 4, 6])";
+        // String expr_4 = "JSON_CONTAINS_ALL(article_meta[\"tags_1\"], [2, 4, 6])";
 
         // prepare query vector
         List<List<Float>> queryVectors = new ArrayList<>();
@@ -349,7 +366,50 @@ public final class SearchQueryWithAdvancedOpsDemo {
         System.out.println(results);
 
         // Output:
-        // [[{"id":445337000188379768,"distance":0.29999834,"title":"Following the Spread of Coronavirus","reading_time":10,"claps":215,"tags_1":true}, {"id":445337000188382232,"distance":0.37674016,"title":"Why The Coronavirus Mortality Rate is Misleading","reading_time":9,"claps":2900,"tags_1":true}, {"id":445337000188377529,"distance":0.4360938,"title":"Mortality Rate As an Indicator of an Epidemic Outbreak","reading_time":6,"claps":65,"tags_1":true}, {"id":445337000188379663,"distance":0.4627558,"title":"Can we learn anything from the progression of influenza to analyze the COVID-19 pandemic better?","reading_time":5,"claps":2,"tags_1":true}, {"id":445337000188380919,"distance":0.48078254,"title":"Ever Wondered How Epidemiologists Simulate COVID-19 Deaths?","reading_time":4,"claps":20,"tags_1":true}]]
+        // [[
+        //     {
+        //         "reading_time": 10,
+        //         "tags_1": true,
+        //         "distance": 0.29999834,
+        //         "id": 445494450042711395,
+        //         "title": "Following the Spread of Coronavirus",
+        //         "claps": 215
+        //     },
+        //     {
+        //         "reading_time": 8,
+        //         "tags_1": true,
+        //         "distance": 0.36103833,
+        //         "id": 445494450042713825,
+        //         "title": "The Hidden Side Effect of the Coronavirus",
+        //         "claps": 83
+        //     },
+        //     {
+        //         "reading_time": 9,
+        //         "tags_1": true,
+        //         "distance": 0.37674016,
+        //         "id": 445494450042713859,
+        //         "title": "Why The Coronavirus Mortality Rate is Misleading",
+        //         "claps": 2900
+        //     },
+        //     {
+        //         "reading_time": 6,
+        //         "tags_1": true,
+        //         "distance": 0.4360938,
+        //         "id": 445494450042709156,
+        //         "title": "Mortality Rate As an Indicator of an Epidemic Outbreak",
+        //         "claps": 65
+        //     },
+        //     {
+        //         "reading_time": 12,
+        //         "tags_1": true,
+        //         "distance": 0.45862228,
+        //         "id": 445494450042713998,
+        //         "title": "Heart Disease Risk Assessment Using Machine Learning",
+        //         "claps": 15
+        //     }
+        // ]]
+
+
 
 
 
@@ -370,6 +430,9 @@ public final class SearchQueryWithAdvancedOpsDemo {
 
         // Output:
         // Successfully drop collection
+
+
+
 
 
     }

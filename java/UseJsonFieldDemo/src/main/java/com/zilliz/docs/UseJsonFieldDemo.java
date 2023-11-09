@@ -57,6 +57,9 @@ public final class UseJsonFieldDemo {
         // Connected to Zilliz Cloud!
 
 
+
+
+
         
         FieldType id = FieldType.newBuilder()
             .withName("id")
@@ -154,6 +157,8 @@ public final class UseJsonFieldDemo {
 
 
 
+
+
         // Load dataset
         JSONObject dataset = JSON.parseObject(content);
         List<JSONObject> rows = getRows(dataset.getJSONArray("rows"), 5979);        
@@ -175,6 +180,8 @@ public final class UseJsonFieldDemo {
 
         // Output:
         // Successfully insert entities: 5979
+
+
 
 
 
@@ -237,7 +244,45 @@ public final class UseJsonFieldDemo {
         System.out.println(results);
 
         // Output:
-        // [[{"id":445337000188202005,"distance":0.41629797,"title":"Coronavirus shows what ethical Amazon could look like","reading_time":4,"claps":51}, {"id":445337000188199502,"distance":0.4360938,"title":"Mortality Rate As an Indicator of an Epidemic Outbreak","reading_time":6,"claps":65}, {"id":445337000188202839,"distance":0.48886317,"title":"How Can AI Help Fight Coronavirus?","reading_time":9,"claps":255}, {"id":445337000188202709,"distance":0.49283174,"title":"Will Coronavirus Impact Freelancers’ Ability to Rent?","reading_time":5,"claps":63}, {"id":445337000188199406,"distance":0.49443865,"title":"Choosing the right performance metrics can save lives against Coronavirus","reading_time":9,"claps":202}]]
+        // [[
+        //     {
+        //         "reading_time": 4,
+        //         "distance": 0.41629803,
+        //         "id": 445297206350527638,
+        //         "title": "Coronavirus shows what ethical Amazon could look like",
+        //         "claps": 51
+        //     },
+        //     {
+        //         "reading_time": 6,
+        //         "distance": 0.4360938,
+        //         "id": 445297206350525135,
+        //         "title": "Mortality Rate As an Indicator of an Epidemic Outbreak",
+        //         "claps": 65
+        //     },
+        //     {
+        //         "reading_time": 9,
+        //         "distance": 0.48886314,
+        //         "id": 445297206350528472,
+        //         "title": "How Can AI Help Fight Coronavirus?",
+        //         "claps": 255
+        //     },
+        //     {
+        //         "reading_time": 5,
+        //         "distance": 0.49283177,
+        //         "id": 445297206350528342,
+        //         "title": "Will Coronavirus Impact Freelancers\u2019 Ability to Rent?",
+        //         "claps": 63
+        //     },
+        //     {
+        //         "reading_time": 9,
+        //         "distance": 0.4944387,
+        //         "id": 445297206350525039,
+        //         "title": "Choosing the right performance metrics can save lives against Coronavirus",
+        //         "claps": 202
+        //     }
+        // ]]
+
+
 
 
 
@@ -258,6 +303,9 @@ public final class UseJsonFieldDemo {
 
         // Output:
         // Successfully drop collection
+
+
+
 
 
     }

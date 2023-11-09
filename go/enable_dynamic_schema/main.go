@@ -41,8 +41,9 @@ type Dynamic struct {
 
 func main() {
 	CLUSTER_ENDPOINT := "YOUR_CLUSTER_ENDPOINT"
-	TOKEN := "YOUR_CLUSTER_TOKEN"
+	TOKEN := "YOUR_API_KEY"
 	COLLNAME := "medium_articles_2020"
+	DATA_FILE := "../../medium_articles_2020_dpr.json"
 
 	// 1. Connect to cluster
 
@@ -102,6 +103,10 @@ func main() {
 
 	fmt.Println(index.Name())
 
+	// Output: 
+	//
+	// AUTOINDEX
+
 	err = conn.CreateIndex(context.Background(), COLLNAME, "title_vector", index, false)
 
 	if err != nil {
@@ -124,8 +129,12 @@ func main() {
 
 	fmt.Println("Loading progress:", progress)
 
+	// Output: 
+	//
+	// Loading progress: 100
+
 	// 6. Read the dataset
-	file, err := os.ReadFile("../../medium_articles_2020_dpr.json")
+	file, err := os.ReadFile(DATA_FILE)
 	if err != nil {
 		log.Fatal("Failed to read file:", err.Error())
 	}
@@ -138,8 +147,16 @@ func main() {
 
 	fmt.Println("Dataset loaded, row number: ", len(data.Rows))
 
+	// Output: 
+	//
+	// Dataset loaded, row number:  5979
+
 	// 7. Insert data
 	fmt.Println("Start inserting ...")
+
+	// Output: 
+	//
+	// Start inserting ...
 
 	rows := make([]interface{}, 0, 1)
 
@@ -155,11 +172,19 @@ func main() {
 
 	fmt.Println("Inserted entities: ", col.Len())
 
+	// Output: 
+	//
+	// Inserted entities:  5979
+
 	time.Sleep(5 * time.Second)
 
 	// 8. Search
 
 	fmt.Println("Start searching ...")
+
+	// Output: 
+	//
+	// Start searching ...
 
 	vectors := []entity.Vector{}
 
@@ -197,6 +222,52 @@ func main() {
 
 	fmt.Println(resultsToJSON(res))
 
+	// Output: 
+	// [
+	// 	{
+	// 		"counts": 5,
+	// 		"distances": [
+	// 			0.36103836,
+	// 			0.37674016,
+	// 			0.41629803,
+	// 			0.4360938,
+	// 			0.48886314
+	// 		],
+	// 		"rows": [
+	// 			{
+	// 				"claps": 83,
+	// 				"id": 5607,
+	// 				"reading_time": 8,
+	// 				"title": "The Hidden Side Effect of the Coronavirus"
+	// 			},
+	// 			{
+	// 				"claps": 2900,
+	// 				"id": 5641,
+	// 				"reading_time": 9,
+	// 				"title": "Why The Coronavirus Mortality Rate is Misleading"
+	// 			},
+	// 			{
+	// 				"claps": 51,
+	// 				"id": 3441,
+	// 				"reading_time": 4,
+	// 				"title": "Coronavirus shows what ethical Amazon could look like"
+	// 			},
+	// 			{
+	// 				"claps": 65,
+	// 				"id": 938,
+	// 				"reading_time": 6,
+	// 				"title": "Mortality Rate As an Indicator of an Epidemic Outbreak"
+	// 			},
+	// 			{
+	// 				"claps": 255,
+	// 				"id": 4275,
+	// 				"reading_time": 9,
+	// 				"title": "How Can AI Help Fight Coronavirus?"
+	// 			}
+	// 		]
+	// 	}
+	// ]
+
 	// 9. Drop collection
 	err = conn.DropCollection(context.Background(), COLLNAME)
 
@@ -209,14 +280,14 @@ func resultsToJSON(results []client.SearchResult) string {
 	var result []map[string]interface{}
 	for _, r := range results {
 		result = append(result, map[string]interface{}{
-			"counts":    r.ResultCount,
-			"fields":    fieldsToJSON(results, true),
+			"counts": r.ResultCount,
+			// "fields":    fieldsToJSON(results, true),
 			"rows":      fieldsToJSON(results, false),
 			"distances": r.Scores,
 		})
 	}
 
-	jsonData, _ := json.MarshalIndent(result, "", "  ")
+	jsonData, _ := json.Marshal(result)
 	return string(jsonData)
 }
 

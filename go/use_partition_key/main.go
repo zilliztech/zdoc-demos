@@ -27,14 +27,11 @@ type Dataset struct {
 	Rows []Row `json:"rows"`
 }
 
-type SearchParameters struct {
-	nprobe float64
-}
-
 func main() {
 	CLUSTER_ENDPOINT := "YOUR_CLUSTER_ENDPOINT"
-	TOKEN := "root:Milvus"
+	TOKEN := "YOUR_CLUSTER_TOKEN"
 	COLLNAME := "medium_articles_2020"
+	DATA_FILE := "../../medium_articles_2020_dpr.json"
 
 	// 1. Connect to cluster
 
@@ -122,6 +119,10 @@ func main() {
 
 	fmt.Println(index.Name())
 
+	// Output: 
+	//
+	// AUTOINDEX
+
 	err = conn.CreateIndex(context.Background(), COLLNAME, "title_vector", index, false)
 
 	if err != nil {
@@ -144,8 +145,12 @@ func main() {
 
 	fmt.Println("Loading progress:", progress)
 
+	// Output: 
+	//
+	// Loading progress: 100
+
 	// 6. Read the dataset
-	file, err := os.ReadFile("../../medium_articles_2020_dpr.json")
+	file, err := os.ReadFile(DATA_FILE)
 	if err != nil {
 		log.Fatal("Failed to read file:", err.Error())
 	}
@@ -158,9 +163,17 @@ func main() {
 
 	fmt.Println("Dataset loaded, row number: ", len(data.Rows))
 
+	// Output: 
+	//
+	// Dataset loaded, row number:  5979
+
 	// 7. Insert data
 
 	fmt.Println("Start inserting ...")
+
+	// Output: 
+	//
+	// Start inserting ...
 
 	rows := make([]interface{}, 0, 1)
 
@@ -176,11 +189,19 @@ func main() {
 
 	fmt.Println("Inserted entities: ", col.Len())
 
+	// Output: 
+	//
+	// Inserted entities:  5979
+
 	time.Sleep(5 * time.Second)
 
 	// 8. Search
 
 	fmt.Println("Start searching ...")
+
+	// Output: 
+	//
+	// Start searching ...
 
 	vectors := []entity.Vector{}
 
@@ -219,6 +240,57 @@ func main() {
 
 	fmt.Println(resultsToJSON(res))
 
+	// Output: 
+	// [
+	// 	{
+	// 		"counts": 5,
+	// 		"distances": [
+	// 			0.37674016,
+	// 			0.45862228,
+	// 			0.5037479,
+	// 			0.52556163,
+	// 			0.58774835
+	// 		],
+	// 		"rows": [
+	// 			{
+	// 				"claps": 2900,
+	// 				"publication": "Towards Data Science",
+	// 				"reading_time": 9,
+	// 				"responses": 47,
+	// 				"title": "Why The Coronavirus Mortality Rate is Misleading"
+	// 			},
+	// 			{
+	// 				"claps": 15,
+	// 				"publication": "Towards Data Science",
+	// 				"reading_time": 12,
+	// 				"responses": 0,
+	// 				"title": "Heart Disease Risk Assessment Using Machine Learning"
+	// 			},
+	// 			{
+	// 				"claps": 161,
+	// 				"publication": "Towards Data Science",
+	// 				"reading_time": 13,
+	// 				"responses": 3,
+	// 				"title": "New Data Shows a Lower Covid-19 Fatality Rate"
+	// 			},
+	// 			{
+	// 				"claps": 20,
+	// 				"publication": "Towards Data Science",
+	// 				"reading_time": 11,
+	// 				"responses": 1,
+	// 				"title": "Common Pipenv Errors"
+	// 			},
+	// 			{
+	// 				"claps": 61,
+	// 				"publication": "Towards Data Science",
+	// 				"reading_time": 12,
+	// 				"responses": 0,
+	// 				"title": "Data quality impact on the dataset"
+	// 			}
+	// 		]
+	// 	}
+	// ]
+
 	// 9. Drop collection
 	err = conn.DropCollection(context.Background(), COLLNAME)
 
@@ -231,14 +303,14 @@ func resultsToJSON(results []client.SearchResult) string {
 	var result []map[string]interface{}
 	for _, r := range results {
 		result = append(result, map[string]interface{}{
-			"counts":    r.ResultCount,
-			"fields":    fieldsToJSON(results, true),
+			"counts": r.ResultCount,
+			// "fields":    fieldsToJSON(results, true),
 			"rows":      fieldsToJSON(results, false),
 			"distances": r.Scores,
 		})
 	}
 
-	jsonData, _ := json.MarshalIndent(result, "", "  ")
+	jsonData, _ := json.Marshal(result)
 	return string(jsonData)
 }
 

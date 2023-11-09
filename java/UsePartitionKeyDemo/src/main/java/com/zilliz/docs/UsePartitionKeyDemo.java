@@ -58,6 +58,8 @@ public final class UsePartitionKeyDemo {
 
 
 
+
+
         // 2. Define fields
 
         FieldType id = FieldType.newBuilder()
@@ -136,6 +138,8 @@ public final class UsePartitionKeyDemo {
 
 
 
+
+
         // 4. Create index
 
         CreateIndexParam createIndexParam = CreateIndexParam.newBuilder()
@@ -160,6 +164,8 @@ public final class UsePartitionKeyDemo {
 
 
 
+
+
         // 5. Load collection
 
         LoadCollectionParam loadCollectionParam = LoadCollectionParam.newBuilder()
@@ -180,6 +186,8 @@ public final class UsePartitionKeyDemo {
 
 
 
+
+
         // 6. Insert vectors
 
         String content;
@@ -197,6 +205,8 @@ public final class UsePartitionKeyDemo {
 
         // Output:
         // Successfully read file
+
+
 
 
 
@@ -222,6 +232,9 @@ public final class UsePartitionKeyDemo {
 
         // Output:
         // Successfully insert entities: 100
+
+
+
 
 
         
@@ -283,7 +296,40 @@ public final class UsePartitionKeyDemo {
         System.out.println(results);
 
         // Output:
-        // [[{"id":445337000188204646,"distance":0.8547761,"title":"Finding optimal NBA physiques using data visualization with Python","link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f"}, {"id":445337000188204627,"distance":0.8702323,"title":"Understanding Natural Language Processing: how AI understands our languages","link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc"}, {"id":445337000188204626,"distance":0.91095924,"title":"Rage Quitting Cancer Research","link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801"}, {"id":445337000188204620,"distance":0.98407775,"title":"Data Cleaning in Python: the Ultimate Guide (2020)","link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d"}, {"id":445337000188204616,"distance":1.091625,"title":"Top 10 In-Demand programming languages to learn in 2020","link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e"}]]
+        // [[
+        //     {
+        //         "distance": 0.85477614,
+        //         "link": "https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f",
+        //         "id": 445297206350548235,
+        //         "title": "Finding optimal NBA physiques using data visualization with Python"
+        //     },
+        //     {
+        //         "distance": 0.8702322,
+        //         "link": "https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc",
+        //         "id": 445297206350548216,
+        //         "title": "Understanding Natural Language Processing: how AI understands our languages"
+        //     },
+        //     {
+        //         "distance": 0.9109591,
+        //         "link": "https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801",
+        //         "id": 445297206350548215,
+        //         "title": "Rage Quitting Cancer Research"
+        //     },
+        //     {
+        //         "distance": 0.9840777,
+        //         "link": "https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d",
+        //         "id": 445297206350548209,
+        //         "title": "Data Cleaning in Python: the Ultimate Guide (2020)"
+        //     },
+        //     {
+        //         "distance": 1.091625,
+        //         "link": "https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e",
+        //         "id": 445297206350548205,
+        //         "title": "Top 10 In-Demand programming languages to learn in 2020"
+        //     }
+        // ]]
+
+
 
 
 
@@ -304,6 +350,9 @@ public final class UsePartitionKeyDemo {
 
         // Output:
         // Successfully drop collection
+
+
+
 
 
     }

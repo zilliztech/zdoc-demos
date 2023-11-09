@@ -30,6 +30,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.lang.reflect.Array;
@@ -48,8 +49,8 @@ public final class UseCustomizedSchemaDemo  {
      * @param args The arguments of the program.
      */
     public static void main(String[] args) {
-        String clusterEndpoint = "http://localhost:19530";
-        String token = "root:Milvus";
+        String clusterEndpoint = "YOUR_CLUSTER_ENDPOINT";
+        String token = "YOUR_CLUSTER_TOKEN";
         String collectionName = "medium_articles";
         String data_file = System.getProperty("user.dir") + "/medium_articles_2020_dpr.json";
 
@@ -67,9 +68,6 @@ public final class UseCustomizedSchemaDemo  {
         // Connected to Zilliz Cloud!
 
 
-
-        // Output:
-        // Connected to Zilliz Cloud!
 
 
 
@@ -150,8 +148,6 @@ public final class UseCustomizedSchemaDemo  {
 
 
 
-        // Output:
-        // Collection created!
 
 
         // 4. Create index
@@ -178,8 +174,6 @@ public final class UseCustomizedSchemaDemo  {
 
 
 
-        // Output:
-        // Index created!
 
 
         // 5. Load collection
@@ -202,8 +196,6 @@ public final class UseCustomizedSchemaDemo  {
 
 
 
-        // Output:
-        // Collection loaded!
 
 
         // 6. Insert vectors
@@ -226,8 +218,7 @@ public final class UseCustomizedSchemaDemo  {
 
 
 
-        // Output:
-        // Successfully read file
+
 
         // Load dataset
         JSONObject dataset = JSON.parseObject(content);
@@ -257,8 +248,8 @@ public final class UseCustomizedSchemaDemo  {
 
 
 
-        // Output:
-        // Successfully insert entities: 100
+
+
         
         // wait for a while
         try {
@@ -332,12 +323,41 @@ public final class UseCustomizedSchemaDemo  {
         System.out.println(results1);
 
         // Output:
-        // [[{"distance":0.0,"link":"https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912","id":445453895051148260,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"distance":0.0,"link":"https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912","id":445453895051142277,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"distance":0.0,"link":"https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912","id":445453895051136294,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"distance":0.0,"link":"https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912","id":445453895051154243,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"distance":0.29999834,"link":"https://towardsdatascience.com/following-the-spread-of-coronavirus-23626940c125","id":445453895051145454,"title":"Following the Spread of Coronavirus"}]]
+        // [[
+        //     {
+        //         "distance": 0,
+        //         "link": "https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912",
+        //         "id": 445297206350469349,
+        //         "title": "The Reported Mortality Rate of Coronavirus Is Not Important"
+        //     },
+        //     {
+        //         "distance": 0.29999837,
+        //         "link": "https://towardsdatascience.com/following-the-spread-of-coronavirus-23626940c125",
+        //         "id": 445297206350472526,
+        //         "title": "Following the Spread of Coronavirus"
+        //     },
+        //     {
+        //         "distance": 0.36103836,
+        //         "link": "https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586",
+        //         "id": 445297206350474956,
+        //         "title": "The Hidden Side Effect of the Coronavirus"
+        //     },
+        //     {
+        //         "distance": 0.37674016,
+        //         "link": "https://towardsdatascience.com/why-the-coronavirus-mortality-rate-is-misleading-cc63f571b6a6",
+        //         "id": 445297206350474990,
+        //         "title": "Why The Coronavirus Mortality Rate is Misleading"
+        //     },
+        //     {
+        //         "distance": 0.41629803,
+        //         "link": "https://medium.com/swlh/coronavirus-shows-what-ethical-amazon-could-look-like-7c80baf2c663",
+        //         "id": 445297206350472790,
+        //         "title": "Coronavirus shows what ethical Amazon could look like"
+        //     }
+        // ]]
 
 
 
-        // Output:
-        // [[{"distance":0.6560175,"link":"https://medium.com/swlh/what-if-facebook-had-to-pay-you-for-the-profit-they-are-making-7571115139a7","id":445453895050486638,"title":"What if Facebook had to pay you for the profit they are making?"}, {"distance":0.663948,"link":"https://medium.com/swlh/what-happens-when-the-google-cookie-crumbles-a0405ef97bf1","id":445453895050486634,"title":"What Happens When the Google Cookie Crumbles?"}, {"distance":0.7018132,"link":"https://medium.com/personal-growth/a-psychologist-explains-how-anyone-can-beat-social-anxiety-7992014ced88","id":445453895050486655,"title":"A Clinical Psychologist Explains How to Beat Social Anxiety"}, {"distance":0.72767186,"link":"https://medium.com/swlh/building-comprehensible-customer-churn-prediction-models-ca61ecce529d","id":445453895050486594,"title":"Building Comprehensible Customer Churn Prediction Models"}, {"distance":0.7282397,"link":"https://medium.com/swlh/bad-luck-or-bad-strategy-9c3ca2352a3b","id":445453895050486646,"title":"Bad Luck? or Bad Strategy?"}]]
 
 
         // Search multiple vectors in a collection
@@ -384,12 +404,76 @@ public final class UseCustomizedSchemaDemo  {
         System.out.println(results2);
 
         // Output:
-        // [[{"distance":0.0,"link":"https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912","id":445453895051148260,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"distance":0.0,"link":"https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912","id":445453895051142277,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"distance":0.0,"link":"https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912","id":445453895051136294,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"distance":0.0,"link":"https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912","id":445453895051154243,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"distance":0.29999834,"link":"https://towardsdatascience.com/following-the-spread-of-coronavirus-23626940c125","id":445453895051145454,"title":"Following the Spread of Coronavirus"}], [{"distance":0.0,"link":"https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a","id":445453895051136295,"title":"Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else"}, {"distance":0.0,"link":"https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a","id":445453895051148261,"title":"Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else"}, {"distance":0.0,"link":"https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a","id":445453895051142278,"title":"Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else"}, {"distance":0.0,"link":"https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a","id":445453895051154244,"title":"Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else"}, {"distance":0.1953007,"link":"https://medium.com/swlh/dashboards-in-python-using-dash-creating-a-data-table-using-data-from-reddit-1d6c0cecb4bd","id":445453895051147848,"title":"Dashboards in Python Using Dash — Creating a Data Table using Data from Reddit"}]]
+        // [
+        //     [
+        //         {
+        //             "distance": 0,
+        //             "link": "https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912",
+        //             "id": 445297206350469349,
+        //             "title": "The Reported Mortality Rate of Coronavirus Is Not Important"
+        //         },
+        //         {
+        //             "distance": 0.29999837,
+        //             "link": "https://towardsdatascience.com/following-the-spread-of-coronavirus-23626940c125",
+        //             "id": 445297206350472526,
+        //             "title": "Following the Spread of Coronavirus"
+        //         },
+        //         {
+        //             "distance": 0.36103836,
+        //             "link": "https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586",
+        //             "id": 445297206350474956,
+        //             "title": "The Hidden Side Effect of the Coronavirus"
+        //         },
+        //         {
+        //             "distance": 0.37674016,
+        //             "link": "https://towardsdatascience.com/why-the-coronavirus-mortality-rate-is-misleading-cc63f571b6a6",
+        //             "id": 445297206350474990,
+        //             "title": "Why The Coronavirus Mortality Rate is Misleading"
+        //         },
+        //         {
+        //             "distance": 0.41629803,
+        //             "link": "https://medium.com/swlh/coronavirus-shows-what-ethical-amazon-could-look-like-7c80baf2c663",
+        //             "id": 445297206350472790,
+        //             "title": "Coronavirus shows what ethical Amazon could look like"
+        //         }
+        //     ],
+        //     [
+        //         {
+        //             "distance": 0,
+        //             "link": "https://medium.com/swlh/dashboards-in-python-3-advanced-examples-for-dash-beginners-and-everyone-else-b1daf4e2ec0a",
+        //             "id": 445297206350469350,
+        //             "title": "Dashboards in Python: 3 Advanced Examples for Dash Beginners and Everyone Else"
+        //         },
+        //         {
+        //             "distance": 0.1953007,
+        //             "link": "https://medium.com/swlh/dashboards-in-python-using-dash-creating-a-data-table-using-data-from-reddit-1d6c0cecb4bd",
+        //             "id": 445297206350474920,
+        //             "title": "Dashboards in Python Using Dash \u2014 Creating a Data Table using Data from Reddit"
+        //         },
+        //         {
+        //             "distance": 0.40734136,
+        //             "link": "https://medium.com/swlh/ocr-engine-comparison-tesseract-vs-easyocr-729be893d3ae",
+        //             "id": 445297206350472593,
+        //             "title": "OCR Engine Comparison \u2014 Tesseract vs. EasyOCR"
+        //         },
+        //         {
+        //             "distance": 0.41571742,
+        //             "link": "https://medium.com/swlh/how-to-import-data-to-salesforce-marketing-cloud-exacttarget-using-python-rest-api-1302a26f89c0",
+        //             "id": 445297206350472625,
+        //             "title": "How to Import Data to Salesforce Marketing Cloud (ExactTarget) Using Python REST API"
+        //         },
+        //         {
+        //             "distance": 0.41766006,
+        //             "link": "https://towardsdatascience.com/how-to-automate-multiple-excel-workbooks-and-perform-analysis-13e8aa5a2042",
+        //             "id": 445297206350470545,
+        //             "title": "How to Automate Multiple Excel Workbooks and Perform Analysis"
+        //         }
+        //     ]
+        // ]
 
 
 
-        // Output:
-        // [[{"distance":0.6560175,"link":"https://medium.com/swlh/what-if-facebook-had-to-pay-you-for-the-profit-they-are-making-7571115139a7","id":445453895050486638,"title":"What if Facebook had to pay you for the profit they are making?"}, {"distance":0.663948,"link":"https://medium.com/swlh/what-happens-when-the-google-cookie-crumbles-a0405ef97bf1","id":445453895050486634,"title":"What Happens When the Google Cookie Crumbles?"}, {"distance":0.7018132,"link":"https://medium.com/personal-growth/a-psychologist-explains-how-anyone-can-beat-social-anxiety-7992014ced88","id":445453895050486655,"title":"A Clinical Psychologist Explains How to Beat Social Anxiety"}, {"distance":0.72767186,"link":"https://medium.com/swlh/building-comprehensible-customer-churn-prediction-models-ca61ecce529d","id":445453895050486594,"title":"Building Comprehensible Customer Churn Prediction Models"}, {"distance":0.7282397,"link":"https://medium.com/swlh/bad-luck-or-bad-strategy-9c3ca2352a3b","id":445453895050486646,"title":"Bad Luck? or Bad Strategy?"}], [{"distance":0.5267407,"link":"https://medium.com/swlh/blockchain-iot-and-ai-a-perfect-fit-1-e04c6ad73fbc","id":445453895050486604,"title":"Blockchain, IoT and AI — A Perfect Fit"}, {"distance":0.54294807,"link":"https://towardsdatascience.com/how-to-write-movie-reviews-with-ai-d17f758f2ed5","id":445453895050486685,"title":"How To Write Movie Reviews with AI"}, {"distance":0.5753727,"link":"https://towardsdatascience.com/feature-selection-techniques-in-python-predicting-hotel-cancellations-48a77521ee4f","id":445453895050486683,"title":"Feature Selection Techniques in Python: Predicting Hotel Cancellations"}, {"distance":0.5788189,"link":"https://medium.com/swlh/guide-to-nest-js-rabbitmq-microservices-e1e8655d2853","id":445453895050486592,"title":"Guide to Nest JS-RabbitMQ Microservices"}, {"distance":0.57894915,"link":"https://towardsdatascience.com/opengl-in-java-how-to-use-hardware-acceleration-676334f18f11","id":445453895050486672,"title":"OpenGL in Java: how to use hardware acceleration"}]]
+
 
         // Search vector with filters in a collection
 
@@ -439,12 +523,42 @@ public final class UseCustomizedSchemaDemo  {
         System.out.println(results3);
 
         // Output:
-        // [[{"reading_time":13,"distance":0.0,"id":445453895051148260,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"reading_time":13,"distance":0.0,"id":445453895051142277,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"reading_time":13,"distance":0.0,"id":445453895051136294,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"reading_time":13,"distance":0.0,"id":445453895051154243,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"reading_time":12,"distance":0.45862228,"id":445453895051148057,"title":"Heart Disease Risk Assessment Using Machine Learning"}]]
+        // [[
+        //     {
+        //         "reading_time": 13,
+        //         "distance": 0,
+        //         "id": 445297206350469349,
+        //         "title": "The Reported Mortality Rate of Coronavirus Is Not Important"
+        //     },
+        //     {
+        //         "reading_time": 12,
+        //         "distance": 0.45862228,
+        //         "id": 445297206350475129,
+        //         "title": "Heart Disease Risk Assessment Using Machine Learning"
+        //     },
+        //     {
+        //         "reading_time": 13,
+        //         "distance": 0.5037479,
+        //         "id": 445297206350474852,
+        //         "title": "New Data Shows a Lower Covid-19 Fatality Rate"
+        //     },
+        //     {
+        //         "reading_time": 11,
+        //         "distance": 0.52556163,
+        //         "id": 445297206350473680,
+        //         "title": "Common Pipenv Errors"
+        //     },
+        //     {
+        //         "reading_time": 12,
+        //         "distance": 0.567989,
+        //         "id": 445297206350472152,
+        //         "title": "How Does US Healthcare Compare With Healthcare Around the World?"
+        //     }
+        // ]]
 
 
 
-        // Output:
-        // [[{"distance":0.8547761,"link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f","id":445453895050486686,"title":"Finding optimal NBA physiques using data visualization with Python"}, {"distance":0.8702323,"link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc","id":445453895050486667,"title":"Understanding Natural Language Processing: how AI understands our languages"}, {"distance":0.91095924,"link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801","id":445453895050486666,"title":"Rage Quitting Cancer Research"}, {"distance":0.98407775,"link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d","id":445453895050486660,"title":"Data Cleaning in Python: the Ultimate Guide (2020)"}, {"distance":1.091625,"link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e","id":445453895050486656,"title":"Top 10 In-Demand programming languages to learn in 2020"}]]
+
 
         // -------
 
@@ -497,7 +611,45 @@ public final class UseCustomizedSchemaDemo  {
         System.out.println(results4);
 
         // Output:
-        // [[{"distance":0.37674016,"responses":47,"id":445453895051141935,"title":"Why The Coronavirus Mortality Rate is Misleading","claps":2900}, {"distance":0.37674016,"responses":47,"id":445453895051147918,"title":"Why The Coronavirus Mortality Rate is Misleading","claps":2900}, {"distance":0.37674016,"responses":47,"id":445453895051153901,"title":"Why The Coronavirus Mortality Rate is Misleading","claps":2900}, {"distance":0.37674016,"responses":47,"id":445453895051159884,"title":"Why The Coronavirus Mortality Rate is Misleading","claps":2900}, {"distance":0.6518569,"responses":95,"id":445453895051140995,"title":"The Discovery of Aliens Would Be Terrible","claps":4300}]]
+        // [[
+        //     {
+        //         "distance": 0.37674016,
+        //         "responses": 47,
+        //         "id": 445297206350474990,
+        //         "title": "Why The Coronavirus Mortality Rate is Misleading",
+        //         "claps": 2900
+        //     },
+        //     {
+        //         "distance": 0.6518569,
+        //         "responses": 95,
+        //         "id": 445297206350474050,
+        //         "title": "The Discovery of Aliens Would Be Terrible",
+        //         "claps": 4300
+        //     },
+        //     {
+        //         "distance": 0.6772847,
+        //         "responses": 212,
+        //         "id": 445297206350470743,
+        //         "title": "Remote Work Is Not Here to Stay",
+        //         "claps": 2600
+        //     },
+        //     {
+        //         "distance": 0.683691,
+        //         "responses": 40,
+        //         "id": 445297206350473922,
+        //         "title": "Apple May Lose the Developer Crowd",
+        //         "claps": 1800
+        //     },
+        //     {
+        //         "distance": 0.71434104,
+        //         "responses": 45,
+        //         "id": 445297206350474148,
+        //         "title": "Sorry, Online Courses Won\u2019t Make you a Data Scientist",
+        //         "claps": 5000
+        //     }
+        // ]]
+
+
 
 
 
@@ -549,7 +701,40 @@ public final class UseCustomizedSchemaDemo  {
         System.out.println(results5);
 
         // Output:
-        // [[{"distance":0.29999834,"publication":"Towards Data Science","id":445453895051151437,"title":"Following the Spread of Coronavirus"}, {"distance":0.29999834,"publication":"Towards Data Science","id":445453895051139471,"title":"Following the Spread of Coronavirus"}, {"distance":0.29999834,"publication":"Towards Data Science","id":445453895051145454,"title":"Following the Spread of Coronavirus"}, {"distance":0.29999834,"publication":"Towards Data Science","id":445453895051157420,"title":"Following the Spread of Coronavirus"}, {"distance":0.37674016,"publication":"Towards Data Science","id":445453895051147918,"title":"Why The Coronavirus Mortality Rate is Misleading"}]]
+        // [[
+        //     {
+        //         "distance": 0.29999837,
+        //         "publication": "Towards Data Science",
+        //         "id": 445297206350472526,
+        //         "title": "Following the Spread of Coronavirus"
+        //     },
+        //     {
+        //         "distance": 0.37674016,
+        //         "publication": "Towards Data Science",
+        //         "id": 445297206350474990,
+        //         "title": "Why The Coronavirus Mortality Rate is Misleading"
+        //     },
+        //     {
+        //         "distance": 0.4360938,
+        //         "publication": "Towards Data Science",
+        //         "id": 445297206350470287,
+        //         "title": "Mortality Rate As an Indicator of an Epidemic Outbreak"
+        //     },
+        //     {
+        //         "distance": 0.45862228,
+        //         "publication": "Towards Data Science",
+        //         "id": 445297206350475129,
+        //         "title": "Heart Disease Risk Assessment Using Machine Learning"
+        //     },
+        //     {
+        //         "distance": 0.46275583,
+        //         "publication": "Towards Data Science",
+        //         "id": 445297206350472421,
+        //         "title": "Can we learn anything from the progression of influenza to analyze the COVID-19 pandemic better?"
+        //     }
+        // ]]
+
+
 
 
 
@@ -601,7 +786,40 @@ public final class UseCustomizedSchemaDemo  {
         System.out.println(results6);
 
         // Output:
-        // [[{"distance":0.0,"publication":"The Startup","id":445453895051148260,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"distance":0.0,"publication":"The Startup","id":445453895051142277,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"distance":0.0,"publication":"The Startup","id":445453895051136294,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"distance":0.0,"publication":"The Startup","id":445453895051154243,"title":"The Reported Mortality Rate of Coronavirus Is Not Important"}, {"distance":0.36103833,"publication":"The Startup","id":445453895051147884,"title":"The Hidden Side Effect of the Coronavirus"}]]
+        // [[
+        //     {
+        //         "distance": 0,
+        //         "publication": "The Startup",
+        //         "id": 445297206350469349,
+        //         "title": "The Reported Mortality Rate of Coronavirus Is Not Important"
+        //     },
+        //     {
+        //         "distance": 0.36103836,
+        //         "publication": "The Startup",
+        //         "id": 445297206350474956,
+        //         "title": "The Hidden Side Effect of the Coronavirus"
+        //     },
+        //     {
+        //         "distance": 0.41629803,
+        //         "publication": "The Startup",
+        //         "id": 445297206350472790,
+        //         "title": "Coronavirus shows what ethical Amazon could look like"
+        //     },
+        //     {
+        //         "distance": 0.48886314,
+        //         "publication": "The Startup",
+        //         "id": 445297206350473624,
+        //         "title": "How Can AI Help Fight Coronavirus?"
+        //     },
+        //     {
+        //         "distance": 0.49283177,
+        //         "publication": "The Startup",
+        //         "id": 445297206350473494,
+        //         "title": "Will Coronavirus Impact Freelancers\u2019 Ability to Rent?"
+        //     }
+        // ]]
+
+
 
 
 
@@ -634,9 +852,6 @@ public final class UseCustomizedSchemaDemo  {
 
         for (int i = 0; i < queryVectors.size(); ++i) {
             List<SearchResultsWrapper.IDScore> scores = wrapper7.getIDScore(i);
-            if (wrapper7.getRowRecords(i) == null) {
-                continue;
-            }
             List<String> titles = (List<String>) wrapper7.getFieldData("title", i);
             List<String> links = (List<String>) wrapper7.getFieldData("link", i);
             List<JSONObject> entities = new ArrayList<>();
@@ -656,7 +871,40 @@ public final class UseCustomizedSchemaDemo  {
         System.out.println(results7);
 
         // Output:
-        // [[{"distance":0.7496654,"link":"https://towardsdatascience.com/topic-modeling-in-power-bi-using-pycaret-54422b4e36d6","id":445453895051151890,"title":"Topic Modeling in Power BI using PyCaret"}, {"distance":0.7496654,"link":"https://towardsdatascience.com/topic-modeling-in-power-bi-using-pycaret-54422b4e36d6","id":445453895051139924,"title":"Topic Modeling in Power BI using PyCaret"}, {"distance":0.7496654,"link":"https://towardsdatascience.com/topic-modeling-in-power-bi-using-pycaret-54422b4e36d6","id":445453895051145907,"title":"Topic Modeling in Power BI using PyCaret"}, {"distance":0.7691308,"link":"https://towardsdatascience.com/topic-modeling-the-comment-section-from-a-new-york-times-article-e4775261530e","id":445453895051145943,"title":"Topic Modeling the comment section from a New York Times article"}, {"distance":0.7691308,"link":"https://towardsdatascience.com/topic-modeling-the-comment-section-from-a-new-york-times-article-e4775261530e","id":445453895051139960,"title":"Topic Modeling the comment section from a New York Times article"}]]
+        // [[
+        //     {
+        //         "distance": 0.7496654,
+        //         "link": "https://towardsdatascience.com/topic-modeling-in-power-bi-using-pycaret-54422b4e36d6",
+        //         "id": 445297206350472979,
+        //         "title": "Topic Modeling in Power BI using PyCaret"
+        //     },
+        //     {
+        //         "distance": 0.7691308,
+        //         "link": "https://towardsdatascience.com/topic-modeling-the-comment-section-from-a-new-york-times-article-e4775261530e",
+        //         "id": 445297206350473015,
+        //         "title": "Topic Modeling the comment section from a New York Times article"
+        //     },
+        //     {
+        //         "distance": 0.81268203,
+        //         "link": "https://medium.com/swlh/top-4-myths-about-app-store-conversion-rate-optimization-cro-c62476901c90",
+        //         "id": 445297206350472637,
+        //         "title": "Top 4 Myths About App Store Conversion Rate Optimization (CRO)"
+        //     },
+        //     {
+        //         "distance": 0.8307196,
+        //         "link": "https://medium.com/swlh/top-vs-code-extensions-for-web-developers-1e038201a8fc",
+        //         "id": 445297206350470975,
+        //         "title": "Top VS Code extensions for Web Developers"
+        //     },
+        //     {
+        //         "distance": 0.84897053,
+        //         "link": "https://medium.com/swlh/top-ten-mistakes-found-while-doing-code-reviews-b935ef44e797",
+        //         "id": 445297206350472747,
+        //         "title": "Top ten mistakes found while performing code reviews"
+        //     }
+        // ]]
+
+
 
 
 
@@ -718,7 +966,55 @@ public final class UseCustomizedSchemaDemo  {
         System.out.println(results8);
 
         // Output:
-        // [[{"reading_time":9,"distance":0.37674016,"publication":"Towards Data Science","responses":47,"id":445453895051147918,"title":"Why The Coronavirus Mortality Rate is Misleading","claps":2900}, {"reading_time":9,"distance":0.37674016,"publication":"Towards Data Science","responses":47,"id":445453895051141935,"title":"Why The Coronavirus Mortality Rate is Misleading","claps":2900}, {"reading_time":9,"distance":0.37674016,"publication":"Towards Data Science","responses":47,"id":445453895051153901,"title":"Why The Coronavirus Mortality Rate is Misleading","claps":2900}, {"reading_time":9,"distance":0.37674016,"publication":"Towards Data Science","responses":47,"id":445453895051159884,"title":"Why The Coronavirus Mortality Rate is Misleading","claps":2900}, {"reading_time":12,"distance":0.45862228,"publication":"Towards Data Science","responses":0,"id":445453895051148057,"title":"Heart Disease Risk Assessment Using Machine Learning","claps":15}]]
+        // [[
+        //     {
+        //         "reading_time": 9,
+        //         "distance": 0.37674016,
+        //         "publication": "Towards Data Science",
+        //         "responses": 47,
+        //         "id": 445297206350474990,
+        //         "title": "Why The Coronavirus Mortality Rate is Misleading",
+        //         "claps": 2900
+        //     },
+        //     {
+        //         "reading_time": 12,
+        //         "distance": 0.45862228,
+        //         "publication": "Towards Data Science",
+        //         "responses": 0,
+        //         "id": 445297206350475129,
+        //         "title": "Heart Disease Risk Assessment Using Machine Learning",
+        //         "claps": 15
+        //     },
+        //     {
+        //         "reading_time": 13,
+        //         "distance": 0.5037479,
+        //         "publication": "Towards Data Science",
+        //         "responses": 3,
+        //         "id": 445297206350474852,
+        //         "title": "New Data Shows a Lower Covid-19 Fatality Rate",
+        //         "claps": 161
+        //     },
+        //     {
+        //         "reading_time": 11,
+        //         "distance": 0.52556163,
+        //         "publication": "Towards Data Science",
+        //         "responses": 1,
+        //         "id": 445297206350473680,
+        //         "title": "Common Pipenv Errors",
+        //         "claps": 20
+        //     },
+        //     {
+        //         "reading_time": 12,
+        //         "distance": 0.58774835,
+        //         "publication": "Towards Data Science",
+        //         "responses": 0,
+        //         "id": 445297206350471936,
+        //         "title": "Data quality impact on the dataset",
+        //         "claps": 61
+        //     }
+        // ]]
+
+
 
 
 
@@ -769,12 +1065,222 @@ public final class UseCustomizedSchemaDemo  {
         System.out.println(queryResults);
 
         // Output:
-        // [[{"reading_time":21,"publication":"Towards Data Science","responses":18,"id":445453895051136363,"title":"Top 10 In-Demand programming languages to learn in 2020","claps":3000}, {"reading_time":12,"publication":"Towards Data Science","responses":7,"id":445453895051136367,"title":"Data Cleaning in Python: the Ultimate Guide (2020)","claps":1500}, {"reading_time":11,"publication":"Towards Data Science","responses":0,"id":445453895051136369,"title":"Top Trends of Graph Machine Learning in 2020","claps":1100}, {"reading_time":12,"publication":"Towards Data Science","responses":3,"id":445453895051136373,"title":"Rage Quitting Cancer Research","claps":331}, {"reading_time":13,"publication":"Towards Data Science","responses":0,"id":445453895051136374,"title":"Understanding Natural Language Processing: how AI understands our languages","claps":109}], [{"reading_time":21,"publication":"Towards Data Science","responses":18,"id":445453895051136363,"title":"Top 10 In-Demand programming languages to learn in 2020","claps":3000}, {"reading_time":12,"publication":"Towards Data Science","responses":7,"id":445453895051136367,"title":"Data Cleaning in Python: the Ultimate Guide (2020)","claps":1500}, {"reading_time":11,"publication":"Towards Data Science","responses":0,"id":445453895051136369,"title":"Top Trends of Graph Machine Learning in 2020","claps":1100}, {"reading_time":12,"publication":"Towards Data Science","responses":3,"id":445453895051136373,"title":"Rage Quitting Cancer Research","claps":331}, {"reading_time":13,"publication":"Towards Data Science","responses":0,"id":445453895051136374,"title":"Understanding Natural Language Processing: how AI understands our languages","claps":109}], [{"reading_time":21,"publication":"Towards Data Science","responses":18,"id":445453895051136363,"title":"Top 10 In-Demand programming languages to learn in 2020","claps":3000}, {"reading_time":12,"publication":"Towards Data Science","responses":7,"id":445453895051136367,"title":"Data Cleaning in Python: the Ultimate Guide (2020)","claps":1500}, {"reading_time":11,"publication":"Towards Data Science","responses":0,"id":445453895051136369,"title":"Top Trends of Graph Machine Learning in 2020","claps":1100}, {"reading_time":12,"publication":"Towards Data Science","responses":3,"id":445453895051136373,"title":"Rage Quitting Cancer Research","claps":331}, {"reading_time":13,"publication":"Towards Data Science","responses":0,"id":445453895051136374,"title":"Understanding Natural Language Processing: how AI understands our languages","claps":109}], [{"reading_time":21,"publication":"Towards Data Science","responses":18,"id":445453895051136363,"title":"Top 10 In-Demand programming languages to learn in 2020","claps":3000}, {"reading_time":12,"publication":"Towards Data Science","responses":7,"id":445453895051136367,"title":"Data Cleaning in Python: the Ultimate Guide (2020)","claps":1500}, {"reading_time":11,"publication":"Towards Data Science","responses":0,"id":445453895051136369,"title":"Top Trends of Graph Machine Learning in 2020","claps":1100}, {"reading_time":12,"publication":"Towards Data Science","responses":3,"id":445453895051136373,"title":"Rage Quitting Cancer Research","claps":331}, {"reading_time":13,"publication":"Towards Data Science","responses":0,"id":445453895051136374,"title":"Understanding Natural Language Processing: how AI understands our languages","claps":109}], [{"reading_time":21,"publication":"Towards Data Science","responses":18,"id":445453895051136363,"title":"Top 10 In-Demand programming languages to learn in 2020","claps":3000}, {"reading_time":12,"publication":"Towards Data Science","responses":7,"id":445453895051136367,"title":"Data Cleaning in Python: the Ultimate Guide (2020)","claps":1500}, {"reading_time":11,"publication":"Towards Data Science","responses":0,"id":445453895051136369,"title":"Top Trends of Graph Machine Learning in 2020","claps":1100}, {"reading_time":12,"publication":"Towards Data Science","responses":3,"id":445453895051136373,"title":"Rage Quitting Cancer Research","claps":331}, {"reading_time":13,"publication":"Towards Data Science","responses":0,"id":445453895051136374,"title":"Understanding Natural Language Processing: how AI understands our languages","claps":109}]]
+        // [
+        //     [
+        //         {
+        //             "reading_time": 21,
+        //             "publication": "Towards Data Science",
+        //             "responses": 18,
+        //             "id": 445297206350469418,
+        //             "title": "Top 10 In-Demand programming languages to learn in 2020",
+        //             "claps": 3000
+        //         },
+        //         {
+        //             "reading_time": 12,
+        //             "publication": "Towards Data Science",
+        //             "responses": 7,
+        //             "id": 445297206350469422,
+        //             "title": "Data Cleaning in Python: the Ultimate Guide (2020)",
+        //             "claps": 1500
+        //         },
+        //         {
+        //             "reading_time": 11,
+        //             "publication": "Towards Data Science",
+        //             "responses": 0,
+        //             "id": 445297206350469424,
+        //             "title": "Top Trends of Graph Machine Learning in 2020",
+        //             "claps": 1100
+        //         },
+        //         {
+        //             "reading_time": 12,
+        //             "publication": "Towards Data Science",
+        //             "responses": 3,
+        //             "id": 445297206350469428,
+        //             "title": "Rage Quitting Cancer Research",
+        //             "claps": 331
+        //         },
+        //         {
+        //             "reading_time": 13,
+        //             "publication": "Towards Data Science",
+        //             "responses": 0,
+        //             "id": 445297206350469429,
+        //             "title": "Understanding Natural Language Processing: how AI understands our languages",
+        //             "claps": 109
+        //         }
+        //     ],
+        //     [
+        //         {
+        //             "reading_time": 21,
+        //             "publication": "Towards Data Science",
+        //             "responses": 18,
+        //             "id": 445297206350469418,
+        //             "title": "Top 10 In-Demand programming languages to learn in 2020",
+        //             "claps": 3000
+        //         },
+        //         {
+        //             "reading_time": 12,
+        //             "publication": "Towards Data Science",
+        //             "responses": 7,
+        //             "id": 445297206350469422,
+        //             "title": "Data Cleaning in Python: the Ultimate Guide (2020)",
+        //             "claps": 1500
+        //         },
+        //         {
+        //             "reading_time": 11,
+        //             "publication": "Towards Data Science",
+        //             "responses": 0,
+        //             "id": 445297206350469424,
+        //             "title": "Top Trends of Graph Machine Learning in 2020",
+        //             "claps": 1100
+        //         },
+        //         {
+        //             "reading_time": 12,
+        //             "publication": "Towards Data Science",
+        //             "responses": 3,
+        //             "id": 445297206350469428,
+        //             "title": "Rage Quitting Cancer Research",
+        //             "claps": 331
+        //         },
+        //         {
+        //             "reading_time": 13,
+        //             "publication": "Towards Data Science",
+        //             "responses": 0,
+        //             "id": 445297206350469429,
+        //             "title": "Understanding Natural Language Processing: how AI understands our languages",
+        //             "claps": 109
+        //         }
+        //     ],
+        //     [
+        //         {
+        //             "reading_time": 21,
+        //             "publication": "Towards Data Science",
+        //             "responses": 18,
+        //             "id": 445297206350469418,
+        //             "title": "Top 10 In-Demand programming languages to learn in 2020",
+        //             "claps": 3000
+        //         },
+        //         {
+        //             "reading_time": 12,
+        //             "publication": "Towards Data Science",
+        //             "responses": 7,
+        //             "id": 445297206350469422,
+        //             "title": "Data Cleaning in Python: the Ultimate Guide (2020)",
+        //             "claps": 1500
+        //         },
+        //         {
+        //             "reading_time": 11,
+        //             "publication": "Towards Data Science",
+        //             "responses": 0,
+        //             "id": 445297206350469424,
+        //             "title": "Top Trends of Graph Machine Learning in 2020",
+        //             "claps": 1100
+        //         },
+        //         {
+        //             "reading_time": 12,
+        //             "publication": "Towards Data Science",
+        //             "responses": 3,
+        //             "id": 445297206350469428,
+        //             "title": "Rage Quitting Cancer Research",
+        //             "claps": 331
+        //         },
+        //         {
+        //             "reading_time": 13,
+        //             "publication": "Towards Data Science",
+        //             "responses": 0,
+        //             "id": 445297206350469429,
+        //             "title": "Understanding Natural Language Processing: how AI understands our languages",
+        //             "claps": 109
+        //         }
+        //     ],
+        //     [
+        //         {
+        //             "reading_time": 21,
+        //             "publication": "Towards Data Science",
+        //             "responses": 18,
+        //             "id": 445297206350469418,
+        //             "title": "Top 10 In-Demand programming languages to learn in 2020",
+        //             "claps": 3000
+        //         },
+        //         {
+        //             "reading_time": 12,
+        //             "publication": "Towards Data Science",
+        //             "responses": 7,
+        //             "id": 445297206350469422,
+        //             "title": "Data Cleaning in Python: the Ultimate Guide (2020)",
+        //             "claps": 1500
+        //         },
+        //         {
+        //             "reading_time": 11,
+        //             "publication": "Towards Data Science",
+        //             "responses": 0,
+        //             "id": 445297206350469424,
+        //             "title": "Top Trends of Graph Machine Learning in 2020",
+        //             "claps": 1100
+        //         },
+        //         {
+        //             "reading_time": 12,
+        //             "publication": "Towards Data Science",
+        //             "responses": 3,
+        //             "id": 445297206350469428,
+        //             "title": "Rage Quitting Cancer Research",
+        //             "claps": 331
+        //         },
+        //         {
+        //             "reading_time": 13,
+        //             "publication": "Towards Data Science",
+        //             "responses": 0,
+        //             "id": 445297206350469429,
+        //             "title": "Understanding Natural Language Processing: how AI understands our languages",
+        //             "claps": 109
+        //         }
+        //     ],
+        //     [
+        //         {
+        //             "reading_time": 21,
+        //             "publication": "Towards Data Science",
+        //             "responses": 18,
+        //             "id": 445297206350469418,
+        //             "title": "Top 10 In-Demand programming languages to learn in 2020",
+        //             "claps": 3000
+        //         },
+        //         {
+        //             "reading_time": 12,
+        //             "publication": "Towards Data Science",
+        //             "responses": 7,
+        //             "id": 445297206350469422,
+        //             "title": "Data Cleaning in Python: the Ultimate Guide (2020)",
+        //             "claps": 1500
+        //         },
+        //         {
+        //             "reading_time": 11,
+        //             "publication": "Towards Data Science",
+        //             "responses": 0,
+        //             "id": 445297206350469424,
+        //             "title": "Top Trends of Graph Machine Learning in 2020",
+        //             "claps": 1100
+        //         },
+        //         {
+        //             "reading_time": 12,
+        //             "publication": "Towards Data Science",
+        //             "responses": 3,
+        //             "id": 445297206350469428,
+        //             "title": "Rage Quitting Cancer Research",
+        //             "claps": 331
+        //         },
+        //         {
+        //             "reading_time": 13,
+        //             "publication": "Towards Data Science",
+        //             "responses": 0,
+        //             "id": 445297206350469429,
+        //             "title": "Understanding Natural Language Processing: how AI understands our languages",
+        //             "claps": 109
+        //         }
+        //     ]
+        // ]
 
 
 
-        // Output:
-        // [[{"link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e","id":445453895050486656,"title":"Top 10 In-Demand programming languages to learn in 2020"}, {"link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d","id":445453895050486660,"title":"Data Cleaning in Python: the Ultimate Guide (2020)"}, {"link":"https://towardsdatascience.com/top-trends-of-graph-machine-learning-in-2020-1194175351a3","id":445453895050486662,"title":"Top Trends of Graph Machine Learning in 2020"}, {"link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801","id":445453895050486666,"title":"Rage Quitting Cancer Research"}, {"link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc","id":445453895050486667,"title":"Understanding Natural Language Processing: how AI understands our languages"}, {"link":"https://towardsdatascience.com/svm-an-optimization-problem-242cbb8d96a8","id":445453895050486677,"title":"SVM: An optimization problem"}, {"link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f","id":445453895050486686,"title":"Finding optimal NBA physiques using data visualization with Python"}], [{"link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e","id":445453895050486656,"title":"Top 10 In-Demand programming languages to learn in 2020"}, {"link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d","id":445453895050486660,"title":"Data Cleaning in Python: the Ultimate Guide (2020)"}, {"link":"https://towardsdatascience.com/top-trends-of-graph-machine-learning-in-2020-1194175351a3","id":445453895050486662,"title":"Top Trends of Graph Machine Learning in 2020"}, {"link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801","id":445453895050486666,"title":"Rage Quitting Cancer Research"}, {"link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc","id":445453895050486667,"title":"Understanding Natural Language Processing: how AI understands our languages"}, {"link":"https://towardsdatascience.com/svm-an-optimization-problem-242cbb8d96a8","id":445453895050486677,"title":"SVM: An optimization problem"}, {"link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f","id":445453895050486686,"title":"Finding optimal NBA physiques using data visualization with Python"}], [{"link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e","id":445453895050486656,"title":"Top 10 In-Demand programming languages to learn in 2020"}, {"link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d","id":445453895050486660,"title":"Data Cleaning in Python: the Ultimate Guide (2020)"}, {"link":"https://towardsdatascience.com/top-trends-of-graph-machine-learning-in-2020-1194175351a3","id":445453895050486662,"title":"Top Trends of Graph Machine Learning in 2020"}, {"link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801","id":445453895050486666,"title":"Rage Quitting Cancer Research"}, {"link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc","id":445453895050486667,"title":"Understanding Natural Language Processing: how AI understands our languages"}, {"link":"https://towardsdatascience.com/svm-an-optimization-problem-242cbb8d96a8","id":445453895050486677,"title":"SVM: An optimization problem"}, {"link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f","id":445453895050486686,"title":"Finding optimal NBA physiques using data visualization with Python"}], [{"link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e","id":445453895050486656,"title":"Top 10 In-Demand programming languages to learn in 2020"}, {"link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d","id":445453895050486660,"title":"Data Cleaning in Python: the Ultimate Guide (2020)"}, {"link":"https://towardsdatascience.com/top-trends-of-graph-machine-learning-in-2020-1194175351a3","id":445453895050486662,"title":"Top Trends of Graph Machine Learning in 2020"}, {"link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801","id":445453895050486666,"title":"Rage Quitting Cancer Research"}, {"link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc","id":445453895050486667,"title":"Understanding Natural Language Processing: how AI understands our languages"}, {"link":"https://towardsdatascience.com/svm-an-optimization-problem-242cbb8d96a8","id":445453895050486677,"title":"SVM: An optimization problem"}, {"link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f","id":445453895050486686,"title":"Finding optimal NBA physiques using data visualization with Python"}], [{"link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e","id":445453895050486656,"title":"Top 10 In-Demand programming languages to learn in 2020"}, {"link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d","id":445453895050486660,"title":"Data Cleaning in Python: the Ultimate Guide (2020)"}, {"link":"https://towardsdatascience.com/top-trends-of-graph-machine-learning-in-2020-1194175351a3","id":445453895050486662,"title":"Top Trends of Graph Machine Learning in 2020"}, {"link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801","id":445453895050486666,"title":"Rage Quitting Cancer Research"}, {"link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc","id":445453895050486667,"title":"Understanding Natural Language Processing: how AI understands our languages"}, {"link":"https://towardsdatascience.com/svm-an-optimization-problem-242cbb8d96a8","id":445453895050486677,"title":"SVM: An optimization problem"}, {"link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f","id":445453895050486686,"title":"Finding optimal NBA physiques using data visualization with Python"}], [{"link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e","id":445453895050486656,"title":"Top 10 In-Demand programming languages to learn in 2020"}, {"link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d","id":445453895050486660,"title":"Data Cleaning in Python: the Ultimate Guide (2020)"}, {"link":"https://towardsdatascience.com/top-trends-of-graph-machine-learning-in-2020-1194175351a3","id":445453895050486662,"title":"Top Trends of Graph Machine Learning in 2020"}, {"link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801","id":445453895050486666,"title":"Rage Quitting Cancer Research"}, {"link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc","id":445453895050486667,"title":"Understanding Natural Language Processing: how AI understands our languages"}, {"link":"https://towardsdatascience.com/svm-an-optimization-problem-242cbb8d96a8","id":445453895050486677,"title":"SVM: An optimization problem"}, {"link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f","id":445453895050486686,"title":"Finding optimal NBA physiques using data visualization with Python"}], [{"link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e","id":445453895050486656,"title":"Top 10 In-Demand programming languages to learn in 2020"}, {"link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d","id":445453895050486660,"title":"Data Cleaning in Python: the Ultimate Guide (2020)"}, {"link":"https://towardsdatascience.com/top-trends-of-graph-machine-learning-in-2020-1194175351a3","id":445453895050486662,"title":"Top Trends of Graph Machine Learning in 2020"}, {"link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801","id":445453895050486666,"title":"Rage Quitting Cancer Research"}, {"link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc","id":445453895050486667,"title":"Understanding Natural Language Processing: how AI understands our languages"}, {"link":"https://towardsdatascience.com/svm-an-optimization-problem-242cbb8d96a8","id":445453895050486677,"title":"SVM: An optimization problem"}, {"link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f","id":445453895050486686,"title":"Finding optimal NBA physiques using data visualization with Python"}]]
+
 
         List<Long> ids = new ArrayList<Long>();
         ids.add((Long) queryResultsWrapper.getFieldWrapper("id").getFieldData().get(0));
@@ -794,21 +1300,42 @@ public final class UseCustomizedSchemaDemo  {
             return;
         }
 
-        List<RowRecord> getResults = new ArrayList<>();
+        List<JSONObject> getResults = new ArrayList<>();
 
         for (QueryResultsWrapper.RowRecord rowRecord: getResponse.getData().getRowRecords()) {
-            getResults.add(rowRecord);
+            JSONObject object = new JSONObject();
+            object.put("id", rowRecord.getFieldValues().get("id"));
+            object.put("title", rowRecord.getFieldValues().get("title"));
+            object.put("publication", rowRecord.getFieldValues().get("publication"));
+            object.put("reading_time", rowRecord.getFieldValues().get("reading_time"));
+            object.put("claps", rowRecord.getFieldValues().get("claps"));
+            object.put("responses", rowRecord.getFieldValues().get("responses"));
+            getResults.add(object);
         }
 
         System.out.println(getResults);
 
         // Output:
-        // [[reading_time:21, publication:Towards Data Science, responses:18, id:445453895051136363, title:Top 10 In-Demand programming languages to learn in 2020, claps:3000], [reading_time:12, publication:Towards Data Science, responses:7, id:445453895051136367, title:Data Cleaning in Python: the Ultimate Guide (2020), claps:1500]]
+        // [
+        //     {
+        //         "reading_time": 21,
+        //         "publication": "Towards Data Science",
+        //         "responses": 18,
+        //         "id": 445297206350469418,
+        //         "title": "Top 10 In-Demand programming languages to learn in 2020",
+        //         "claps": 3000
+        //     },
+        //     {
+        //         "reading_time": 12,
+        //         "publication": "Towards Data Science",
+        //         "responses": 7,
+        //         "id": 445297206350469422,
+        //         "title": "Data Cleaning in Python: the Ultimate Guide (2020)",
+        //         "claps": 1500
+        //     }
+        // ]
 
 
-
-        // Output:
-        // []
 
 
 
@@ -832,13 +1359,7 @@ public final class UseCustomizedSchemaDemo  {
 
 
 
-        // Output:
-        // Successfully drop collection
 
-
-
-        // Output:
-        // Successfully drop collection
 
     }
 

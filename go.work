@@ -5,4 +5,7 @@ use (
 	./go/use_customized_schema
 	./go/use_json_field
 	./go/use_partition_key
+	./go/upsert_entities
+	./go/search_query_advanced_ops
+	./go/runner
 )

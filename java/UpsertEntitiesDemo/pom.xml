@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.zilliz.docs</groupId>
-  <artifactId>UpsertEntities</artifactId>
+  <artifactId>UpsertEntitiesDemo</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -53,7 +53,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
-          <mainClass>com.zilliz.docs.UpsertEntities</mainClass>
+          <mainClass>com.zilliz.docs.UpsertEntitiesDemo</mainClass>
         </configuration>
       </plugin>
       <plugin>

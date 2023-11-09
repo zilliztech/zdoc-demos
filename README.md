@@ -276,7 +276,7 @@ To run the demos in the `java` folder, run the following commands:
         </tr>
         <tr>
             <td><a href="https://docs.zilliz.com/docs/upsert_entities">Upsert Entities</a></td>
-            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/UpsertEntities/src/main/java/com/zilliz/docs/UpsertEntities.java">java/UpsertEntities</a></td>
+            <td><a href="https://github.com/zilliztech/zdoc-demos/blob/master/java/UpsertEntitiesDemo/src/main/java/com/zilliz/docs/UpsertEntitiesDemo.java">java/UpsertEntities</a></td>
             <td>Ready</td>
         </tr>
         <tr>

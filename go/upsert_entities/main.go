@@ -159,33 +159,7 @@ func main() {
 		rows = append(rows, data.Rows[i])
 	}
 
-	var ids []int64
-	var titles []string
-	var title_vectors [][]float32
-	var links []string
-	var reading_times []int64
-	var publications []string
-	var clapses []int64
-
-	for i := 0; i < len(data.Rows); i++ {
-		ids = append(ids, data.Rows[i].ID)
-		titles = append(titles, data.Rows[i].Title)
-		title_vectors = append(title_vectors, data.Rows[i].TitleVector)
-		links = append(links, data.Rows[i].Link)
-		reading_times = append(reading_times, data.Rows[i].ReadingTime)
-		publications = append(publications, data.Rows[i].Publication)
-		clapses = append(clapses, data.Rows[i].Claps)
-	}
-
-	columns := []entity.Column{
-		entity.NewColumnInt64("id", ids),
-		entity.NewColumnString("title", titles),
-		entity.NewColumnFloatVector("title_vector", 768, title_vectors),
-		entity.NewColumnString("link", links),
-		entity.NewColumnInt64("reading_time", reading_times),
-		entity.NewColumnString("publication", publications),
-		entity.NewColumnInt64("claps", clapses),
-	}
+	columns, _ := entity.AnyToColumns(rows, schema)
 
 	// 7. Upsert
 

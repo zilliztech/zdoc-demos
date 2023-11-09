@@ -32,8 +32,8 @@ import java.nio.file.Path;
 /**
  * Hello world!
  */
-public final class UpsertEntities {
-    private UpsertEntities() {
+public final class UpsertEntitiesDemo {
+    private UpsertEntitiesDemo() {
     }
 
     /**
@@ -58,6 +58,8 @@ public final class UpsertEntities {
 
         // Output:
         // Connected to Zilliz Cloud!
+
+
 
 
 
@@ -137,6 +139,10 @@ public final class UpsertEntities {
         // Output:
         // Collection created!
 
+
+
+
+
         // 4. Create index
 
         CreateIndexParam createIndexParam = CreateIndexParam.newBuilder()
@@ -160,6 +166,9 @@ public final class UpsertEntities {
         // Index created!
 
 
+
+
+
         // 5. Load collection
 
         LoadCollectionParam loadCollectionParam = LoadCollectionParam.newBuilder()
@@ -179,6 +188,9 @@ public final class UpsertEntities {
         // Collection loaded!
 
 
+
+
+
         // 6. Upsert vectors
 
         String content;
@@ -196,6 +208,9 @@ public final class UpsertEntities {
 
         // Output:
         // Successfully read file
+
+
+
 
 
         // Load dataset
@@ -223,6 +238,10 @@ public final class UpsertEntities {
 
         // Output:
         // Successfully insert entities: 100
+
+
+
+
 
         
         // wait for a while
@@ -285,7 +304,41 @@ public final class UpsertEntities {
         System.out.println(results);
 
         // Output:
-        // [[{"distance":0.8547761,"link":"https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f","id":99,"title":"Finding optimal NBA physiques using data visualization with Python"}, {"distance":0.8702323,"link":"https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc","id":80,"title":"Understanding Natural Language Processing: how AI understands our languages"}, {"distance":0.91095924,"link":"https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801","id":79,"title":"Rage Quitting Cancer Research"}, {"distance":0.98407775,"link":"https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d","id":73,"title":"Data Cleaning in Python: the Ultimate Guide (2020)"}, {"distance":1.091625,"link":"https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e","id":69,"title":"Top 10 In-Demand programming languages to learn in 2020"}]]
+        // [[
+        //     {
+        //         "distance": 0.8547761,
+        //         "link": "https://towardsdatascience.com/finding-optimal-nba-physiques-using-data-visualization-with-python-6ce27ac5b68f",
+        //         "id": 99,
+        //         "title": "Finding optimal NBA physiques using data visualization with Python"
+        //     },
+        //     {
+        //         "distance": 0.8702323,
+        //         "link": "https://towardsdatascience.com/understanding-nlp-how-ai-understands-our-languages-77601002cffc",
+        //         "id": 80,
+        //         "title": "Understanding Natural Language Processing: how AI understands our languages"
+        //     },
+        //     {
+        //         "distance": 0.91095924,
+        //         "link": "https://towardsdatascience.com/rage-quitting-cancer-research-5e79cb04801",
+        //         "id": 79,
+        //         "title": "Rage Quitting Cancer Research"
+        //     },
+        //     {
+        //         "distance": 0.98407775,
+        //         "link": "https://towardsdatascience.com/data-cleaning-in-python-the-ultimate-guide-2020-c63b88bf0a0d",
+        //         "id": 73,
+        //         "title": "Data Cleaning in Python: the Ultimate Guide (2020)"
+        //     },
+        //     {
+        //         "distance": 1.091625,
+        //         "link": "https://towardsdatascience.com/top-10-in-demand-programming-languages-to-learn-in-2020-4462eb7d8d3e",
+        //         "id": 69,
+        //         "title": "Top 10 In-Demand programming languages to learn in 2020"
+        //     }
+        // ]]
+
+
+
 
 
         // 8. Drop collection
@@ -305,6 +358,10 @@ public final class UpsertEntities {
 
         // Output:
         // Successfully drop collection
+
+
+
+
 
     }
 

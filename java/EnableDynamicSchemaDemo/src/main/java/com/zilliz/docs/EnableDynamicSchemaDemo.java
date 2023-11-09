@@ -56,6 +56,8 @@ public final class EnableDynamicSchemaDemo {
 
 
 
+
+
         // 2. Define fields
 
         FieldType id = FieldType.newBuilder()
@@ -103,6 +105,8 @@ public final class EnableDynamicSchemaDemo {
 
 
 
+
+
         // 4. Create index
 
         CreateIndexParam createIndexParam = CreateIndexParam.newBuilder()
@@ -127,6 +131,8 @@ public final class EnableDynamicSchemaDemo {
 
 
 
+
+
         // 5. Load collection
 
         LoadCollectionParam loadCollectionParam = LoadCollectionParam.newBuilder()
@@ -147,6 +153,8 @@ public final class EnableDynamicSchemaDemo {
 
 
 
+
+
         // 6. Insert vectors
 
         String content;
@@ -164,6 +172,8 @@ public final class EnableDynamicSchemaDemo {
 
         // Output:
         // Successfully read file
+
+
 
 
 
@@ -191,6 +201,9 @@ public final class EnableDynamicSchemaDemo {
 
         // Output:
         // Successfully insert entities: 1000
+
+
+
 
 
         
@@ -255,7 +268,44 @@ public final class EnableDynamicSchemaDemo {
         System.out.println(results);
 
         // Output:
-        // [[{"reading_time":6,"distance":0.49484298,"id":445337000188205720,"title":"How bad will the Coronavirus Outbreak get? — Predicting the outbreak figures","claps":1100}, {"reading_time":7,"distance":0.5052265,"id":445337000188206211,"title":"What Does Coronavirus Mean For Your Startup?","claps":111}, {"reading_time":4,"distance":0.5095389,"id":445337000188206459,"title":"The Definitive Guide to Leading Remote Work Teams During Coronavirus","claps":753}, {"reading_time":6,"distance":0.53836524,"id":445337000188205889,"title":"The Relocation Problem of Field-Calibrated Low-Cost Air Quality Monitoring Systems","claps":51}, {"reading_time":7,"distance":0.57358503,"id":445337000188205810,"title":"The Funeral Industry is a Killer","claps":407}]]
+        // [[
+        //     {
+        //         "reading_time": 6,
+        //         "distance": 0.494843,
+        //         "id": 445297206350523266,
+        //         "title": "How bad will the Coronavirus Outbreak get? \u2014 Predicting the outbreak figures",
+        //         "claps": 1100
+        //     },
+        //     {
+        //         "reading_time": 7,
+        //         "distance": 0.50522643,
+        //         "id": 445297206350523757,
+        //         "title": "What Does Coronavirus Mean For Your Startup?",
+        //         "claps": 111
+        //     },
+        //     {
+        //         "reading_time": 4,
+        //         "distance": 0.50953895,
+        //         "id": 445297206350524005,
+        //         "title": "The Definitive Guide to Leading Remote Work Teams During Coronavirus",
+        //         "claps": 753
+        //     },
+        //     {
+        //         "reading_time": 6,
+        //         "distance": 0.53836524,
+        //         "id": 445297206350523435,
+        //         "title": "The Relocation Problem of Field-Calibrated Low-Cost Air Quality Monitoring Systems",
+        //         "claps": 51
+        //     },
+        //     {
+        //         "reading_time": 7,
+        //         "distance": 0.57358503,
+        //         "id": 445297206350523356,
+        //         "title": "The Funeral Industry is a Killer",
+        //         "claps": 407
+        //     }
+        // ]]
+
 
 
 
@@ -277,6 +327,8 @@ public final class EnableDynamicSchemaDemo {
 
         // Output:
         // Successfully drop collection
+
+
 
 
 

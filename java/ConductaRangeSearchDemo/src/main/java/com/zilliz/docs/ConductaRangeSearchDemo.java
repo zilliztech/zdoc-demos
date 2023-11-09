@@ -59,6 +59,7 @@ public final class ConductaRangeSearchDemo {
 
 
 
+
         // 2. Define fields
 
         FieldType id = FieldType.newBuilder()
@@ -137,6 +138,8 @@ public final class ConductaRangeSearchDemo {
 
 
 
+
+
         // 4. Create index
 
         CreateIndexParam createIndexParam = CreateIndexParam.newBuilder()
@@ -161,6 +164,8 @@ public final class ConductaRangeSearchDemo {
 
 
 
+
+
         // 5. Load collection
 
         LoadCollectionParam loadCollectionParam = LoadCollectionParam.newBuilder()
@@ -181,6 +186,8 @@ public final class ConductaRangeSearchDemo {
 
 
 
+
+
         // 6. Insert vectors
 
         String content;
@@ -198,6 +205,8 @@ public final class ConductaRangeSearchDemo {
 
         // Output:
         // Successfully read file
+
+
 
 
 
@@ -223,6 +232,9 @@ public final class ConductaRangeSearchDemo {
 
         // Output:
         // Successfully insert entities: 5979
+
+
+
 
 
         
@@ -285,7 +297,40 @@ public final class ConductaRangeSearchDemo {
         System.out.println(results);
 
         // Output:
-        // [[{"id":445337000188215647,"distance":0.800161,"title":"Binary cross-entropy and logistic regression","link":"https://towardsdatascience.com/binary-cross-entropy-and-logistic-regression-bf7098e75559"}, {"id":445337000188214448,"distance":0.80130583,"title":"What I Learnt From Taking A Masters In Computer Vision And Machine Learning","link":"https://towardsdatascience.com/what-i-learnt-from-taking-a-masters-in-computer-vision-and-machine-learning-69f0c6dfe9df"}, {"id":445337000188213936,"distance":0.8042611,"title":"Do Not Use “+” to Join Strings in Python","link":"https://towardsdatascience.com/do-not-use-to-join-strings-in-python-f89908307273"}, {"id":445337000188214494,"distance":0.8053469,"title":"Using Data Science to Study Economic Inequality in the United States","link":"https://towardsdatascience.com/using-data-science-to-study-economic-inequality-in-the-united-states-1101e9350c3d"}, {"id":445337000188214078,"distance":0.80535966,"title":"Learn AI Today: 01 — Getting started with Pytorch","link":"https://towardsdatascience.com/learn-ai-today-01-getting-started-with-pytorch-2e3ba25a518"}]]
+        // [[
+        //     {
+        //         "distance": 0.800161,
+        //         "link": "https://towardsdatascience.com/binary-cross-entropy-and-logistic-regression-bf7098e75559",
+        //         "id": 445494450042705136,
+        //         "title": "Binary cross-entropy and logistic regression"
+        //     },
+        //     {
+        //         "distance": 0.80130583,
+        //         "link": "https://towardsdatascience.com/what-i-learnt-from-taking-a-masters-in-computer-vision-and-machine-learning-69f0c6dfe9df",
+        //         "id": 445494450042703937,
+        //         "title": "What I Learnt From Taking A Masters In Computer Vision And Machine Learning"
+        //     },
+        //     {
+        //         "distance": 0.8042611,
+        //         "link": "https://towardsdatascience.com/do-not-use-to-join-strings-in-python-f89908307273",
+        //         "id": 445494450042703425,
+        //         "title": "Do Not Use \u201c+\u201d to Join Strings in Python"
+        //     },
+        //     {
+        //         "distance": 0.8053469,
+        //         "link": "https://towardsdatascience.com/using-data-science-to-study-economic-inequality-in-the-united-states-1101e9350c3d",
+        //         "id": 445494450042703983,
+        //         "title": "Using Data Science to Study Economic Inequality in the United States"
+        //     },
+        //     {
+        //         "distance": 0.80535966,
+        //         "link": "https://towardsdatascience.com/learn-ai-today-01-getting-started-with-pytorch-2e3ba25a518",
+        //         "id": 445494450042703567,
+        //         "title": "Learn AI Today: 01 \u2014 Getting started with Pytorch"
+        //     }
+        // ]]
+
+
 
 
 
@@ -306,6 +351,9 @@ public final class ConductaRangeSearchDemo {
 
         // Output:
         // Successfully drop collection
+
+
+
 
 
     }
