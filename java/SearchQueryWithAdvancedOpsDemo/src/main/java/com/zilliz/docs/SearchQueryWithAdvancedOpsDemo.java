@@ -43,8 +43,8 @@ public final class SearchQueryWithAdvancedOpsDemo {
      * @param args The arguments of the program.
      */
     public static void main(String[] args) {
-        String clusterEndpoint = "YOUR_CLUSTER_ENDPOINT";
-        String token = "YOUR_CLUSTER_TOKEN";
+        String clusterEndpoint = "http://localhost:19530";
+        String token = "root:Milvus";
         String collectionName = "medium_articles";
         String data_file = System.getProperty("user.dir") + "/medium_articles_2020_dpr.json";
 
@@ -368,34 +368,34 @@ public final class SearchQueryWithAdvancedOpsDemo {
         // Output:
         // [[
         //     {
-        //         "reading_time": 10,
+        //         "reading_time": 13,
         //         "tags_1": true,
-        //         "distance": 0.29999834,
-        //         "id": 445494450042711395,
-        //         "title": "Following the Spread of Coronavirus",
-        //         "claps": 215
-        //     },
-        //     {
-        //         "reading_time": 8,
-        //         "tags_1": true,
-        //         "distance": 0.36103833,
-        //         "id": 445494450042713825,
-        //         "title": "The Hidden Side Effect of the Coronavirus",
-        //         "claps": 83
+        //         "distance": 0,
+        //         "id": 445535516305953765,
+        //         "title": "The Reported Mortality Rate of Coronavirus Is Not Important",
+        //         "claps": 1100
         //     },
         //     {
         //         "reading_time": 9,
         //         "tags_1": true,
         //         "distance": 0.37674016,
-        //         "id": 445494450042713859,
+        //         "id": 445535516305959406,
         //         "title": "Why The Coronavirus Mortality Rate is Misleading",
         //         "claps": 2900
+        //     },
+        //     {
+        //         "reading_time": 4,
+        //         "tags_1": true,
+        //         "distance": 0.41629797,
+        //         "id": 445535516305957206,
+        //         "title": "Coronavirus shows what ethical Amazon could look like",
+        //         "claps": 51
         //     },
         //     {
         //         "reading_time": 6,
         //         "tags_1": true,
         //         "distance": 0.4360938,
-        //         "id": 445494450042709156,
+        //         "id": 445535516305954703,
         //         "title": "Mortality Rate As an Indicator of an Epidemic Outbreak",
         //         "claps": 65
         //     },
@@ -403,9 +403,118 @@ public final class SearchQueryWithAdvancedOpsDemo {
         //         "reading_time": 12,
         //         "tags_1": true,
         //         "distance": 0.45862228,
-        //         "id": 445494450042713998,
+        //         "id": 445535516305959545,
         //         "title": "Heart Disease Risk Assessment Using Machine Learning",
         //         "claps": 15
+        //     }
+        // ]]
+
+
+
+
+
+        QueryParam queryParam = QueryParam.newBuilder()
+            .withCollectionName(collectionName)
+            .withExpr(expr_1)
+            .withOutFields(outputFields)
+            .withLimit(5L)
+            .build();
+
+        R<QueryResults> queryResponse = client.query(queryParam);
+
+        if (queryResponse.getException() != null) {
+            System.err.println("Failed to query: " + queryResponse.getException().getMessage());
+            return;
+        }
+
+        QueryResultsWrapper queryResultsWrapper = new QueryResultsWrapper(queryResponse.getData());
+
+        List<List<JSONObject>> queryResults = new ArrayList<>();
+
+        List<Long> ids = (List<Long>) queryResultsWrapper.getFieldWrapper("id").getFieldData();
+        List<String> titles = (List<String>) queryResultsWrapper.getFieldWrapper("title").getFieldData();
+        List<?> articleMetas = queryResultsWrapper.getFieldWrapper("article_meta").getFieldData();
+        List<JSONObject> entities = new ArrayList<>();
+        for (int j = 0; j < ids.size(); ++j) {
+            JSONObject entity = new JSONObject();
+            entity.put("id", ids.get(j));
+            entity.put("title", titles.get(j));
+
+            byte[] articleMetaBytes = (byte[]) articleMetas.get(j);
+            JSONObject articleMeta = JSON.parseObject(new String(articleMetaBytes));
+
+            articleMeta.put("tags_1", articleMeta.getJSONArray("tags_1").indexOf(16) >= 0);
+            articleMeta.remove("tags_2");
+
+            entity.put("article_meta", articleMeta);
+            entities.add(entity);
+        }
+
+        queryResults.add(entities);
+
+        System.out.println(queryResults);        
+
+        // Output:
+        // [[
+        //     {
+        //         "article_meta": {
+        //             "reading_time": 13,
+        //             "tags_1": true,
+        //             "publication": "The Startup",
+        //             "link": "https://medium.com/swlh/the-reported-mortality-rate-of-coronavirus-is-not-important-369989c8d912",
+        //             "responses": 18,
+        //             "claps": 1100
+        //         },
+        //         "id": 445535516305953765,
+        //         "title": "The Reported Mortality Rate of Coronavirus Is Not Important"
+        //     },
+        //     {
+        //         "article_meta": {
+        //             "reading_time": 6,
+        //             "tags_1": true,
+        //             "publication": "The Startup",
+        //             "link": "https://medium.com/swlh/how-can-we-best-switch-in-python-458fb33f7835",
+        //             "responses": 7,
+        //             "claps": 500
+        //         },
+        //         "id": 445535516305953767,
+        //         "title": "How Can We Best Switch in Python?"
+        //     },
+        //     {
+        //         "article_meta": {
+        //             "reading_time": 6,
+        //             "tags_1": true,
+        //             "publication": "The Startup",
+        //             "link": "https://medium.com/swlh/science-monday-can-you-drink-as-much-water-as-tom-brady-1a45cb802be8",
+        //             "responses": 5,
+        //             "claps": 142
+        //         },
+        //         "id": 445535516305953771,
+        //         "title": "Science Monday: Can You Drink As Much Water As Tom Brady?"
+        //     },
+        //     {
+        //         "article_meta": {
+        //             "reading_time": 13,
+        //             "tags_1": true,
+        //             "publication": "The Startup",
+        //             "link": "https://medium.com/swlh/building-comprehensible-customer-churn-prediction-models-ca61ecce529d",
+        //             "responses": 4,
+        //             "claps": 261
+        //         },
+        //         "id": 445535516305953772,
+        //         "title": "Building Comprehensible Customer Churn Prediction Models"
+        //     },
+        //     {
+        //         "article_meta": {
+        //             "reading_time": 11,
+        //             "tags_1": true,
+        //             "publication": "The Startup",
+        //             "link": "https://medium.com/swlh/building-high-performance-startup-teams-1a0611c0bdd4",
+        //             "responses": 0,
+        //             "claps": 188
+        //         },
+        //         "id": 445535516305953775,
+        //         "title": "Building high performance startup teams"
         //     }
         // ]]
 
