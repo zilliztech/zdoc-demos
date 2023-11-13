@@ -23,8 +23,8 @@ os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 # 4. Set up the connection parameters for your Zilliz Cloud cluster.
 URI = 'YOUR_CLUSTER_ENDPOINT'
 
-# For serverless clusters, use your API key as the token.
-# For dedicated clusters, use a colon (:) concatenating your username and password as the token.
+# 5. Set up the token for your Zilliz Cloud cluster.
+# You can either use an API key or a set of cluster username and password joined by a colon.
 TOKEN = 'YOUR_CLUSTER_TOKEN'
 
 # Use the WebBaseLoader to load specified web pages into documents

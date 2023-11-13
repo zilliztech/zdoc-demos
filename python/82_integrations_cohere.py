@@ -8,7 +8,7 @@ import time, os
 # Set up arguments
 
 # 1. Set the The SQuAD dataset url.
-FILE = "{}/../train-v2.0.json".format(os.path.dirname(__file__)) 
+FILE = 'https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v2.0.json' 
 
 # 2. Set up the name of the collection to be created.
 COLLECTION_NAME = 'question_answering_db'
@@ -26,8 +26,8 @@ COHERE_API_KEY = "YOUR_COHERE_API_KEY"
 # 6. Set up the connection parameters for your Zilliz Cloud cluster.
 URI = 'YOUR_CLUSTER_ENDPOINT'
 
-# For serverless clusters, use your API key as the token.
-# For dedicated clusters, use a colon (:) concatenating your username and password as the token.
+# 7. Set up the token for your Zilliz Cloud cluster.
+# You can either use an API key or a set of cluster username and password joined by a colon.
 TOKEN = 'YOUR_CLUSTER_TOKEN'
 
 # Download the dataset
@@ -97,15 +97,15 @@ collection.load()
 cohere_client = cohere.Client(COHERE_API_KEY)
 
 # Extract embeddings from questions using Cohere
-def embed(texts):
-    res = cohere_client.embed(texts, model='multilingual-22-12')
+def embed(texts, input_type):
+    res = cohere_client.embed(texts, model='multilingual-22-12', input_type=input_type)
     return res.embeddings
 
 # Insert each question, answer, and qustion embedding
 total = pandas.DataFrame()
 for batch in tqdm(np.array_split(simplified_records, (COUNT/BATCH_SIZE) + 1)):
     questions = batch['question'].tolist()
-    embeddings = embed(questions)
+    embeddings = embed(questions, "search_document")
     
     data = [
         {
@@ -126,7 +126,7 @@ def search(text, top_k = 5):
     search_params = {}
 
     results = collection.search(
-        data = embed([text]),  # Embeded the question
+        data = embed([text], "search_query"),  # Embeded the question
         anns_field='original_question_embedding',
         param=search_params,
         limit = top_k,  # Limit to top_k results per search

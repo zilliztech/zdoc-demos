@@ -6,8 +6,8 @@ from sentence_transformers import SentenceTransformer
 # Parameters for set up Zilliz Cloud
 COLLECTION_NAME = 'movies_db'  # Collection name
 DIMENSION = 384  # Embeddings size
-URI = 'http://localhost:19530'  # Endpoint URI obtained from Zilliz Cloud
-TOKEN = 'root:Milvus'  # API key or a colon-separated cluster username and password
+URI = 'YOUR_CLUSTER_ENDPOINT'  # Endpoint URI obtained from Zilliz Cloud
+TOKEN = 'YOUR_CLUSTER_TOKEN'  # API key or a colon-separated cluster username and password
 
 # Inference Arguments
 BATCH_SIZE = 128

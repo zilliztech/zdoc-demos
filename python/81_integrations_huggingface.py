@@ -190,58 +190,9 @@ for x in question_dataset:
     for x in zip(x["answer"], x["distance"], x["original_question"]):
         ret += str(x) + "\n"
 
-    print(ret)
-
 print(ret)
 
 # Output
-#
-# Question:
-# When did the premier league start?
-# Answer, Distance, Original Question
-# ('1992', tensor(15.8973), 'In what year was the Premier League created?')
-# ('mid-fifteenth century', tensor(21.2091), 'When did Sikhism begin?')
-# ('around July 3', tensor(21.5117), "When does Tucson's monsoon usually start?")
-# ('March 20, 1880', tensor(21.7186), 'When did Tucson get a railroad?')
-# ('the Football Bowl Subdivision', tensor(22.8579), 'What is the name of the highest level of college football?')
-# ('the district of Germersheim', tensor(23.1635), 'When did the expert commission deliver its report?')
-# ('at an Earth Day rally', tensor(23.4384), 'Where did Kerry and Teresa meet?')
-# ('April 26', tensor(23.4490), 'When did the torch arrive in Nagano?')
-# ('1630', tensor(23.5346), 'When was Boston founded?')
-# ('with the signing of the Treaty of Coche by both the centralist government of the time and the Federal Forces', tensor(23.6430), 'How did the federal war end? ')
-
-
-
-# Question:
-# When did the premier league start?
-# Answer, Distance, Original Question
-# ('1992', tensor(15.8973), 'In what year was the Premier League created?')
-# ('mid-fifteenth century', tensor(21.2091), 'When did Sikhism begin?')
-# ('around July 3', tensor(21.5117), "When does Tucson's monsoon usually start?")
-# ('March 20, 1880', tensor(21.7186), 'When did Tucson get a railroad?')
-# ('the Football Bowl Subdivision', tensor(22.8579), 'What is the name of the highest level of college football?')
-# ('the district of Germersheim', tensor(23.1635), 'When did the expert commission deliver its report?')
-# ('at an Earth Day rally', tensor(23.4384), 'Where did Kerry and Teresa meet?')
-# ('April 26', tensor(23.4490), 'When did the torch arrive in Nagano?')
-# ('1630', tensor(23.5346), 'When was Boston founded?')
-# ('with the signing of the Treaty of Coche by both the centralist government of the time and the Federal Forces', tensor(23.6430), 'How did the federal war end? ')
-
-
-# Question:
-# Where did people learn russian?
-# Answer, Distance, Original Question
-# ('accomplishments', tensor(23.7489), 'What did Czech historians emphasize about their countrymen?')
-# ('people were asked to rate themselves on a scale from completely heterosexual to completely homosexual.', tensor(23.7928), 'What where people asked to do in these research studies?')
-# ('Wardenclyffe', tensor(24.7777), 'What did Tesla establish following his Colorado experiments?')
-# ('traders', tensor(26.1855), 'Along with fishermen, what sort of Japanese people visited the Marshalls?')
-# ('1816 to 1821', tensor(26.2205), 'During what years did Chopin receive instruction from  Żywny?')
-# ('Poland, Bulgaria, the Czech Republic, Slovakia, Hungary, Albania, former East Germany and Cuba', tensor(26.3033), 'Where was Russian schooling mandatory in the 20th century?')
-# ('March 20, 1880', tensor(26.4897), 'When did Tucson get a railroad?')
-# ('Worms', tensor(26.6245), 'Where did Luther refuse to change his beliefs?')
-# ('Collaborationist units', tensor(26.8737), 'What type of soldiers came from Hong Kong? ')
-# ('1996', tensor(27.1454), 'When did Ross Sackett study time and energy for hunter-gartherer groups?')
-
-
 
 # Question:
 # When did the premier league start?
