@@ -14,7 +14,7 @@ FILE = 'https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v2.0.json'
 COLLECTION_NAME = 'question_answering_db'
 
 # 3. Set up the dimension of the embeddings.
-DIMENSION = 768
+DIMENSION = 1024
 
 # 4. Set the number of entities to create and the number of entities to insert at a time.
 COUNT = 5000
@@ -81,7 +81,7 @@ collection = Collection(
 )
 
 index_params = {
-    'metric_type': 'L2',
+    'metric_type': 'IP',
     'index_type': 'AUTOINDEX',
     'params': {'nlist': 1024}
 }
@@ -98,7 +98,7 @@ cohere_client = cohere.Client(COHERE_API_KEY)
 
 # Extract embeddings from questions using Cohere
 def embed(texts, input_type):
-    res = cohere_client.embed(texts, model='multilingual-22-12', input_type=input_type)
+    res = cohere_client.embed(texts, model='embed-multilingual-v3.0', input_type=input_type)
     return res.embeddings
 
 # Insert each question, answer, and qustion embedding
@@ -162,28 +162,28 @@ print(ret)
 #         "candidates": [
 #             {
 #                 "answer": "farming",
-#                 "distance": 25.10422134399414,
+#                 "distance": 0.6261022090911865,
 #                 "original_question": "What makes bacteria resistant to antibiotic treatment?"
 #             },
 #             {
-#                 "answer": "converting nitrogen gas to nitrogenous compounds",
-#                 "distance": 25.26958465576172,
-#                 "original_question": "What do bacteria do in soil?"
-#             },
-#             {
-#                 "answer": "slowing down the multiplication of bacteria or killing the bacteria",
-#                 "distance": 26.225540161132812,
-#                 "original_question": "How do antibiotics work?"
-#             },
-#             {
 #                 "answer": "Phage therapy",
-#                 "distance": 30.04580307006836,
+#                 "distance": 0.6093736886978149,
 #                 "original_question": "What has been talked about to treat resistant bacteria?"
 #             },
 #             {
-#                 "answer": "antibiotic target",
-#                 "distance": 32.077369689941406,
-#                 "original_question": "What can be absent from the bacterial genome?"
+#                 "answer": "oral contraceptives",
+#                 "distance": 0.5902313590049744,
+#                 "original_question": "In therapy, what does the antibacterial interact with?"
+#             },
+#             {
+#                 "answer": "slowing down the multiplication of bacteria or killing the bacteria",
+#                 "distance": 0.5874154567718506,
+#                 "original_question": "How do antibiotics work?"
+#             },
+#             {
+#                 "answer": "in intensive farming to promote animal growth",
+#                 "distance": 0.5667208433151245,
+#                 "original_question": "Besides in treating human disease where else are antibiotics used?"
 #             }
 #         ]
 #     },
@@ -192,28 +192,28 @@ print(ret)
 #         "candidates": [
 #             {
 #                 "answer": "English Mastiff",
-#                 "distance": 12.71607780456543,
+#                 "distance": 0.7875324487686157,
 #                 "original_question": "What breed was the largest dog known to have lived?"
 #             },
 #             {
-#                 "answer": "part of the family",
-#                 "distance": 27.21062469482422,
-#                 "original_question": "Most people today describe their dogs as what?"
-#             },
-#             {
-#                 "answer": "77.5 million",
-#                 "distance": 28.54041290283203,
-#                 "original_question": "How many people in the United States are said to own dog?"
+#                 "answer": "forest elephants",
+#                 "distance": 0.5886962413787842,
+#                 "original_question": "What large animals reside in the national park?"
 #             },
 #             {
 #                 "answer": "Rico",
-#                 "distance": 28.770610809326172,
+#                 "distance": 0.5634892582893372,
 #                 "original_question": "What is the name of the dog that could ID over 200 things?"
 #             },
 #             {
-#                 "answer": "about six",
-#                 "distance": 31.739566802978516,
-#                 "original_question": "What is the average number of pups in a litter?"
+#                 "answer": "Iditarod Trail Sled Dog Race",
+#                 "distance": 0.546872615814209,
+#                 "original_question": "Which dog-sled race in Alaska is the most famous?"
+#             },
+#             {
+#                 "answer": "part of the family",
+#                 "distance": 0.5387814044952393,
+#                 "original_question": "Most people today describe their dogs as what?"
 #             }
 #         ]
 #     }
