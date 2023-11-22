@@ -83,9 +83,11 @@ public final class Runner {
                 }
                 String pretty;
                 if (line2.trim().startsWith("{")) {
-                    pretty = new JSONObject(line2).toString(4);
+                    JSONObject originalObject = new JSONObject(line2);
+                    pretty = ((JSONObject) limitArraySize(originalObject, 10)).toString(4);
                 } else if (line2.trim().startsWith("[")) {
-                    pretty = new JSONArray(line2).toString(4);
+                    JSONArray originalArray = new JSONArray(line2);
+                    pretty = ((JSONArray) limitArraySize(originalArray, 10)).toString(4);
                 } else {
                     pretty = line2;
                 }
@@ -112,5 +114,35 @@ public final class Runner {
         Path newScriptPath = Paths.get(classPath + "/src/main/java/com/zilliz/docs/" + args[0] + "Copy.java");
 
         Files.write(newScriptPath, script.getBytes());
+    }
+
+    public static Object limitArraySize(Object obj, int maxElements) {
+        if (obj instanceof JSONArray) {
+            JSONArray originalArray = (JSONArray) obj;
+            JSONArray newArray = new JSONArray();
+    
+            for (int i = 0; i < Math.min(originalArray.length(), maxElements); i++) {
+                newArray.put(limitArraySize(originalArray.get(i), maxElements));
+            }
+
+            if (originalArray.length() > maxElements) {
+                int hiddenElements = originalArray.length() - maxElements;
+                String hiddenElement = "(" + hiddenElements + " elements are hidden)";
+                newArray.put(hiddenElement);
+            }
+    
+            return newArray;
+        } else if (obj instanceof JSONObject) {
+            JSONObject originalObject = (JSONObject) obj;
+            JSONObject newObject = new JSONObject();
+    
+            for (String key : originalObject.keySet()) {
+                newObject.put(key, limitArraySize(originalObject.get(key), maxElements));
+            }
+    
+            return newObject;
+        } else {
+            return obj;
+        }
     }
 }

@@ -7,5 +7,6 @@ use (
 	./go/use_partition_key
 	./go/upsert_entities
 	./go/search_query_advanced_ops
+	./go/quick_start
 	./go/runner
 )
