@@ -8,5 +8,6 @@ use (
 	./go/upsert_entities
 	./go/search_query_advanced_ops
 	./go/quick_start
+	./go/use_partition
 	./go/runner
 )
