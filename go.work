@@ -9,5 +9,6 @@ use (
 	./go/search_query_advanced_ops
 	./go/quick_start
 	./go/use_partition
+	./go/use_built-in_roles
 	./go/runner
 )
