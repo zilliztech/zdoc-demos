@@ -20,6 +20,7 @@ import io.milvus.param.credential.DeleteCredentialParam;
 import io.milvus.param.credential.ListCredUsersParam;
 import io.milvus.param.credential.UpdateCredentialParam;
 import io.milvus.param.role.AddUserToRoleParam;
+import io.milvus.param.role.RemoveUserFromRoleParam;
 import io.milvus.param.role.SelectRoleParam;
 import io.milvus.param.role.SelectUserParam;
 
@@ -213,7 +214,21 @@ public final class UseBuiltInRolesDemo {
         //     {"roles": [{"name": "db_ro"}]}
         // ]
 
+        // 8. Remove user from role
 
+        RemoveUserFromRoleParam removeUserFromRoleParam = RemoveUserFromRoleParam.newBuilder()
+            .withUserName("user1")
+            .withRoleName("db_ro")
+            .build();
+
+        R<RpcStatus> removeRes = client.removeUserFromRole(removeUserFromRoleParam);
+
+        if (removeRes.getException() != null) {
+            System.err.println("Failed to remove user from role!");
+            return;
+        }
+
+        System.out.println("User removed from role!");
 
 
         // 8. Delete user

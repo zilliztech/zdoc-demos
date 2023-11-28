@@ -115,7 +115,9 @@ print(roles)
 #     }
 # ]
 
+# 7. Remove user from role
 
+role.remove_user("user1")
 
-# 7. Delete user
+# 8. Delete user
 utility.delete_user('user1')

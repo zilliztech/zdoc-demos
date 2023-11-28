@@ -62,6 +62,13 @@ async function main () {
     // ]
     // 
 
+    // 7. Remove user from role
+
+    await client.removeUserFromRole({
+        username: "user1",
+        rolename: "db_ro",
+    })
+
     // 7. Delete user
 
     await client.deleteUser({
