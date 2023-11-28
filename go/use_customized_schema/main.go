@@ -118,10 +118,9 @@ func main() {
 
 	fmt.Println(index.Name())
 
-	// Output: 
+	// Output:
 	//
 	// AUTOINDEX
-
 
 	err = conn.CreateIndex(context.Background(), COLLNAME, "title_vector", index, false)
 
@@ -145,10 +144,9 @@ func main() {
 
 	fmt.Println("Loading progress:", progress)
 
-	// Output: 
+	// Output:
 	//
 	// Loading progress: 100
-
 
 	// 6. Read the dataset
 	file, err := os.ReadFile(DATA_FILE)
@@ -164,18 +162,16 @@ func main() {
 
 	fmt.Println("Dataset loaded, row number: ", len(data.Rows))
 
-	// Output: 
+	// Output:
 	//
 	// Dataset loaded, row number:  5979
-
 
 	// 7. Insert data
 	fmt.Println("Start inserting ...")
 
-	// Output: 
+	// Output:
 	//
 	// Start inserting ...
-
 
 	rows := make([]interface{}, 0, 1)
 
@@ -191,10 +187,9 @@ func main() {
 
 	fmt.Println("Inserted entities: ", col.Len())
 
-	// Output: 
+	// Output:
 	//
 	// Inserted entities:  5979
-
 
 	time.Sleep(5 * time.Second)
 
@@ -202,10 +197,9 @@ func main() {
 
 	fmt.Println("Start searching ...")
 
-	// Output: 
+	// Output:
 	//
 	// Start searching ...
-
 
 	// single vector search
 	vectors := []entity.Vector{}
@@ -244,7 +238,7 @@ func main() {
 
 	fmt.Println(resultsToJSON(res))
 
-	// Output: 
+	// Output:
 	// [
 	// 	{
 	// 		"counts": 5,
@@ -285,7 +279,6 @@ func main() {
 	// 	}
 	// ]
 
-
 	// multiple vector search
 	vectors = []entity.Vector{}
 
@@ -323,7 +316,7 @@ func main() {
 
 	fmt.Println(resultsToJSON(res))
 
-	// Output: 
+	// Output:
 	// [
 	// 	{
 	// 		"counts": 5,
@@ -445,7 +438,7 @@ func main() {
 
 	fmt.Println(resultsToJSON(res))
 
-	// Output: 
+	// Output:
 	// [
 	// 	{
 	// 		"counts": 5,
@@ -520,7 +513,7 @@ func main() {
 
 	fmt.Println(resultsToJSON(res))
 
-	// Output: 
+	// Output:
 	// [
 	// 	{
 	// 		"counts": 5,
@@ -600,7 +593,7 @@ func main() {
 
 	fmt.Println(resultsToJSON(res))
 
-	// Output: 
+	// Output:
 	// [
 	// 	{
 	// 		"counts": 5,
@@ -675,7 +668,7 @@ func main() {
 
 	fmt.Println(resultsToJSON(res))
 
-	// Output: 
+	// Output:
 	// [
 	// 	{
 	// 		"counts": 5,
@@ -750,7 +743,7 @@ func main() {
 
 	fmt.Println(resultsToJSON(res))
 
-	// Output: 
+	// Output:
 	// [
 	// 	{
 	// 		"counts": 5,
@@ -825,7 +818,7 @@ func main() {
 
 	fmt.Println(resultsToJSON(res))
 
-	// Output: 
+	// Output:
 	// [
 	// 	{
 	// 		"counts": 5,
@@ -896,7 +889,7 @@ func main() {
 
 	fmt.Println(resultSetToJSON(resq, false))
 
-	// Output: 
+	// Output:
 	// [
 	// 	{
 	// 		"claps": 3000,
@@ -998,7 +991,7 @@ func main() {
 
 	fmt.Println(resultSetToJSON(resg, false))
 
-	// Output: 
+	// Output:
 	// [
 	// 	{
 	// 		"claps": 3000,
