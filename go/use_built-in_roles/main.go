@@ -63,9 +63,10 @@ func main() {
 
 	fmt.Println("Users:", users1)
 
-	// Output:
+	// Output: 
 	//
 	// Users: [db_admin user1]
+
 
 	// Alternatively
 
@@ -83,9 +84,10 @@ func main() {
 
 	fmt.Println("Users:", userList)
 
-	// Output:
+	// Output: 
 	//
 	// Users: [db_admin user1]
+
 
 	// 4. List Roles
 
@@ -104,9 +106,10 @@ func main() {
 
 	fmt.Println("Roles:", roleList)
 
-	// Output:
+	// Output: 
 	//
-	// Roles: [admin db_admin db_ro db_rw public]
+	// Roles: [db_admin db_ro db_rw]
+
 
 	// 5. Assign role
 

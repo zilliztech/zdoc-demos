@@ -38,6 +38,7 @@ async function main () {
     // [ 'db_admin', 'user1' ]
     // 
 
+
     // 5. Assigne role to user
 
     await client.addUserToRole({
@@ -54,13 +55,12 @@ async function main () {
     // Output
     // 
     // [
-    //   { users: [ [Object] ], role: { name: 'admin' } },
     //   { users: [ [Object] ], role: { name: 'db_admin' } },
     //   { users: [], role: { name: 'db_ro' } },
-    //   { users: [], role: { name: 'db_rw' } },
-    //   { users: [], role: { name: 'public' } }
+    //   { users: [], role: { name: 'db_rw' } }
     // ]
     // 
+
 
     // 7. Remove user from role
 

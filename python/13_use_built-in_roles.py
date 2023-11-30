@@ -88,12 +88,6 @@ print(roles)
 #
 # [
 #     {
-#         "role": "admin",
-#         "users": [
-#             "zcloud_root"
-#         ]
-#     },
-#     {
 #         "role": "db_admin",
 #         "users": [
 #             "db_admin"
@@ -108,12 +102,10 @@ print(roles)
 #     {
 #         "role": "db_rw",
 #         "users": []
-#     },
-#     {
-#         "role": "public",
-#         "users": []
 #     }
 # ]
+
+
 
 # 7. Remove user from role
 
