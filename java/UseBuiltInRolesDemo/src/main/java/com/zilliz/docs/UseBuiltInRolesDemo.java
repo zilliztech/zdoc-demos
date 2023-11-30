@@ -37,7 +37,7 @@ public final class UseBuiltInRolesDemo {
      */
     public static void main(String[] args) {
         String clusterEndpoint = "YOUR_CLUSTER_ENDPOINT";
-        String token = "YOUR_CLUSTER_TOKEN";
+        String token = "YOUR_CLUSTER_TOKEN*";
 
         // 1. Connect to Zilliz Cloud cluster
         ConnectParam connectParam = ConnectParam.newBuilder()
@@ -79,6 +79,7 @@ public final class UseBuiltInRolesDemo {
 
 
 
+
         // 3. Update user credential
 
         UpdateCredentialParam updateCredentialParam = UpdateCredentialParam.newBuilder()
@@ -98,6 +99,7 @@ public final class UseBuiltInRolesDemo {
 
         // Output:
         // User credential updated!
+
 
 
 
@@ -127,6 +129,7 @@ public final class UseBuiltInRolesDemo {
 
 
 
+
         // 5. Assigne roles to user
 
         AddUserToRoleParam addUserToRoleParam = AddUserToRoleParam.newBuilder()
@@ -145,6 +148,7 @@ public final class UseBuiltInRolesDemo {
 
         // Output:
         // Role assigned to user!
+
 
 
 
@@ -182,6 +186,8 @@ public final class UseBuiltInRolesDemo {
 
 
 
+
+
             
         // 7. Get roles of a specific user
 
@@ -214,6 +220,10 @@ public final class UseBuiltInRolesDemo {
         //     {"roles": [{"name": "db_ro"}]}
         // ]
 
+
+
+
+
         // 8. Remove user from role
 
         RemoveUserFromRoleParam removeUserFromRoleParam = RemoveUserFromRoleParam.newBuilder()
@@ -229,6 +239,12 @@ public final class UseBuiltInRolesDemo {
         }
 
         System.out.println("User removed from role!");
+
+        // Output:
+        // User removed from role!
+
+
+
 
 
         // 8. Delete user
@@ -248,6 +264,8 @@ public final class UseBuiltInRolesDemo {
 
         // Output:
         // User deleted!
+
+
 
 
 
