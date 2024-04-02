@@ -6,7 +6,7 @@ from io import StringIO
 
 def format_line(line, comment=True, debug=False):
     if "{" in line or "[" in line:
-        line = replace_quote(line).replace("True", "true").replace("False", "false").replace("None", "null")
+        line = replace_quote(line).replace("True", "true").replace("False", "false").replace("None", "null").replace('<', '"<').replace('>', '>"')
         if debug:
             print(line)
         obj = json.loads(line)
@@ -71,7 +71,8 @@ if __name__ == '__main__':
 
     with open('{}/../{}'.format(os.path.dirname(__file__), args.e), 'r') as f:
         for line in f.readlines():
-            key, value = line.split('=')
+            key = line[:line.index("=")]
+            value = line[line.index("=")+1:]
             parameters[key] = value.strip()
 
     with open(target, 'r') as f:

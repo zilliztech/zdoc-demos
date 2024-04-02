@@ -103,7 +103,7 @@ func main() {
 
 	fmt.Println(index.Name())
 
-	// Output: 
+	// Output:
 	//
 	// AUTOINDEX
 
@@ -129,7 +129,7 @@ func main() {
 
 	fmt.Println("Loading progress:", progress)
 
-	// Output: 
+	// Output:
 	//
 	// Loading progress: 100
 
@@ -147,14 +147,14 @@ func main() {
 
 	fmt.Println("Dataset loaded, row number: ", len(data.Rows))
 
-	// Output: 
+	// Output:
 	//
 	// Dataset loaded, row number:  5979
 
 	// 7. Insert data
 	fmt.Println("Start inserting ...")
 
-	// Output: 
+	// Output:
 	//
 	// Start inserting ...
 
@@ -172,7 +172,7 @@ func main() {
 
 	fmt.Println("Inserted entities: ", col.Len())
 
-	// Output: 
+	// Output:
 	//
 	// Inserted entities:  5979
 
@@ -182,7 +182,7 @@ func main() {
 
 	fmt.Println("Start searching ...")
 
-	// Output: 
+	// Output:
 	//
 	// Start searching ...
 
@@ -222,7 +222,7 @@ func main() {
 
 	fmt.Println(resultsToJSON(res))
 
-	// Output: 
+	// Output:
 	// [
 	// 	{
 	// 		"counts": 5,

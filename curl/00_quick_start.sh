@@ -1,182 +1,215 @@
 #!/usr/bin sh
 
-PUBLIC_ENDPOINT="YOUR_CLUSTER_ENDPOINT"
-TOKEN="YOUR_CLUSTER_TOKEN"
+CLOUD_REGION="gcp-us-west1"
+API_KEY="YOUR_API_KEY"
+PROJECT_ID="proj-************************"
 
+# 1. Create a serverless cluster
+serverless_cluster=$(curl -s --request POST \
+    --url "https://controller.api.${CLOUD_REGION}.cloud-uat3.zilliz.com/v1/clusters/createServerless" \
+    --header "Authorization: Bearer ${API_KEY}" \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    --data-raw "{
+        \"clusterName\": \"cluster-starter\",
+        \"projectId\": \"${PROJECT_ID}\"
+    }") 
 
-# Replace PUBLIC_ENDPOINT and TOKEN with your own
-# - For a serverless cluster, use an API key as the token.
-# - For a dedicated cluster, use the cluster credentials as the token
-#   in the format of 'user:password'.
-curl --location --request POST "${PUBLIC_ENDPOINT}/v1/vector/collections/create" \
-    --header "Authorization: Bearer ${TOKEN}" \
-    --header "Content-Type: application/json" \
-    --header "Accept: */*" \
-    --data '{
-        "collectionName": "medium_articles_2020",
-        "dimension": 768
+echo $serverless_cluster
+
+# 2. Create a dedicated cluster
+dedicated_cluster=$(curl -s --request POST \
+    --url "https://controller.api.${CLOUD_REGION}.cloud-uat3.zilliz.com/v1/clusters/create" \
+    --header "Authorization: Bearer ${API_KEY}" \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    --data-raw "{
+        \"plan\": \"Standard\",
+        \"clusterName\": \"cluster-standard\",
+        \"cuSize\": 1,
+        \"cuType\": \"Performance-optimized\",
+        \"projectId\": \"${PROJECT_ID}\"
+    }")
+
+echo $dedicated_cluster
+
+# 3. Get Cluster ENDPOINT and TOKEN
+SERVERLESS_CLUSTER_ID="$(echo $serverless_cluster | jq -r '.data.clusterId')"
+DEDICATED_CLUSTER_D=$(echo $dedicated_cluster | jq -r '.data.clusterId')
+CLUSTER_ENDPOINT="https://$(echo $serverless_cluster | jq -r '.data.clusterId').api.${CLOUD_REGION}.cloud-uat3.zilliz.com"
+TOKEN="$(echo $serverless_cluster | jq -r '(.data.username + ":" + .data.password)')"
+
+echo "Cluster Endpoint: ${CLUSTER_ENDPOINT}"
+echo "Token: ${TOKEN}"
+
+# sleep 20
+
+# CLUSTER_ENDPOINT=""
+# TOKEN=""
+
+# 4. Create a collection
+COLLECTION_NAME="quick_setup"
+
+curl --request POST \
+    --url "${CLUSTER_ENDPOINT}/v1/vector/collections/create" \
+    --header "Authorization: Bearer ${API_KEY}" \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    --data-raw "{   
+        \"collectionName\": \"${COLLECTION_NAME}\",
+        \"dimension\": 32
+    }"
+
+# 5. Create a collection with custom field names and metric type
+COLLECTION_NAME="customized_setup"
+
+curl --request POST \
+    --url "${CLUSTER_ENDPOINT}/v1/vector/collections/create" \
+    --header "Authorization: Bearer ${API_KEY}" \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    --data-raw "{   
+        \"collectionName\": \"${COLLECTION_NAME}\",
+        \"dimension\": 32,
+        \"metricType\": \"L2\",
+        \"primaryField\": \"my_id\",
+        \"vectorField\": \"my_vector\"
+    }"
+
+# 6. Insert data into collection
+insert=$(curl -s --request POST \
+    --url "${CLUSTER_ENDPOINT}/v1/vector/insert" \
+    --header "Authorization: Bearer ${API_KEY}" \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    --data-raw '{
+        "collectionName": "quick_setup",
+        "data": [
+          {"vector": [0.3847391566891949, -0.5163308707041789, -0.5295937262122905, -0.3592193314357348, 0.9108593166893231, 0.5785260847050646, -0.054715415380102606, -0.5397764260208828, 0.43017743102321027, 0.9806353568812998, -0.24673180651795223, 0.34881128643815407, -0.32534925835429895, 0.7241025896770166, -0.9310390347090534, -0.00517733162532541, 0.35907388281139796, 0.18688386131011714, -0.8001861303343061, -0.5566607389660039, 0.04377295852369856, 0.8581396389536908, -0.978968045358507, -0.4880334792710488, 0.5358685336203941, -0.7193875502048268, -0.4532291009652729, -0.11581052480270215, 0.10653024983528492, -0.8627130991811947, -0.25257559931666673, -0.5504183627361223], "color": "grey_4070"},
+          {"vector": [-0.3909198248479646, -0.8726174312444843, 0.4981267572657442, -0.9392508698102204, -0.5470572556090092, -0.3935189142612121, 0.1352989877734332, 0.024264294653546514, 0.7264052115187281, -0.6808533057244894, 0.7351664405855725, 0.005931211564576433, -0.0697782425914808, 0.6040296457830396, -0.47872914502564345, -0.5288260741725077, -0.5362319321619846, -0.8108472036219292, -0.8577528226667432, -0.2048056936793683, -0.6943943334329779, -0.8299930135359141, 0.49330825099195597, 0.6527186109414937, -0.6682390594575318, -0.9522414136501673, -0.8932844905587374, 0.6156902872360595, 0.4407973007703412, 0.36692826296755854, -0.019596585511122644, 0.5003546782774693], "color": "black_3737"},
+          {"vector": [-0.9098169905660276, -0.9307025336058208, -0.5308685343695865, -0.3852032359431963, -0.8050806646961366, -0.7553958648430483, -0.04746686780074083, 0.3159553062289606, 0.7370698278509888, -0.6989962887777352, 0.8064774943951307, 0.4263340869435144, -0.8213814014479408, 0.6238869984219455, 0.13179555217281624, -0.5249440937384842, 0.3112418861757056, -0.009645837220139786, -0.34449540620045216, -0.16945013209894366, -0.08038078340201227, -0.5288249245667362, -0.26255967229065824, -0.2601166677919182, -0.9203887463545513, 0.4976565748955917, -0.8474289284878807, -0.7117411686814676, -0.05565836948920677, 0.6094714291840837, -0.0020195585026894225, 0.362204588344899], "color": "yellow_7436"},
+          {"vector": [-0.05064204615748724, 0.6058571389881378, 0.26812302147792155, 0.4862225881265785, -0.27042586524166445, -0.10680573214013545, -0.7152960094489149, -0.7053115315538734, -0.5081969178297439, -0.07475606674958946, -0.7587226116897114, 0.7886604365718077, -0.528645030042241, 0.86863376110431, 0.28607868071957854, -0.5571199703709493, 0.8499541027352635, 0.5813793976730512, -0.5556154008368948, -0.36544531446924267, 0.019021916423604956, -0.6436002715728013, 0.6630699558027113, -0.5903357545674612, -0.5324197660811583, 0.5397005035747773, -0.8636516266354666, 0.6514205420589516, 0.18186014054232635, -0.6579510629936576, 0.9154204121171494, -0.588373370919973], "color": "grey_9883"},
+          {"vector": [-0.8610792440629793, 0.5278969698864726, 0.09065723848982965, -0.8685651142668274, 0.5912780986996793, 0.7718057232138666, -0.6930251121964992, -0.17342634825314818, 0.061179249376206, -0.837569096833388, -0.3767257369548458, -0.8687434527488724, -0.06111062357392094, 0.6072631561858302, 0.4725979771913693, -0.08096083856280956, -0.5442650638494355, 0.5091961466254937, 0.2921502370985445, 0.9443668573144401, 0.8571520725555872, 0.17127995370389137, -0.7250695774062459, -0.5881549461813231, 0.38032084480540296, -0.030410542912708394, -0.3805227007958596, 0.43257136753925574, 0.5753379480674585, 0.7776080918850938, 0.3290459466010087, 0.44644425336832505], "color": "green_8111"},
+          {"vector": [0.4814454540587043, -0.23573937400668377, -0.14938260011601723, 0.08275006479687019, 0.6726732239961157, -0.31385042293554943, 0.9065116066382561, -0.07376617502043659, -0.15985076697373835, 0.8263269726712981, 0.7132277417959834, 0.5844650108623501, 0.020362603272864988, 0.9082939898010478, -0.919972930439023, 0.7046162221439936, 0.8553697519202315, -0.07825115185283904, 0.7391763987156941, -0.41400552255842027, 0.35433032483330784, 0.9985892288882159, -0.9516074554318614, 0.22832313108038482, -0.21336772684586625, 0.23130728052337313, -0.18432662864762395, 0.003069103769209436, -0.24614748888766202, -0.42442199335438135, -0.8464531066031178, 0.9721537266896632], "color": "orange_2725"},
+          {"vector": [0.9763298348098068, 0.5777919290849443, 0.9579310732153326, 0.8951091168874232, 0.46917481926682525, -0.3061975140935782, -0.16434109070432057, -0.6434953092266336, 0.6075700936951791, 0.7286632067443393, -0.8441327280179198, 0.36851370865411615, 0.35737333933348236, 0.6662206497349656, 0.5937307976280566, 0.9988743075763993, -0.25270272864064935, -0.7279204320769948, 0.8063165272147106, 0.9371129579799526, -0.13546107168994004, 0.08170978985509914, -0.12002219980690865, -0.4541366824231243, -0.9991267995837836, 0.30319946122207386, -0.5678648848761576, 0.47977343131413464, 0.5368586513295002, -0.8628460510223892, 0.047832472509733215, 0.42742619692820605], "color": "black_6073"},
+          {"vector": [0.326134221411539, 0.6870356809753577, 0.7977120714123429, 0.4305198158670587, -0.14894148480426983, 0.33293178404139834, 0.989645830971488, 0.9694029045116572, -0.9665991194957253, 0.3494360539847803, 0.9214746589945242, -0.9837563715221675, 0.19427528567061514, 0.9480034805808477, 0.44987272210144713, 0.140189550857855, 0.3467104580971587, 0.2114891340667513, -0.17782796206191853, 0.5987574466521213, -0.15394322442802588, -0.8119407476074019, 0.24952406054263054, -0.8707940028976195, 0.29912917392406735, 0.35946930014146994, 0.7351955477319807, -0.49286540351167396, -0.5563489486554862, 0.7526768798984209, -0.6701129581899767, -0.4130966219244212], "color": "purple_1285"},
+          {"vector": [0.8709056428858379, 0.021264532993509055, -0.8042932327188321, -0.007299919034885249, 0.14411861700299666, 0.4241829662545695, 0.7975746278107849, -0.4458631108150193, 0.9884543861771473, 0.3130286915737188, -0.22046712292493242, -0.45285286937302316, -0.018640592787550814, 0.8799940941813773, 0.035261311713563614, 0.4658267779876306, -0.7413463515490162, -0.7759814759030597, -0.4529594870928504, -0.19067842917654443, 0.5011790741277351, 0.3757039803466302, -0.6209543465851151, -0.42329482992153356, 0.33756431637161577, -0.5507021636838432, -0.2560901440100689, 0.2674794972696948, -0.6657069132148055, 0.9336993159102207, -0.7371725139286605, -0.02842483808811025], "color": "green_3127"},
+          {"vector": [-0.8182282159972083, -0.7882247281939101, -0.1870871133115657, 0.07914806834708976, 0.9825978431531959, 0.6376417285837821, 0.03471891555076656, -0.528573240192042, -0.3120101879340418, 0.7310244200318836, 0.3667663237097627, 0.9999351024798635, 0.07293451060816847, 0.6677216710145908, -0.22314582717085552, 0.40498852077068226, 0.2795560683848244, 0.9332235971261622, -0.9714034189529892, 0.913281723620643, -0.7104703586519907, 0.5913739340519524, 0.04391242994176703, 0.07074627854378579, 0.9076826088747483, 0.9438187849605835, 0.5835538442072998, 0.960003211421663, 0.35362751894674815, -0.7583360985487917, -0.8714012832349345, 0.48642391194514345], "color": "blue_6372"}
+        ]
+    }')
+
+echo $insert
+
+# 7. Insert more fields
+for i in {1..10}; do
+  DATA=$(python curl/random_floats.py)
+
+  curl --request POST \
+      --url "${CLUSTER_ENDPOINT}/v1/vector/insert" \
+      --header "Authorization: Bearer ${API_KEY}" \
+      --header "accept: application/json" \
+      --header "content-type: application/json" \
+      --data-raw "{
+          \"collectionName\": \"quick_setup\",
+          \"data\": ${DATA}
+      }"
+
+  sleep 1
+done     
+
+# 8. Conduct a single vector search
+curl --request POST \
+    --url "${CLUSTER_ENDPOINT}/v1/vector/search" \
+    --header "Authorization: Bearer ${API_KEY}" \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    -d '{
+       "collectionName": "quick_setup",
+       "vector": [0.3847391566891949, -0.5163308707041789, -0.5295937262122905, -0.3592193314357348, 0.9108593166893231, 0.5785260847050646, -0.054715415380102606, -0.5397764260208828, 0.43017743102321027, 0.9806353568812998, -0.24673180651795223, 0.34881128643815407, -0.32534925835429895, 0.7241025896770166, -0.9310390347090534, -0.00517733162532541, 0.35907388281139796, 0.18688386131011714, -0.8001861303343061, -0.5566607389660039, 0.04377295852369856, 0.8581396389536908, -0.978968045358507, -0.4880334792710488, 0.5358685336203941, -0.7193875502048268, -0.4532291009652729, -0.11581052480270215, 0.10653024983528492, -0.8627130991811947, -0.25257559931666673, -0.5504183627361223]
     }'
 
-# Replace PUBLIC_ENDPOINT and TOKEN with your own
-curl --request GET \
-    --url "${PUBLIC_ENDPOINT}/v1/vector/collections/describe?collectionName=medium_articles_2020" \
-    --header "Authorization: Bearer ${TOKEN}" \
-    --header 'accept: application/json' \
-    --header 'content-type: application/json'
-
-# Read the first record from the dataset
-data="$(cat ../medium_articles_2020_dpr.json \
-    | jq '.rows' \
-    | jq '.[0]' \
-    | jq -c '. + {"vector": .title_vector} | del(.title_vector) | del(.id)' )"
-
-echo $data
-
-# Insert a single entity
-# Replace PUBLIC_ENDPOINT and TOKEN with your own
+# 9. Conduct a single vector search with filters and output fields
 curl --request POST \
-     --url "${PUBLIC_ENDPOINT}/v1/vector/insert" \
-     --header "Authorization: Bearer ${TOKEN}" \
-     --header 'accept: application/json' \
-     --header 'content-type: application/json' \
-     --data "{
-        \"collectionName\": \"medium_articles_2020\",
-        \"data\": $data
+    --url "${CLUSTER_ENDPOINT}/v1/vector/search" \
+    --header "Authorization: Bearer ${API_KEY}" \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    -d '{
+       "collectionName": "quick_setup",
+       "vector": [0.3847391566891949, -0.5163308707041789, -0.5295937262122905, -0.3592193314357348, 0.9108593166893231, 0.5785260847050646, -0.054715415380102606, -0.5397764260208828, 0.43017743102321027, 0.9806353568812998, -0.24673180651795223, 0.34881128643815407, -0.32534925835429895, 0.7241025896770166, -0.9310390347090534, -0.00517733162532541, 0.35907388281139796, 0.18688386131011714, -0.8001861303343061, -0.5566607389660039, 0.04377295852369856, 0.8581396389536908, -0.978968045358507, -0.4880334792710488, 0.5358685336203941, -0.7193875502048268, -0.4532291009652729, -0.11581052480270215, 0.10653024983528492, -0.8627130991811947, -0.25257559931666673, -0.5504183627361223],
+       "filter": "color like \"red%\"",
+       "outputFields": ["color"]
+    }'
+
+# 10. Conduct a scalar query with filters and output fields
+curl --request POST \
+    --url "${CLUSTER_ENDPOINT}/v1/vector/query" \
+    --header "Authorization: Bearer ${API_KEY}" \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    -d '{
+       "collectionName": "quick_setup",
+       "query": "color like \"red%\"",
+       "outputFields": ["color"],
+       "limit": 3
+    }'
+
+# 11. Get entities by IDs
+IDs=$(echo $insert | jq -c '.data.insertIds' | jq -s '.[]')
+echo $IDs
+
+curl --request POST \
+    --url "${CLUSTER_ENDPOINT}/v1/vector/get" \
+    --header "Authorization: Bearer ${API_KEY}" \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    -d "{
+       \"collectionName\": \"quick_setup\",
+       \"id\": ${IDs},
+       \"outputFields\": [\"vector\", \"color\"]
     }"
 
-# read the first 200 records from the dataset
-data="$(cat ../medium_articles_2020_dpr.json \
-        | jq '.rows' \
-        | jq '.[1:200]' \
-        | jq -r '.[] | . + {"vector": .title_vector} | del(.title_vector) | del(.id)' \
-        | jq -s -c '.')"
-
-echo $data
-
-# Insert multiple entities
-# Replace PUBLIC_ENDPOINT and TOKEN with your own
+# 12. Delete entities by IDs
 curl --request POST \
-     --url "${PUBLIC_ENDPOINT}/v1/vector/insert" \
-     --header "Authorization: Bearer ${TOKEN}" \
-     --header 'accept: application/json' \
-     --header 'content-type: application/json' \
-     --data "{
-        \"collectionName\": \"medium_articles_2020\",
-        \"data\": ${data}
+    --url "${CLUSTER_ENDPOINT}/v1/vector/delete" \
+    --header "Authorization: Bearer ${API_KEY}" \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    -d "{
+       \"collectionName\": \"quick_setup\",
+       \"id\": ${IDs},
     }"
 
-# read the first vector from the dataset
-vector="$(cat ../medium_articles_2020_dpr.json \
-    | jq '.rows[0].title_vector' )"
-
-echo $vector
-
-# Replace PUBLIC_ENDPOINT and TOKEN with your own
+# Drop collection
 curl --request POST \
-     --url "${PUBLIC_ENDPOINT}/v1/vector/search" \
-     --header "Authorization: Bearer ${TOKEN}" \
-     --header 'accept: application/json' \
-     --header 'content-type: application/json' \
-     --data "{
-        \"collectionName\": \"medium_articles_2020\",
-        \"limit\": 3,
-        \"vector\": $vector
-      }"
+    --url "${CLUSTER_ENDPOINT}/v1/vector/collections/drop" \
+    --header "Authorization: Bearer ${API_KEY}" \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    --data-raw '{
+        "collectionName": "quick_setup"
+    }'
 
-# read the first vector from the dataset
-vector="$(cat ../medium_articles_2020_dpr.json \
-    | jq '.rows[0].title_vector' )"
-
-echo $vector
-
-# Replace PUBLIC_ENDPOINT and TOKEN with your own
 curl --request POST \
-     --url "${PUBLIC_ENDPOINT}/v1/vector/search" \
-     --header "Authorization: Bearer ${TOKEN}" \
-     --header 'accept: application/json' \
-     --header 'content-type: application/json' \
-     --data "{
-        \"collectionName\": \"medium_articles_2020\",
-        \"limit\": 3,
-        \"vector\": $vector,
-        \"filter\": \"claps > 5\",
-        \"outputFields\": [\"title\", \"claps\"]
-      }"
+    --url "${CLUSTER_ENDPOINT}/v1/vector/collections/drop" \
+    --header "Authorization: Bearer ${API_KEY}" \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    --data-raw '{
+        "collectionName": "customized_setup"
+    }'
 
-# Replace PUBLIC_ENDPOINT and TOKEN with your own
-curl --request POST \
-     --url "${PUBLIC_ENDPOINT}/v1/vector/query" \
-     --header "Authorization: Bearer ${TOKEN}" \
-     --header 'accept: application/json' \
-     --header 'content-type: application/json' \
-     --data "{
-        \"collectionName\": \"medium_articles_2020\",
-        \"limit\": 3,
-        \"filter\": \"claps > 100 and publication in [\"The Startup\", \"Towards Data Science\"]\",
-        \"outputFields\": [\"title\", \"claps\", \"publication\"]
-      }"
+# # Drop clusters
+# curl --request DELETE \
+#     --url "https://controller.api.${CLOUD_REGION}.cloud-uat3.zilliz.com/v1/clusters/cluster-starter/drop" \
+#     --header "Authorization: Bearer ${API_KEY}" \
+#     --header "accept: application/json" \
+#     --header "content-type: application/json"
 
-# Retrieve a single entity by ID
-# Go to Zilliz Cloud console, and look for the ID of an entity
-# Fill the ID in the request body
-curl --request POST \
-     --url "${PUBLIC_ENDPOINT}/v1/vector/get" \
-     --header "Authorization: Bearer ${TOKEN}" \
-     --header 'accept: application/json' \
-     --header 'content-type: application/json' \
-     --data '{
-        "collectionName": "medium_articles_2020",
-        "id": 442169042773492589,
-        "outputFields": ["id", "title"]
-      }'
+# curl --request DELETE \
+#     --url "https://controller.api.${CLOUD_REGION}.cloud-uat3.zilliz.com/v1/clusters/cluster-standard/drop" \
+#     --header "Authorization: Bearer ${API_KEY}" \
+#     --header "accept: application/json" \
+#     --header "content-type: application/json"
 
-# Retrieve a set of entities by their IDs
-# Go to Zilliz Cloud console, and look for the ID of some entities
-# Fill the IDs in the request body
-curl --request POST \
-     --url "${PUBLIC_ENDPOINT}/v1/vector/get" \
-     --header "Authorization: Bearer ${TOKEN}" \
-     --header 'accept: application/json' \
-     --header 'content-type: application/json' \
-     --data '{
-        "collectionName": "medium_articles_2020",
-        "id": [442169042773492591, 442169042773492593, 442169042773492595],
-        "outputFields": ["id", "title"]
-      }'
 
-# Deletes an entity
-# Go to Zilliz Cloud console, and look for the ID of an entity
-# Fill the ID in the request body
-curl --request POST \
-     --url "${PUBLIC_ENDPOINT}/v1/vector/delete" \
-     --header "Authorization: Bearer ${TOKEN}" \
-     --header 'accept: application/json' \
-     --header 'content-type: application/json' \
-     --data '{
-        "collectionName": "medium_articles_2020",
-        "id": 442169042773492589
-      }'
-
-# Delete a set of entities in a batch
-# Go to Zilliz Cloud console, and look for the ID of some entities
-# Fill the IDs in the request body
-curl --request POST \
-     --url "${PUBLIC_ENDPOINT}/v1/vector/delete" \
-     --header "Authorization: Bearer ${TOKEN}" \
-     --header 'accept: application/json' \
-     --header 'content-type: application/json' \
-     --data '{
-        "collectionName": "medium_articles_2020",
-        "id": [442169042773492591, 442169042773492593, 442169042773492595]
-      }'
-
-# Drop a collection
-# Replace uri and API key with your own
-curl --request POST \
-     --url "${PUBLIC_ENDPOINT}/v1/vector/collections/drop" \
-     --header "Authorization: Bearer ${TOKEN}" \
-     --header 'accept: application/json' \
-     --header 'content-type: application/json' \
-     --data '{
-        "collectionName": "medium_articles_2020"
-      }'

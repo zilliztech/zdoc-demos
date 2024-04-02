@@ -1,2 +1,4 @@
 github.com/milvus-io/milvus-sdk-go/v2 v2.3.3 h1:jHZJTQsTwZCxT5UyogIYecKqkjPAXyuYODfBAP3Qq2w=
 github.com/milvus-io/milvus-sdk-go/v2 v2.3.3/go.mod h1:MrlykwjCuFFg3xYL7gh5JmVkbpSo04W1w7MVT3JiE6A=
+github.com/milvus-io/milvus-sdk-go/v2 v2.3.5 h1:PG5EMJVBq/4ylMTqtqMUgTFWy+M1ZbU8oFBTuIX3ix0=
+github.com/milvus-io/milvus-sdk-go/v2 v2.3.5/go.mod h1:bYFSXVxEj6A/T8BfiR+xkofKbAVZpWiDvKr3SzYUWiA=

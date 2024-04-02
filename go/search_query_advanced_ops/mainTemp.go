@@ -10,6 +10,7 @@ import (
 
 	"github.com/milvus-io/milvus-sdk-go/v2/client"
 	"github.com/milvus-io/milvus-sdk-go/v2/entity"
+	"golang.org/x/exp/rand"
 )
 
 type DatasetRow struct {
@@ -21,8 +22,6 @@ type DatasetRow struct {
 	Publication string    `json:"publication" milvus:"name:publication"`
 	Claps       int64     `json:"claps" milvus:"name:claps"`
 	Responses   int64     `json:"responses" milvus:"name:responses"`
-	Tag_1       []int64   `json: "tag_1" milvus:"name:tag_1"`
-	Tag_2       [][]int64 `json: "tag_2" milvus:"name:tag_2"`
 }
 
 type Dataset struct {
@@ -37,18 +36,20 @@ type CollSchema struct {
 }
 
 type JsonFields struct {
-	Link        string `json:"link" milvus:"name:link"`
-	ReadingTime int64  `json:"reading_time" milvus:"name:reading_time"`
-	Publication string `json:"publication" milvus:"name:publication"`
-	Claps       int64  `json:"claps" milvus:"name:claps"`
-	Responses   int64  `json:"responses" milvus:"name:responses"`
+	Link        string  `json:"link" milvus:"name:link"`
+	ReadingTime int64   `json:"reading_time" milvus:"name:reading_time"`
+	Publication string  `json:"publication" milvus:"name:publication"`
+	Claps       int64   `json:"claps" milvus:"name:claps"`
+	Responses   int64   `json:"responses" milvus:"name:responses"`
+	Tags1       []int   `json:"tags1" milvus:"name:tags1"`
+	Tags2       [][]int `json:"tags2" milvus:"name:tags2"`
 }
 
 func main() {
 	CLUSTER_ENDPOINT := "http://localhost:19530"
 	TOKEN := "root:Milvus"
 	COLLNAME := "medium_articles_2020"
-	DATA_FILE := "../../medium_articles_2020_dpr.json"
+	DATA_FILE := "medium_articles_2020_dpr.json"
 
 	// 1. Connect to cluster
 
@@ -112,9 +113,6 @@ func main() {
 
 	fmt.Println(index.Name())
 
-	// Output:
-	//
-	// AUTOINDEX
 
 	err = conn.CreateIndex(context.Background(), COLLNAME, "title_vector", index, false)
 
@@ -138,9 +136,6 @@ func main() {
 
 	fmt.Println("Loading progress:", progress)
 
-	// Output:
-	//
-	// Loading progress: 100
 
 	// 6. Read the dataset
 	file, err := os.ReadFile(DATA_FILE)
@@ -166,6 +161,8 @@ func main() {
 			Publication: data.Rows[i].Publication,
 			Claps:       data.Rows[i].Claps,
 			Responses:   data.Rows[i].Responses,
+			Tags1:       randList(20, 40),
+			Tags2:       rand2DList(10, 4, 40),
 		}
 
 		collSchema := CollSchema{
@@ -180,16 +177,10 @@ func main() {
 
 	fmt.Println("Dataset loaded, row number: ", len(data.Rows))
 
-	// Output:
-	//
-	// Dataset loaded, row number:  5979
 
 	// 7. Insert data
 	fmt.Println("Start inserting ...")
 
-	// Output:
-	//
-	// Start inserting ...
 
 	col, err := conn.InsertRows(context.Background(), COLLNAME, "", rows)
 
@@ -199,19 +190,13 @@ func main() {
 
 	fmt.Println("Inserted entities: ", col.Len())
 
-	// Output:
-	//
-	// Inserted entities:  5979
 
 	time.Sleep(5 * time.Second)
 
-	// 8. Search
+	// 8. Count entities
 
 	fmt.Println("Start searching ...")
 
-	// Output:
-	//
-	// Start searching ...
 
 	vectors := []entity.Vector{}
 
@@ -223,111 +208,139 @@ func main() {
 
 	sp, _ := entity.NewIndexAUTOINDEXSearchParam(1)
 
-	limit := client.WithLimit(10)
-	offset := client.WithOffset(0)
+	// limit := client.WithLimit(10)
+	// offset := client.WithOffset(0)
 	topK := 5
-	outputFields := []string{"id", "title", "article_meta"}
-	expr := "article_meta['claps'] > 30 and article_meta['reading_time'] < 10"
+	outputFields := []string{"count(*)"}
+	expr := ""
+
+	resq, err := conn.Query(
+		context.Background(), // context
+		COLLNAME,             // collectionName
+		[]string{},           // partitionNames
+		expr,                 // expr
+		outputFields,         // outputFields
+	)
+
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	fmt.Println(resultSetToJSON(resq, false))
+
+	// 9. Count entities with condition
+
+	expr = "article_meta[\"claps\"] > 30 and article_meta[\"reading_time\"] < 10"
+
+	resq, err = conn.Query(
+		context.Background(), // context
+		COLLNAME,             // collectionName
+		[]string{},           // partitionNames
+		expr,                 // expr
+		outputFields,         // outputFields
+	)
+
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	fmt.Println(resultSetToJSON(resq, false))
+
+	// 10. Check if a specific element exists in a JSON field
+
+	// matches all articles with tags_1 having the member 16
+	expr_1 := "JSON_CONTAINS(article_meta[\"tags_1\"], 16)"
+
+	// matches all articles with tags_2 having the member [5, 3, 39, 8]
+	// expr_2 := "JSON_CONTAINS(article_meta[\"tags_2\"], [5, 3, 39, 8])"
+
+	// matches all articles with tags_1 having a member from [5, 3, 39, 8]
+	// expr_3 := "JSON_CONTAINS_ANY(article_meta[\"tags_1\"], [5, 3, 39, 8])"
+
+	// matches all articles with tags_1 having all members from [2, 4, 6]
+	expr_4 := "JSON_CONTAINS_ALL(article_meta[\"tags_1\"], [2, 4, 6])"
+
+	outputFields = []string{"title", "article_meta"}
 
 	res, err := conn.Search(
 		context.Background(),    // context
 		COLLNAME,                // collectionName
 		[]string{},              // partitionNames
-		expr,                    // expr
+		expr_1,                  // expr
 		outputFields,            // outputFields
 		vectors,                 // vectors
 		"title_vector",          // vectorField
 		entity.MetricType("L2"), // metricType
 		topK,                    // topK
 		sp,                      // sp
-		limit,                   // opts
-		offset,                  // opts
 	)
 
 	if err != nil {
-		log.Fatal("Failed to insert rows:", err.Error())
+		log.Fatal(err.Error())
 	}
 
 	fmt.Println(resultsToJSON(res))
 
-	// Output:
-	// [
-	// 	{
-	// 		"counts": 5,
-	// 		"distances": [
-	// 			0.36103833,
-	// 			0.37674016,
-	// 			0.41629797,
-	// 			0.4360938,
-	// 			0.48886317
-	// 		],
-	// 		"rows": [
-	// 			{
-	// 				"article_meta": {
-	// 					"link": "https://medium.com/swlh/the-hidden-side-effect-of-the-coronavirus-b6a7a5ee9586",
-	// 					"reading_time": 8,
-	// 					"publication": "The Startup",
-	// 					"claps": 83,
-	// 					"responses": 0
-	// 				},
-	// 				"id": 5607,
-	// 				"title": "The Hidden Side Effect of the Coronavirus"
-	// 			},
-	// 			{
-	// 				"article_meta": {
-	// 					"link": "https://towardsdatascience.com/why-the-coronavirus-mortality-rate-is-misleading-cc63f571b6a6",
-	// 					"reading_time": 9,
-	// 					"publication": "Towards Data Science",
-	// 					"claps": 2900,
-	// 					"responses": 47
-	// 				},
-	// 				"id": 5641,
-	// 				"title": "Why The Coronavirus Mortality Rate is Misleading"
-	// 			},
-	// 			{
-	// 				"article_meta": {
-	// 					"link": "https://medium.com/swlh/coronavirus-shows-what-ethical-amazon-could-look-like-7c80baf2c663",
-	// 					"reading_time": 4,
-	// 					"publication": "The Startup",
-	// 					"claps": 51,
-	// 					"responses": 0
-	// 				},
-	// 				"id": 3441,
-	// 				"title": "Coronavirus shows what ethical Amazon could look like"
-	// 			},
-	// 			{
-	// 				"article_meta": {
-	// 					"link": "https://towardsdatascience.com/mortality-rate-as-an-indicator-of-an-epidemic-outbreak-704592f3bb39",
-	// 					"reading_time": 6,
-	// 					"publication": "Towards Data Science",
-	// 					"claps": 65,
-	// 					"responses": 0
-	// 				},
-	// 				"id": 938,
-	// 				"title": "Mortality Rate As an Indicator of an Epidemic Outbreak"
-	// 			},
-	// 			{
-	// 				"article_meta": {
-	// 					"link": "https://medium.com/swlh/how-can-ai-help-fight-coronavirus-60f2182de93a",
-	// 					"reading_time": 9,
-	// 					"publication": "The Startup",
-	// 					"claps": 255,
-	// 					"responses": 1
-	// 				},
-	// 				"id": 4275,
-	// 				"title": "How Can AI Help Fight Coronavirus?"
-	// 			}
-	// 		]
-	// 	}
-	// ]
+	res, err = conn.Search(
+		context.Background(),    // context
+		COLLNAME,                // collectionName
+		[]string{},              // partitionNames
+		expr_4,                  // expr
+		outputFields,            // outputFields
+		vectors,                 // vectors
+		"title_vector",          // vectorField
+		entity.MetricType("L2"), // metricType
+		topK,                    // topK
+		sp,                      // sp
+	)
 
-	// 9. Drop collection
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	fmt.Println(resultsToJSON(res))
+
+	// 11. Drop collection
 	err = conn.DropCollection(context.Background(), COLLNAME)
 
 	if err != nil {
 		log.Fatal("Failed to drop collection:", err.Error())
 	}
 
+}
+
+func resultSetToJSON(results client.ResultSet, inFields bool) string {
+	var fields []map[string]interface{}
+	var rows []map[string]interface{}
+	var ret []map[string]interface{}
+	for _, r := range results {
+		field := make(map[string]interface{})
+		fname := r.FieldData().FieldName
+		values := typeSwitch(r)
+
+		for i, v := range values {
+			if len(rows) < i+1 {
+				row := make(map[string]interface{})
+				row[fname] = v
+				rows = append(rows, row)
+			} else {
+				rows[i][fname] = v
+			}
+		}
+
+		field[fname] = values
+		fields = append(fields, field)
+	}
+
+	if inFields {
+		ret = fields
+	} else {
+		ret = rows
+	}
+
+	jsonData, _ := json.Marshal(ret)
+
+	return string(jsonData)
 }
 
 func resultsToJSON(results []client.SearchResult) string {
@@ -408,4 +421,20 @@ func typeSwitch(c entity.Column) []interface{} {
 	}
 	// You should add more types here
 	return data
+}
+
+func randList(n int, max int) []int {
+	var list []int
+	for i := 0; i < n; i++ {
+		list = append(list, rand.Intn(max))
+	}
+	return list
+}
+
+func rand2DList(n int, m int, max int) [][]int {
+	var list [][]int
+	for i := 0; i < n; i++ {
+		list = append(list, randList(m, max))
+	}
+	return list
 }

@@ -10,6 +10,7 @@ commander
     .option("-e, --env <env>", "path to the .env file")
     .option("-d, --debug", "output extra debugging info")
     .option("-r, --remove", "remove output")
+    .option("-l, --localBuild <localBuild>", "build local sdk version")
     .parse(process.argv)
 
 const options = commander.opts()
@@ -28,9 +29,14 @@ const env = fs.readFileSync(options.env, "utf8")
 var script = fs.readFileSync(options.file, "utf8")
 
 env.split("\n").map(line => {
-    const [key, value] = line.split("=")
+    const key  = line.slice(0, line.indexOf("="))
+    const value = line.slice(line.indexOf("=") + 1)
     script = script.replace(new RegExp(`"${key}"`, "g"), value)
 })
+
+if (options.localBuild) {
+    script = script.replace("@zilliz/milvus2-sdk-node", options.localBuild)
+}
 
 if (options.remove) {
     script = script.replace(/[^\S\r\n]*\/\/ Output\n(?:[^\S\r\n]*\/\/[^\S\r\n].*\n)*/g, "")
@@ -52,7 +58,15 @@ proc.stdout.on("data", data => {
 })
 
 proc.stdout.on("end", () => {
+    if (options.debug) {
+        console.log(logs.join("\n"))
+    }
+
     script = script.split("\n").map(line => {
+        if (options.localBuild && line.includes(options.localBuild)) {
+            return line.replace(options.localBuild, "@zilliz/milvus2-sdk-node")
+        }
+
         if (line.includes("console.log")) {
             var indent = line.match(/^\s*/)[0].length
             var output = "Output\n\n" + logs.shift()
@@ -64,7 +78,8 @@ proc.stdout.on("end", () => {
     }).join("\n")
 
     env.split("\n").map(line => {
-        const [key, value] = line.split("=")
+        const key  = line.slice(0, line.indexOf("="))
+        const value = line.slice(line.indexOf("=") + 1)
         script = script.replace(value, `"${key}"`)
     })
 
