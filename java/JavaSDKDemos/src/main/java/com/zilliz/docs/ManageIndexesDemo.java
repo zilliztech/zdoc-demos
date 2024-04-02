@@ -9,6 +9,7 @@ import io.milvus.v2.client.ConnectConfig;
 import io.milvus.v2.client.MilvusClientV2;
 import io.milvus.v2.common.DataType;
 import io.milvus.v2.common.IndexParam;
+import io.milvus.v2.service.collection.request.AddFieldReq;
 import io.milvus.v2.service.collection.request.CreateCollectionReq;
 import io.milvus.v2.service.collection.request.DropCollectionReq;
 import io.milvus.v2.service.index.request.CreateIndexReq;
@@ -34,18 +35,18 @@ public class ManageIndexesDemo {
         // 2. Create a collection
 
         // 2.1 Create schema
-        CreateCollectionReq.CollectionSchema schema = client.createSchema(false, "");
+        CreateCollectionReq.CollectionSchema schema = client.createSchema();
 
         // 2.2 Add fields to schema
-        schema.addPrimaryField("id", DataType.Int64, true, false);
-        schema.addVectorField("vector", DataType.FloatVector, 5);
+        schema.addField(AddFieldReq.builder().fieldName("id").dataType(DataType.Int64).isPrimaryKey(true).autoID(false).build());
+        schema.addField(AddFieldReq.builder().fieldName("vector").dataType(DataType.FloatVector).dimension(5).build());
 
         // 2.3 Create a collection without schema and index parameters
         CreateCollectionReq customizedSetupReq = CreateCollectionReq.builder()
         .collectionName("customized_setup")
         .collectionSchema(schema)
         .build();
-    
+
         client.createCollection(customizedSetupReq);
 
         // 4 Prepare index parameters

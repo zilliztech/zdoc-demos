@@ -4,14 +4,9 @@ import io.milvus.v2.client.ConnectConfig;
 import io.milvus.v2.client.MilvusClientV2;
 import io.milvus.v2.common.DataType;
 import io.milvus.v2.common.IndexParam;
-import io.milvus.v2.service.collection.request.CreateCollectionReq;
-import io.milvus.v2.service.collection.request.DescribeCollectionReq;
+import io.milvus.v2.service.collection.request.*;
 import io.milvus.v2.service.collection.response.DescribeCollectionResp;
 import io.milvus.v2.service.collection.response.ListCollectionsResp;
-import io.milvus.v2.service.collection.request.DropCollectionReq;
-import io.milvus.v2.service.collection.request.GetLoadStateReq;
-import io.milvus.v2.service.collection.request.LoadCollectionReq;
-import io.milvus.v2.service.collection.request.ReleaseCollectionReq;
 import io.milvus.v2.service.index.request.CreateIndexReq;
 import io.milvus.v2.service.utility.request.AlterAliasReq;
 import io.milvus.v2.service.utility.request.CreateAliasReq;
@@ -67,11 +62,11 @@ public class ManageCollectionDemo {
         // 3. Create a collection in customized setup mode
 
         // 3.1 Create schema
-        CreateCollectionReq.CollectionSchema schema = client.createSchema(false, "");
+        CreateCollectionReq.CollectionSchema schema = client.createSchema();
 
         // 3.2 Add fields to schema
-        schema.addPrimaryField("my_id", DataType.Int64, true, false);
-        schema.addVectorField("my_vector", DataType.FloatVector, 5);
+        schema.addField(AddFieldReq.builder().fieldName("my_id").dataType(DataType.Int64).isPrimaryKey(true).autoID(false).build());
+        schema.addField(AddFieldReq.builder().fieldName("my_vector").dataType(DataType.FloatVector).dimension(5).build());
 
         // 3.3 Prepare index parameters
         IndexParam indexParamForIdField = IndexParam.builder()
@@ -99,12 +94,12 @@ public class ManageCollectionDemo {
         client.createCollection(customizedSetupReq1);
 
         // Thread.sleep(5000);
-        
+
         // 3.5 Get load state of the collection
         GetLoadStateReq customSetupLoadStateReq1 = GetLoadStateReq.builder()
             .collectionName("customized_setup_1")
             .build();
-        
+
         res = client.getLoadState(customSetupLoadStateReq1);
 
         System.out.println(res);
@@ -137,7 +132,7 @@ public class ManageCollectionDemo {
         GetLoadStateReq customSetupLoadStateReq2 = GetLoadStateReq.builder()
             .collectionName("customized_setup_2")
             .build();
-        
+
         res = client.getLoadState(customSetupLoadStateReq2);
 
         System.out.println(res);
@@ -228,7 +223,7 @@ public class ManageCollectionDemo {
         GetLoadStateReq loadStateReq = GetLoadStateReq.builder()
             .collectionName("customized_setup_2")
             .build();
-        
+
         res = client.getLoadState(loadStateReq);
 
         System.out.println(res);
@@ -358,7 +353,7 @@ public class ManageCollectionDemo {
         DropAliasReq dropAliasReq = DropAliasReq.builder()
             .alias("bob")
             .build();
-        
+
         client.dropAlias(dropAliasReq);
 
         dropAliasReq = DropAliasReq.builder()
@@ -379,13 +374,13 @@ public class ManageCollectionDemo {
             .collectionName("customized_setup_1")
             .build();
 
-        client.dropCollection(dropCustomizedSetupParam); 
+        client.dropCollection(dropCustomizedSetupParam);
 
         dropCustomizedSetupParam = DropCollectionReq.builder()
             .collectionName("customized_setup_2")
             .build();
 
-        client.dropCollection(dropCustomizedSetupParam); 
+        client.dropCollection(dropCustomizedSetupParam);
     }
 
     public static void main(String[] args) {

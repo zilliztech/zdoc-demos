@@ -14,7 +14,6 @@ import io.milvus.v2.service.vector.response.QueryResp;
 import io.milvus.v2.service.vector.request.DeleteReq;
 import io.milvus.v2.service.vector.response.DeleteResp;
 import io.milvus.v2.service.collection.request.DropCollectionReq;
-import io.milvus.grpc.FieldSchema;
 import io.milvus.v2.client.ConnectConfig;
 import io.milvus.v2.common.DataType;
 import io.milvus.v2.common.IndexParam;
@@ -146,7 +145,7 @@ public final class QuickStartDemo {
             JSONObject row = new JSONObject();
             row.put("id", Long.valueOf(i));
             row.put("vector", Arrays.asList(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), rand.nextFloat()));
-            row.put("color", colors.get(rand.nextInt(colors.size()-1)) + '_' + rand.nextInt(1000, 9999));
+            row.put("color", colors.get(rand.nextInt(colors.size()-1)) + '_' + rand.nextInt(1000));
             insertData.add(row);
         }
 
@@ -182,49 +181,8 @@ public final class QuickStartDemo {
         SearchResp singleVectorSearchRes = client.search(searchReq);
 
         System.out.println(JSONObject.toJSON(singleVectorSearchRes));
-
         // Output:
-        // {"searchResults": [[
-        //     {
-        //         "score": 0.05297109,
-        //         "fields": {
-        //             "vector": [
-        //                 0.99489605,
-        //                 0.620082,
-        //                 0.09068686,
-        //                 0.27704495,
-        //                 0.92576367
-        //             ],
-        //             "id": 66
-        //         }
-        //     },
-        //     {
-        //         "score": 0.05258018,
-        //         "fields": {
-        //             "vector": [
-        //                 0.9346232,
-        //                 0.7711106,
-        //                 0.12809038,
-        //                 0.16101098,
-        //                 0.8805015
-        //             ],
-        //             "id": 785
-        //         }
-        //     },
-        //     {
-        //         "score": 0.05251121,
-        //         "fields": {
-        //             "vector": [
-        //                 0.3172005,
-        //                 0.97190446,
-        //                 -0.36981148,
-        //                 -0.48608947,
-        //                 0.9579189
-        //             ],
-        //             "id": 3
-        //         }
-        //     }
-        // ]]}
+        //{"searchResults":[[{"distance":0.63183993,"id":3,"entity":{}},{"distance":0.5989335,"id":8,"entity":{}},{"distance":0.5756271,"id":9,"entity":{}}]]}
 
 
 
@@ -246,90 +204,7 @@ public final class QuickStartDemo {
         System.out.println(JSONObject.toJSON(multiVectorSearchRes));
 
         // Output:
-        // {"searchResults": [
-        //     [
-        //         {
-        //             "score": 0.05297109,
-        //             "fields": {
-        //                 "vector": [
-        //                     0.99489605,
-        //                     0.620082,
-        //                     0.09068686,
-        //                     0.27704495,
-        //                     0.92576367
-        //                 ],
-        //                 "id": 66
-        //             }
-        //         },
-        //         {
-        //             "score": 0.05258018,
-        //             "fields": {
-        //                 "vector": [
-        //                     0.9346232,
-        //                     0.7711106,
-        //                     0.12809038,
-        //                     0.16101098,
-        //                     0.8805015
-        //                 ],
-        //                 "id": 785
-        //             }
-        //         },
-        //         {
-        //             "score": 0.05251121,
-        //             "fields": {
-        //                 "vector": [
-        //                     0.3172005,
-        //                     0.97190446,
-        //                     -0.36981148,
-        //                     -0.48608947,
-        //                     0.9579189
-        //                 ],
-        //                 "id": 3
-        //             }
-        //         }
-        //     ],
-        //     [
-        //         {
-        //             "score": 0.044951554,
-        //             "fields": {
-        //                 "vector": [
-        //                     0.92594373,
-        //                     0.880975,
-        //                     0.21442568,
-        //                     0.9900633,
-        //                     0.0030285716
-        //                 ],
-        //                 "id": 867
-        //             }
-        //         },
-        //         {
-        //             "score": 0.044517424,
-        //             "fields": {
-        //                 "vector": [
-        //                     0.9028428,
-        //                     0.7563419,
-        //                     0.43204427,
-        //                     0.9965389,
-        //                     0.09731263
-        //                 ],
-        //                 "id": 529
-        //             }
-        //         },
-        //         {
-        //             "score": 0.04314029,
-        //             "fields": {
-        //                 "vector": [
-        //                     0.8447083,
-        //                     0.781666,
-        //                     0.58065236,
-        //                     0.98519135,
-        //                     0.8621161
-        //                 ],
-        //                 "id": 127
-        //             }
-        //         }
-        //     ]
-        // ]}
+        //{"searchResults":[[{"distance":0.75459296,"id":482,"entity":{}},{"distance":0.7508138,"id":897,"entity":{}},{"distance":0.74391407,"id":518,"entity":{}}],[{"distance":0.9812526,"id":976,"entity":{}},{"distance":0.96157026,"id":403,"entity":{}},{"distance":0.9585952,"id":253,"entity":{}}]]}
 
 
 
@@ -352,20 +227,7 @@ public final class QuickStartDemo {
         System.out.println(JSONObject.toJSON(filteredVectorSearchRes));
 
         // Output:
-        // {"searchResults": [[
-        //     {
-        //         "score": 0.05258018,
-        //         "fields": {"id": 785}
-        //     },
-        //     {
-        //         "score": 0.044485703,
-        //         "fields": {"id": 708}
-        //     },
-        //     {
-        //         "score": 0.04229039,
-        //         "fields": {"id": 576}
-        //     }
-        // ]]}
+        // {"searchResults":[[{"distance":0.74391407,"id":518,"entity":{"id":518}},{"distance":0.7175761,"id":616,"entity":{"id":616}},{"distance":0.70198226,"id":728,"entity":{"id":728}}]]}
 
 
 
@@ -388,20 +250,7 @@ public final class QuickStartDemo {
         System.out.println(JSONObject.toJSON(customFilteredVectorSearchRes));
 
         // Output:
-        // {"searchResults": [[
-        //     {
-        //         "score": 0.04506649,
-        //         "fields": {"color": "red_6124"}
-        //     },
-        //     {
-        //         "score": 0.043304324,
-        //         "fields": {"color": "red_2464"}
-        //     },
-        //     {
-        //         "score": 0.041873857,
-        //         "fields": {"color": "red_9392"}
-        //     }
-        // ]]}
+        // {"searchResults":[[{"distance":0.66446877,"id":632,"entity":{"color":"red_942"}},{"distance":0.65629846,"id":116,"entity":{"color":"red_155"}},{"distance":0.59880066,"id":231,"entity":{"color":"red_681"}}]]}
 
 
 
@@ -420,24 +269,7 @@ public final class QuickStartDemo {
         System.out.println(JSONObject.toJSON(queryRes));
 
         // Output:
-        // {"queryResults": [
-        //     {"fields": {
-        //         "color": "yellow_5750",
-        //         "id": 11
-        //     }},
-        //     {"fields": {
-        //         "color": "white_9744",
-        //         "id": 12
-        //     }},
-        //     {"fields": {
-        //         "color": "red_3180",
-        //         "id": 13
-        //     }},
-        //     {"fields": {
-        //         "color": "white_5496",
-        //         "id": 14
-        //     }}
-        // ]}
+        // {"queryResults":[{"entity":{"id":11}},{"entity":{"id":12}},{"entity":{"id":13}},{"entity":{"id":14}}]}
 
 
 
@@ -456,28 +288,7 @@ public final class QuickStartDemo {
         System.out.println(JSONObject.toJSON(customQueryRes));
 
         // Output:
-        // {"queryResults": [
-        //     {"fields": {
-        //         "color": "brown_8488",
-        //         "id": 22
-        //     }},
-        //     {"fields": {
-        //         "color": "brown_8356",
-        //         "id": 93
-        //     }},
-        //     {"fields": {
-        //         "color": "brown_8612",
-        //         "id": 353
-        //     }},
-        //     {"fields": {
-        //         "color": "brown_8217",
-        //         "id": 727
-        //     }},
-        //     {"fields": {
-        //         "color": "brown_8142",
-        //         "id": 739
-        //     }}
-        // ]}
+        // {"queryResults":[{"entity":{"color":"brown_879","id":185}},{"entity":{"color":"brown_846","id":273}},{"entity":{"color":"brown_85","id":336}},{"entity":{"color":"brown_81","id":448}},{"entity":{"color":"brown_80","id":479}}]}
 
 
 
@@ -494,38 +305,7 @@ public final class QuickStartDemo {
         System.out.println(JSONObject.toJSON(getRes));
 
         // Output:
-        // {"getResults": [
-        //     {"fields": {
-        //         "vector": [
-        //             0.35803765,
-        //             -0.6023496,
-        //             0.18414013,
-        //             -0.26286206,
-        //             0.90294385
-        //         ],
-        //         "id": 0
-        //     }},
-        //     {"fields": {
-        //         "vector": [
-        //             0.19886813,
-        //             0.060235605,
-        //             0.6976963,
-        //             0.26144746,
-        //             0.8387295
-        //         ],
-        //         "id": 1
-        //     }},
-        //     {"fields": {
-        //         "vector": [
-        //             0.43742132,
-        //             -0.55975026,
-        //             0.6457888,
-        //             0.7894059,
-        //             0.20785794
-        //         ],
-        //         "id": 2
-        //     }}
-        // ]}
+        // {"getResults":[{"entity":{"color":"pink_8682","vector":[0.35803765,-0.6023496,0.18414013,-0.26286206,0.90294385],"id":0}},{"entity":{"color":"red_7025","vector":[0.19886813,0.060235605,0.6976963,0.26144746,0.8387295],"id":1}},{"entity":{"color":"orange_6781","vector":[0.43742132,-0.55975026,0.6457888,0.7894059,0.20785794],"id":2}}]}
 
 
 
@@ -583,6 +363,6 @@ public final class QuickStartDemo {
             run();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }        
+        }
     }
 }

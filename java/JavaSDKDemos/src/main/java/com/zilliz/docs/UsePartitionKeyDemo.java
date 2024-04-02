@@ -7,6 +7,7 @@ import io.milvus.v2.client.ConnectConfig;
 import io.milvus.v2.client.MilvusClientV2;
 import io.milvus.v2.common.DataType;
 import io.milvus.v2.common.IndexParam;
+import io.milvus.v2.service.collection.request.AddFieldReq;
 import io.milvus.v2.service.collection.request.CreateCollectionReq;
 
 public class UsePartitionKeyDemo {
@@ -20,17 +21,17 @@ public class UsePartitionKeyDemo {
             .token(TOKEN)
             .build();
 
-        MilvusClientV2 client = new MilvusClientV2(connectConfig);      
-        
+        MilvusClientV2 client = new MilvusClientV2(connectConfig);
+
         // 2. Create a collection in customized setup mode
 
         // 2.1 Create schema
-        CreateCollectionReq.CollectionSchema schema = client.createSchema(false, "");
+        CreateCollectionReq.CollectionSchema schema = client.createSchema();
 
         // 2.2 Add fields to schema
-        schema.addPrimaryField("id", DataType.Int64, true, false);
-        schema.addVectorField("vector", DataType.FloatVector, 5);
-        schema.addScalarField("color", DataType.VarChar, 512);
+        schema.addField(AddFieldReq.builder().fieldName("id").dataType(DataType.Int64).isPrimaryKey(true).autoID(false).build());
+        schema.addField(AddFieldReq.builder().fieldName("vector").dataType(DataType.FloatVector).dimension(5).build());
+        schema.addField(AddFieldReq.builder().fieldName("color").dataType(DataType.VarChar).maxLength(512).isPartitionKey(true).build());
 
         // 2.3 Prepare index parameters
         IndexParam indexParamForIdField = IndexParam.builder()
@@ -71,6 +72,6 @@ public class UsePartitionKeyDemo {
             run();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }        
-    } 
+        }
+    }
 }
