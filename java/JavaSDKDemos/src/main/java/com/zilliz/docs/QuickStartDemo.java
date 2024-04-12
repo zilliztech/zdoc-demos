@@ -30,12 +30,10 @@ import com.alibaba.fastjson.JSONObject;
 public final class QuickStartDemo {
     private static void run() throws InterruptedException {
         String CLUSTER_ENDPOINT = "YOUR_CLUSTER_ENDPOINT";
-        String TOKEN = "YOUR_CLUSTER_TOKEN";
 
         // 1. Connect to Milvus server
         ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(CLUSTER_ENDPOINT)
-            .token(TOKEN)
             .build();
 
         MilvusClientV2 client = new MilvusClientV2(connectConfig);
@@ -166,6 +164,8 @@ public final class QuickStartDemo {
 
 
 
+        // 5.3 Wait for a while to ensure data is indexed
+        Thread.sleep(5000);
 
         // 6. Search with a single vector
 
@@ -181,8 +181,25 @@ public final class QuickStartDemo {
         SearchResp singleVectorSearchRes = client.search(searchReq);
 
         System.out.println(JSONObject.toJSON(singleVectorSearchRes));
+
         // Output:
-        //{"searchResults":[[{"distance":0.63183993,"id":3,"entity":{}},{"distance":0.5989335,"id":8,"entity":{}},{"distance":0.5756271,"id":9,"entity":{}}]]}
+        // {"searchResults": [[
+        //     {
+        //         "distance": 0.77929854,
+        //         "id": 90,
+        //         "entity": {}
+        //     },
+        //     {
+        //         "distance": 0.76438016,
+        //         "id": 252,
+        //         "entity": {}
+        //     },
+        //     {
+        //         "distance": 0.76274073,
+        //         "id": 727,
+        //         "entity": {}
+        //     }
+        // ]]}
 
 
 
@@ -204,7 +221,42 @@ public final class QuickStartDemo {
         System.out.println(JSONObject.toJSON(multiVectorSearchRes));
 
         // Output:
-        //{"searchResults":[[{"distance":0.75459296,"id":482,"entity":{}},{"distance":0.7508138,"id":897,"entity":{}},{"distance":0.74391407,"id":518,"entity":{}}],[{"distance":0.9812526,"id":976,"entity":{}},{"distance":0.96157026,"id":403,"entity":{}},{"distance":0.9585952,"id":253,"entity":{}}]]}
+        // {"searchResults": [
+        //     [
+        //         {
+        //             "distance": 0.77929854,
+        //             "id": 90,
+        //             "entity": {}
+        //         },
+        //         {
+        //             "distance": 0.76438016,
+        //             "id": 252,
+        //             "entity": {}
+        //         },
+        //         {
+        //             "distance": 0.76274073,
+        //             "id": 727,
+        //             "entity": {}
+        //         }
+        //     ],
+        //     [
+        //         {
+        //             "distance": 0.96298015,
+        //             "id": 767,
+        //             "entity": {}
+        //         },
+        //         {
+        //             "distance": 0.94215965,
+        //             "id": 140,
+        //             "entity": {}
+        //         },
+        //         {
+        //             "distance": 0.9297105,
+        //             "id": 467,
+        //             "entity": {}
+        //         }
+        //     ]
+        // ]}
 
 
 
@@ -227,7 +279,23 @@ public final class QuickStartDemo {
         System.out.println(JSONObject.toJSON(filteredVectorSearchRes));
 
         // Output:
-        // {"searchResults":[[{"distance":0.74391407,"id":518,"entity":{"id":518}},{"distance":0.7175761,"id":616,"entity":{"id":616}},{"distance":0.70198226,"id":728,"entity":{"id":728}}]]}
+        // {"searchResults": [[
+        //     {
+        //         "distance": 0.76274073,
+        //         "id": 727,
+        //         "entity": {"id": 727}
+        //     },
+        //     {
+        //         "distance": 0.73705024,
+        //         "id": 596,
+        //         "entity": {"id": 596}
+        //     },
+        //     {
+        //         "distance": 0.71537596,
+        //         "id": 668,
+        //         "entity": {"id": 668}
+        //     }
+        // ]]}
 
 
 
@@ -250,7 +318,23 @@ public final class QuickStartDemo {
         System.out.println(JSONObject.toJSON(customFilteredVectorSearchRes));
 
         // Output:
-        // {"searchResults":[[{"distance":0.66446877,"id":632,"entity":{"color":"red_942"}},{"distance":0.65629846,"id":116,"entity":{"color":"red_155"}},{"distance":0.59880066,"id":231,"entity":{"color":"red_681"}}]]}
+        // {"searchResults": [[
+        //     {
+        //         "distance": 0.73705024,
+        //         "id": 596,
+        //         "entity": {"color": "red_691"}
+        //     },
+        //     {
+        //         "distance": 0.7145017,
+        //         "id": 170,
+        //         "entity": {"color": "red_209"}
+        //     },
+        //     {
+        //         "distance": 0.6979258,
+        //         "id": 946,
+        //         "entity": {"color": "red_958"}
+        //     }
+        // ]]}
 
 
 
@@ -269,7 +353,12 @@ public final class QuickStartDemo {
         System.out.println(JSONObject.toJSON(queryRes));
 
         // Output:
-        // {"queryResults":[{"entity":{"id":11}},{"entity":{"id":12}},{"entity":{"id":13}},{"entity":{"id":14}}]}
+        // {"queryResults": [
+        //     {"entity": {"id": 11}},
+        //     {"entity": {"id": 12}},
+        //     {"entity": {"id": 13}},
+        //     {"entity": {"id": 14}}
+        // ]}
 
 
 
@@ -288,7 +377,28 @@ public final class QuickStartDemo {
         System.out.println(JSONObject.toJSON(customQueryRes));
 
         // Output:
-        // {"queryResults":[{"entity":{"color":"brown_879","id":185}},{"entity":{"color":"brown_846","id":273}},{"entity":{"color":"brown_85","id":336}},{"entity":{"color":"brown_81","id":448}},{"entity":{"color":"brown_80","id":479}}]}
+        // {"queryResults": [
+        //     {"entity": {
+        //         "color": "brown_813",
+        //         "id": 45
+        //     }},
+        //     {"entity": {
+        //         "color": "brown_840",
+        //         "id": 113
+        //     }},
+        //     {"entity": {
+        //         "color": "brown_851",
+        //         "id": 136
+        //     }},
+        //     {"entity": {
+        //         "color": "brown_817",
+        //         "id": 190
+        //     }},
+        //     {"entity": {
+        //         "color": "brown_822",
+        //         "id": 431
+        //     }}
+        // ]}
 
 
 
@@ -305,7 +415,41 @@ public final class QuickStartDemo {
         System.out.println(JSONObject.toJSON(getRes));
 
         // Output:
-        // {"getResults":[{"entity":{"color":"pink_8682","vector":[0.35803765,-0.6023496,0.18414013,-0.26286206,0.90294385],"id":0}},{"entity":{"color":"red_7025","vector":[0.19886813,0.060235605,0.6976963,0.26144746,0.8387295],"id":1}},{"entity":{"color":"orange_6781","vector":[0.43742132,-0.55975026,0.6457888,0.7894059,0.20785794],"id":2}}]}
+        // {"getResults": [
+        //     {"entity": {
+        //         "color": "pink_8682",
+        //         "vector": [
+        //             0.35803765,
+        //             -0.6023496,
+        //             0.18414013,
+        //             -0.26286206,
+        //             0.90294385
+        //         ],
+        //         "id": 0
+        //     }},
+        //     {"entity": {
+        //         "color": "red_7025",
+        //         "vector": [
+        //             0.19886813,
+        //             0.060235605,
+        //             0.6976963,
+        //             0.26144746,
+        //             0.8387295
+        //         ],
+        //         "id": 1
+        //     }},
+        //     {"entity": {
+        //         "color": "orange_6781",
+        //         "vector": [
+        //             0.43742132,
+        //             -0.55975026,
+        //             0.6457888,
+        //             0.7894059,
+        //             0.20785794
+        //         ],
+        //         "id": 2
+        //     }}
+        // ]}
 
 
 

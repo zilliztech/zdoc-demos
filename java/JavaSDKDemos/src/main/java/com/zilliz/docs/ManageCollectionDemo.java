@@ -18,18 +18,17 @@ import io.milvus.v2.service.utility.response.ListAliasResp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 
 public class ManageCollectionDemo {
     private static void run() throws InterruptedException {
         String CLUSTER_ENDPOINT = "YOUR_CLUSTER_ENDPOINT";
-        String TOKEN = "YOUR_CLUSTER_TOKEN";
 
         // 1. Connect to Milvus server
         ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(CLUSTER_ENDPOINT)
-            .token(TOKEN)
             .build();
 
         MilvusClientV2 client = new MilvusClientV2(connectConfig);
@@ -78,6 +77,7 @@ public class ManageCollectionDemo {
             .fieldName("my_vector")
             .indexType(IndexParam.IndexType.IVF_FLAT)
             .metricType(IndexParam.MetricType.L2)
+            .extraParams(Map.of("nlist", 1024))
             .build();
 
         List<IndexParam> indexParams = new ArrayList<>();
@@ -155,28 +155,28 @@ public class ManageCollectionDemo {
 
         // Output:
         // {
-        //     "createTime": 448186568622211075,
-        //     "collectionSchema": {
-        //         "fieldSchemaList": [
-        //             {
-        //                 "autoID": false,
-        //                 "dataType": "Int64",
-        //                 "name": "my_id",
-        //                 "isPrimaryKey": true,
-        //                 "maxLength": 65535
-        //             },
-        //             {
-        //                 "autoID": false,
-        //                 "dataType": "FloatVector",
-        //                 "name": "my_vector",
-        //                 "isPrimaryKey": false,
-        //                 "dimension": 5,
-        //                 "maxLength": 65535
-        //             }
-        //         ],
-        //         "description": "",
-        //         "enableDynamicField": false
-        //     },
+        //     "createTime": 449005822816026627,
+        //     "collectionSchema": {"fieldSchemaList": [
+        //         {
+        //             "autoID": false,
+        //             "dataType": "Int64",
+        //             "name": "my_id",
+        //             "description": "",
+        //             "isPrimaryKey": true,
+        //             "maxLength": 65535,
+        //             "isPartitionKey": false
+        //         },
+        //         {
+        //             "autoID": false,
+        //             "dataType": "FloatVector",
+        //             "name": "my_vector",
+        //             "description": "",
+        //             "isPrimaryKey": false,
+        //             "dimension": 5,
+        //             "maxLength": 65535,
+        //             "isPartitionKey": false
+        //         }
+        //     ]},
         //     "vectorFieldName": ["my_vector"],
         //     "autoID": false,
         //     "fieldNames": [
@@ -186,7 +186,7 @@ public class ManageCollectionDemo {
         //     "description": "",
         //     "numOfPartitions": 1,
         //     "primaryFieldName": "my_id",
-        //     "enableDynamicField": false,
+        //     "enableDynamicField": true,
         //     "collectionName": "customized_setup_2"
         // }
 
@@ -201,9 +201,10 @@ public class ManageCollectionDemo {
 
         // Output:
         // [
-        //     "customized_setup_2",
+        //     "customized_setup_1",
+        //     "test_collection",
         //     "quick_setup",
-        //     "customized_setup_1"
+        //     "customized_setup_2"
         // ]
 
 
@@ -335,6 +336,7 @@ public class ManageCollectionDemo {
 
 
 
+
         listAliasesReq = ListAliasesReq.builder()
             .collectionName("customized_setup_2")
             .build();
@@ -345,6 +347,7 @@ public class ManageCollectionDemo {
 
         // Output:
         // ["bob"]
+
 
 
 

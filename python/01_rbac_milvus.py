@@ -20,7 +20,7 @@ client.grant_privilege(
     object_name="*"
 )
 
-# 3. Describe the role
+# 4. Describe the role
 res = client.describe_role(role_name="read_only")
 
 print(res)

@@ -3,6 +3,7 @@ package com.zilliz.docs;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.alibaba.fastjson.JSONObject;
@@ -22,13 +23,11 @@ import io.milvus.v2.service.vector.response.SearchResp;
 
 public class EnableDynamicFieldDemo {
     public static void run() throws InterruptedException {
-        String CLUSTER_ENDPOINT = "https://in01-0ed1e58b63f3f62.aws-us-west-2.vectordb-uat3.zillizcloud.com:19538";
-        String TOKEN = "root:n8=;5cdO:5q0G%:K<SdMhwcx0Rl!G=:}";
+        String CLUSTER_ENDPOINT = "YOUR_CLUSTER_ENDPOINT";
 
         // 1. Connect to Milvus server
         ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(CLUSTER_ENDPOINT)
-            .token(TOKEN)
             .build();
 
         MilvusClientV2 client = new MilvusClientV2(connectConfig);
@@ -52,6 +51,7 @@ public class EnableDynamicFieldDemo {
             .fieldName("vector")
             .indexType(IndexParam.IndexType.IVF_FLAT)
             .metricType(IndexParam.MetricType.IP)
+            .extraParams(Map.of("nlist", 1024))
             .build();
 
         List<IndexParam> indexParams = new ArrayList<>();
@@ -68,7 +68,7 @@ public class EnableDynamicFieldDemo {
 
         client.createCollection(customizedSetupReq);
 
-        // Thread.sleep(5000);
+        Thread.sleep(5000);
 
         // 2.5 Get load state of the collection
         GetLoadStateReq customSetupLoadStateReq1 = GetLoadStateReq.builder()
@@ -78,6 +78,12 @@ public class EnableDynamicFieldDemo {
         boolean res = client.getLoadState(customSetupLoadStateReq1);
 
         System.out.println(res);
+
+        // Output:
+        // true
+
+
+
 
 
         // 3. Insert randomly generated vectors
@@ -100,6 +106,24 @@ public class EnableDynamicFieldDemo {
 
         System.out.println(JSONObject.toJSON(data.get(0)));
 
+        // Output:
+        // {
+        //     "color": "orange",
+        //     "color_tag": "orange_3484",
+        //     "vector": [
+        //         0.7102922,
+        //         0.108297944,
+        //         0.51227134,
+        //         0.5478929,
+        //         0.47800457
+        //     ],
+        //     "id": 0,
+        //     "tag": 8745
+        // }
+
+
+
+
         // 3.1 Insert data into the collection
         InsertReq insertReq = InsertReq.builder()
             .collectionName("customized_setup")
@@ -109,6 +133,12 @@ public class EnableDynamicFieldDemo {
         InsertResp insertResp = client.insert(insertReq);
 
         System.out.println(JSONObject.toJSON(insertResp));
+
+        // Output:
+        // {"insertCnt": 1000}
+
+
+
 
         Thread.sleep(5000);
 
@@ -125,6 +155,28 @@ public class EnableDynamicFieldDemo {
         SearchResp searchResp = client.search(searchReq);
 
         System.out.println(JSONObject.toJSON(searchResp));
+
+        // Output:
+        // {"searchResults": [[
+        //     {
+        //         "distance": 1.1244214,
+        //         "id": 525,
+        //         "entity": {}
+        //     },
+        //     {
+        //         "distance": 0.9610535,
+        //         "id": 722,
+        //         "entity": {}
+        //     },
+        //     {
+        //         "distance": 0.9521862,
+        //         "id": 420,
+        //         "entity": {}
+        //     }
+        // ]]}
+
+
+
 
         // 5. Drop the collection
         DropCollectionReq dropCollectionReq = DropCollectionReq.builder()

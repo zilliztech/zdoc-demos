@@ -18,12 +18,10 @@ import io.milvus.v2.service.partition.request.ReleasePartitionsReq;
 public class ManagePartitionsDemo {
     public static void run() throws InterruptedException {
         String CLUSTER_ENDPOINT = "YOUR_CLUSTER_ENDPOINT";
-        String TOKEN = "YOUR_CLUSTER_TOKEN";
 
         // 1. Connect to Milvus server
         ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(CLUSTER_ENDPOINT)
-            .token(TOKEN)
             .build();
 
         MilvusClientV2 client = new MilvusClientV2(connectConfig);
@@ -47,6 +45,7 @@ public class ManagePartitionsDemo {
 
         // Output:
         // ["_default"]
+
 
 
 
@@ -84,6 +83,7 @@ public class ManagePartitionsDemo {
 
 
 
+
         // 5. Check whether a partition exists
         HasPartitionReq hasPartitionReq = HasPartitionReq.builder()
             .collectionName("quick_setup")
@@ -100,6 +100,7 @@ public class ManagePartitionsDemo {
 
 
 
+
         hasPartitionReq = HasPartitionReq.builder()
             .collectionName("quick_setup")
             .partitionName("partitionC")
@@ -111,6 +112,7 @@ public class ManagePartitionsDemo {
 
         // Output:
         // false
+
 
 
 
@@ -148,6 +150,7 @@ public class ManagePartitionsDemo {
 
 
 
+
         getLoadStateReq = GetLoadStateReq.builder()
             .collectionName("quick_setup")
             .partitionName("partitionA")
@@ -163,6 +166,7 @@ public class ManagePartitionsDemo {
 
 
 
+
         getLoadStateReq = GetLoadStateReq.builder()
             .collectionName("quick_setup")
             .partitionName("partitionB")
@@ -174,6 +178,7 @@ public class ManagePartitionsDemo {
 
         // Output:
         // false
+
 
 
 
@@ -201,6 +206,7 @@ public class ManagePartitionsDemo {
 
 
 
+
         // Drop a partition
         DropPartitionReq dropPartitionReq = DropPartitionReq.builder()
             .collectionName("quick_setup")
@@ -223,6 +229,7 @@ public class ManagePartitionsDemo {
         //     "_default",
         //     "partitionA"
         // ]
+
 
 
 

@@ -2,6 +2,7 @@ package com.zilliz.docs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -22,12 +23,10 @@ public class ManageIndexesDemo {
 
     public static void run() throws InterruptedException {
         String CLUSTER_ENDPOINT = "YOUR_CLUSTER_ENDPOINT";
-        String TOKEN = "YOUR_CLUSTER_TOKEN";
 
         // 1. Connect to Milvus server
         ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(CLUSTER_ENDPOINT)
-            .token(TOKEN)
             .build();
 
         MilvusClientV2 client = new MilvusClientV2(connectConfig);
@@ -97,6 +96,7 @@ public class ManageIndexesDemo {
 
 
 
+
         // 5.2 Describe an index
         DescribeIndexReq describeIndexReq = DescribeIndexReq.builder()
             .collectionName("customized_setup")
@@ -118,6 +118,7 @@ public class ManageIndexesDemo {
 
 
 
+
         describeIndexReq = DescribeIndexReq.builder()
             .collectionName("customized_setup")
             .indexName("primary_field_index")
@@ -133,6 +134,7 @@ public class ManageIndexesDemo {
         //     "fieldName": "id",
         //     "indexName": "primary_field_index"
         // }
+
 
 
 

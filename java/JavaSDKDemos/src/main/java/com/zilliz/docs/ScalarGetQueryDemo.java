@@ -23,12 +23,10 @@ import io.milvus.v2.service.vector.response.QueryResp;
 public class ScalarGetQueryDemo {
     public static void run() throws InterruptedException {
         String CLUSTER_ENDPOINT = "YOUR_CLUSTER_ENDPOINT";
-        String TOKEN = "YOUR_CLUSTER_TOKEN";
 
         // 1. Connect to Milvus server
         ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(CLUSTER_ENDPOINT)
-            .token(TOKEN)
             .build();
 
         MilvusClientV2 client = new MilvusClientV2(connectConfig);  
@@ -135,6 +133,7 @@ public class ScalarGetQueryDemo {
 
 
 
+
         data.clear();
 
         for (int i=1500; i<2000; i++) {
@@ -165,6 +164,7 @@ public class ScalarGetQueryDemo {
 
 
 
+
         // 5. Get entities by ID
         GetReq getReq = GetReq.builder()
             .collectionName("quick_setup")
@@ -177,37 +177,47 @@ public class ScalarGetQueryDemo {
 
         // Output:
         // {"getResults": [
-        //     {"fields": {
+        //     {"entity": {
+        //         "color": "white",
+        //         "color_tag": "white_4597",
         //         "vector": [
-        //             0.95507205,
-        //             0.61584574,
-        //             0.95414686,
-        //             0.71491015,
-        //             0.49362534
+        //             0.09665024,
+        //             0.1163497,
+        //             0.0701347,
+        //             0.32577968,
+        //             0.40943468
         //         ],
+        //         "tag": 8946,
         //         "id": 0
         //     }},
-        //     {"fields": {
+        //     {"entity": {
+        //         "color": "green",
+        //         "color_tag": "green_3039",
         //         "vector": [
-        //             0.6985752,
-        //             0.23070127,
-        //             0.8181768,
-        //             0.086550236,
-        //             0.8761731
+        //             0.90689456,
+        //             0.4377399,
+        //             0.75387514,
+        //             0.36454988,
+        //             0.8702918
         //         ],
+        //         "tag": 2341,
         //         "id": 1
         //     }},
-        //     {"fields": {
+        //     {"entity": {
+        //         "color": "white",
+        //         "color_tag": "white_8708",
         //         "vector": [
-        //             0.09116334,
-        //             0.48260283,
-        //             0.7720485,
-        //             0.06723672,
-        //             0.6035099
+        //             0.9757728,
+        //             0.13974023,
+        //             0.8023141,
+        //             0.61947155,
+        //             0.8290197
         //         ],
+        //         "tag": 9913,
         //         "id": 2
         //     }}
         // ]}
+
 
 
 
@@ -225,37 +235,44 @@ public class ScalarGetQueryDemo {
 
         // Output:
         // {"getResults": [
-        //     {"fields": {
+        //     {"entity": {
+        //         "color": "yellow",
         //         "vector": [
-        //             0.26971114,
-        //             0.8162539,
-        //             0.24346673,
-        //             0.9125845,
-        //             0.29279858
+        //             0.4300114,
+        //             0.599917,
+        //             0.799163,
+        //             0.75395125,
+        //             0.89947814
         //         ],
-        //         "id": 1001
+        //         "id": 1001,
+        //         "tag": 5803
         //     }},
-        //     {"fields": {
+        //     {"entity": {
+        //         "color": "blue",
         //         "vector": [
-        //             0.61355865,
-        //             0.80650723,
-        //             0.5405893,
-        //             0.2860809,
-        //             0.6199198
+        //             0.009218454,
+        //             0.64637834,
+        //             0.19815737,
+        //             0.30519038,
+        //             0.8218663
         //         ],
-        //         "id": 1002
+        //         "id": 1002,
+        //         "tag": 7212
         //     }},
-        //     {"fields": {
+        //     {"entity": {
+        //         "color": "black",
         //         "vector": [
-        //             0.0035357475,
-        //             0.60450536,
-        //             0.45755625,
-        //             0.5474898,
-        //             0.09484583
+        //             0.76521933,
+        //             0.7818409,
+        //             0.16976339,
+        //             0.8719652,
+        //             0.1434964
         //         ],
-        //         "id": 1003
+        //         "id": 1003,
+        //         "tag": 1710
         //     }}
         // ]}
+
 
 
 
@@ -275,19 +292,20 @@ public class ScalarGetQueryDemo {
 
         // Output:
         // {"queryResults": [
-        //     {"fields": {
-        //         "color_tag": "white_7191",
-        //         "id": 2
+        //     {"entity": {
+        //         "color_tag": "white_7588",
+        //         "id": 34
         //     }},
-        //     {"fields": {
-        //         "color_tag": "orange_1697",
-        //         "id": 23
+        //     {"entity": {
+        //         "color_tag": "orange_4989",
+        //         "id": 64
         //     }},
-        //     {"fields": {
-        //         "color_tag": "yellow_9110",
-        //         "id": 72
+        //     {"entity": {
+        //         "color_tag": "white_3415",
+        //         "id": 73
         //     }}
         // ]}
+
 
 
 
@@ -305,19 +323,20 @@ public class ScalarGetQueryDemo {
 
         // Output:
         // {"queryResults": [
-        //     {"fields": {
-        //         "color_tag": "brown_6764",
-        //         "id": 10
+        //     {"entity": {
+        //         "color_tag": "brown_7792",
+        //         "id": 3
         //     }},
-        //     {"fields": {
-        //         "color_tag": "brown_4123",
-        //         "id": 12
+        //     {"entity": {
+        //         "color_tag": "brown_9695",
+        //         "id": 7
         //     }},
-        //     {"fields": {
-        //         "color_tag": "brown_1103",
-        //         "id": 21
+        //     {"entity": {
+        //         "color_tag": "brown_2551",
+        //         "id": 15
         //     }}
         // ]}
+
 
 
 
@@ -335,19 +354,20 @@ public class ScalarGetQueryDemo {
 
         // Output:
         // {"queryResults": [
-        //     {"fields": {
-        //         "color_tag": "red_2945",
-        //         "id": 1
+        //     {"entity": {
+        //         "color_tag": "white_4597",
+        //         "id": 0
         //     }},
-        //     {"fields": {
-        //         "color_tag": "white_7191",
+        //     {"entity": {
+        //         "color_tag": "white_8708",
         //         "id": 2
         //     }},
-        //     {"fields": {
-        //         "color_tag": "yellow_3849",
+        //     {"entity": {
+        //         "color_tag": "brown_7792",
         //         "id": 3
         //     }}
         // ]}
+
 
 
 
@@ -365,19 +385,20 @@ public class ScalarGetQueryDemo {
 
         // Output:
         // {"queryResults": [
-        //     {"fields": {
-        //         "color_tag": "red_2945",
-        //         "id": 1
+        //     {"entity": {
+        //         "color_tag": "red_4929",
+        //         "id": 9
         //     }},
-        //     {"fields": {
-        //         "color_tag": "red_4602",
-        //         "id": 17
+        //     {"entity": {
+        //         "color_tag": "red_8284",
+        //         "id": 13
         //     }},
-        //     {"fields": {
-        //         "color_tag": "red_4854",
-        //         "id": 18
+        //     {"entity": {
+        //         "color_tag": "red_3021",
+        //         "id": 44
         //     }}
         // ]}
+
 
 
 
@@ -395,19 +416,20 @@ public class ScalarGetQueryDemo {
 
         // Output:
         // {"queryResults": [
-        //     {"fields": {
-        //         "color_tag": "red_1390",
-        //         "id": 162
+        //     {"entity": {
+        //         "color_tag": "red_8124",
+        //         "id": 83
         //     }},
-        //     {"fields": {
-        //         "color_tag": "red_5429",
-        //         "id": 912
+        //     {"entity": {
+        //         "color_tag": "red_5358",
+        //         "id": 501
         //     }},
-        //     {"fields": {
-        //         "color_tag": "red_7540",
-        //         "id": 990
+        //     {"entity": {
+        //         "color_tag": "red_3564",
+        //         "id": 638
         //     }}
         // ]}
+
 
 
 
@@ -425,7 +447,9 @@ public class ScalarGetQueryDemo {
         System.out.println(JSONObject.toJSON(queryResp));
 
         // Output:
-        // {"queryResults": [{"fields": {"count(*)": 2000}}]}
+        // {"queryResults": [{"entity": {"count(*)": 2000}}]}
+
+
 
 
 
@@ -443,7 +467,8 @@ public class ScalarGetQueryDemo {
         System.out.println(JSONObject.toJSON(queryResp));
 
         // Output:
-        // {"queryResults": [{"fields": {"count(*)": 500}}]}
+        // {"queryResults": [{"entity": {"count(*)": 500}}]}
+
 
 
 
@@ -460,7 +485,8 @@ public class ScalarGetQueryDemo {
         System.out.println(JSONObject.toJSON(queryResp));
 
         // Output:
-        // {"queryResults": [{"fields": {"count(*)": 9}}]}
+        // {"queryResults": [{"entity": {"count(*)": 7}}]}
+
 
 
 

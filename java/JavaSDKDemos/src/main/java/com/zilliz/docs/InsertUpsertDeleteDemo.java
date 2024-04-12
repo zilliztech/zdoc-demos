@@ -21,12 +21,10 @@ import io.milvus.v2.service.vector.response.UpsertResp;
 public class InsertUpsertDeleteDemo {
     public static void run() throws InterruptedException {
         String CLUSTER_ENDPOINT = "YOUR_CLUSTER_ENDPOINT";
-        String TOKEN = "YOUR_CLUSTER_TOKEN";
 
         // 1. Connect to Milvus server
         ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(CLUSTER_ENDPOINT)
-            .token(TOKEN)
             .build();
 
         MilvusClientV2 client = new MilvusClientV2(connectConfig);
@@ -50,6 +48,7 @@ public class InsertUpsertDeleteDemo {
 
         // Output:
         // true
+
 
 
 
@@ -79,6 +78,7 @@ public class InsertUpsertDeleteDemo {
 
         // Output:
         // {"insertCnt": 10}
+
 
 
 
@@ -120,6 +120,7 @@ public class InsertUpsertDeleteDemo {
 
 
 
+
         // 5. Upsert some data
         data = Arrays.asList(
             new JSONObject(Map.of("id", 0L, "vector", Arrays.asList(-0.619954382375778f, 0.4479436794798608f, -0.17493894838751745f, -0.4248030059917294f, -0.8648452746018911f), "color", "black_9898")),
@@ -145,6 +146,7 @@ public class InsertUpsertDeleteDemo {
 
         // Output:
         // {"upsertCnt": 10}
+
 
 
 
@@ -180,6 +182,7 @@ public class InsertUpsertDeleteDemo {
 
 
 
+
         // 7. Delete entities
 
         DeleteReq deleteReq = DeleteReq.builder()
@@ -197,6 +200,7 @@ public class InsertUpsertDeleteDemo {
 
 
 
+
         deleteReq = DeleteReq.builder()
             .collectionName("quick_setup")
             .ids(Arrays.asList(18L, 19L))
@@ -209,6 +213,7 @@ public class InsertUpsertDeleteDemo {
 
         // Output:
         // {"deleteCnt": 2}
+
 
 
 

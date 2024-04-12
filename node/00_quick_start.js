@@ -51,21 +51,13 @@ async function main() {
         collection_name: "customized_setup_1"
     })
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateLoaded'
-    // }
+    // LoadStateLoaded
     // 
+
 
 
 
@@ -90,31 +82,13 @@ async function main() {
         data: data
     })
 
-    console.log(res)
+    console.log(res.insert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //     0, 1, 2, 3, 4,
-    //     5, 6, 7, 8, 9
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '10',
-    //   delete_cnt: '0',
-    //   upsert_cnt: '0',
-    //   timestamp: '448211908247683076'
-    // }
+    // 10
     // 
+
 
 
 
@@ -136,39 +110,13 @@ async function main() {
         data: data
     })
 
-    console.log(res)
+    console.log(res.insert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //      0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11,
-    //     12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-    //     24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-    //     36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
-    //     48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-    //     60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
-    //     72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
-    //     84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
-    //     96, 97, 98, 99,
-    //     ... 895 more items
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '995',
-    //   delete_cnt: '0',
-    //   upsert_cnt: '0',
-    //   timestamp: '448211908418076673'
-    // }
+    // 995
     // 
+
 
 
 
@@ -191,12 +139,13 @@ async function main() {
     // 
     // [
     //   { score: 0, id: '0' },
-    //   { score: 0.5374976396560669, id: '26' },
-    //   { score: 0.5396882891654968, id: '856' },
-    //   { score: 0.6510515809059143, id: '214' },
-    //   { score: 0.6665088534355164, id: '469' }
+    //   { score: 0.503976583480835, id: '961' },
+    //   { score: 0.5741162300109863, id: '168' },
+    //   { score: 0.660664439201355, id: '805' },
+    //   { score: 0.6729328632354736, id: '415' }
     // ]
     // 
+
 
 
 
@@ -221,20 +170,21 @@ console.log(res.results)
 // [
 //   [
 //     { score: 0, id: '0' },
-//     { score: 0.5374976396560669, id: '26' },
-//     { score: 0.5396882891654968, id: '856' },
-//     { score: 0.6510515809059143, id: '214' },
-//     { score: 0.6665088534355164, id: '469' }
+//     { score: 0.503976583480835, id: '961' },
+//     { score: 0.5741162300109863, id: '168' },
+//     { score: 0.660664439201355, id: '805' },
+//     { score: 0.6729328632354736, id: '415' }
 //   ],
 //   [
 //     { score: 0, id: '1' },
-//     { score: 0.018891718238592148, id: '718' },
-//     { score: 0.031348153948783875, id: '983' },
-//     { score: 0.03305535763502121, id: '682' },
-//     { score: 0.03766927123069763, id: '229' }
+//     { score: 0.04019960016012192, id: '139' },
+//     { score: 0.049453068524599075, id: '916' },
+//     { score: 0.05025326460599899, id: '606' },
+//     { score: 0.054675549268722534, id: '603' }
 //   ]
 // ]
 // 
+
 
 
 
@@ -254,13 +204,14 @@ console.log(res.results)
 // Output
 // 
 // [
-//   { score: 0.7752822041511536, id: '649' },
-//   { score: 0.8341060876846313, id: '532' },
-//   { score: 0.8522343039512634, id: '718' },
-//   { score: 0.905109703540802, id: '608' },
-//   { score: 0.9218588471412659, id: '708' }
+//   { score: 0.7135878801345825, id: '675' },
+//   { score: 0.7833935618400574, id: '517' },
+//   { score: 0.7932313084602356, id: '606' },
+//   { score: 0.9196463823318481, id: '603' },
+//   { score: 0.9780420064926147, id: '712' }
 // ]
 // 
+
 
 
 
@@ -275,27 +226,19 @@ res = await client.search({
     output_fields: ["color"]
 })
 
-console.log(res)
+console.log(res.results)
 
 // Output
 // 
-// {
-//   status: {
-//     error_code: 'Success',
-//     reason: '',
-//     code: 0,
-//     retriable: false,
-//     detail: ''
-//   },
-//   results: [
-//     { score: 0.9218588471412659, id: '708', color: 'red_9190' },
-//     { score: 0.9596457481384277, id: '239', color: 'red_5656' },
-//     { score: 1.0071179866790771, id: '1', color: 'red_7025' },
-//     { score: 1.0132081508636475, id: '676', color: 'red_9445' },
-//     { score: 1.1416831016540527, id: '784', color: 'red_3665' }
-//   ]
-// }
+// [
+//   { score: 0.5741162300109863, id: '168', color: 'red_2944' },
+//   { score: 0.9455333948135376, id: '943', color: 'red_8752' },
+//   { score: 0.9563189744949341, id: '441', color: 'red_1222' },
+//   { score: 1.0071179866790771, id: '1', color: 'red_7025' },
+//   { score: 1.0883007049560547, id: '490', color: 'red_6795' }
+// ]
 // 
+
 
 
 
@@ -325,11 +268,13 @@ console.log(res.data)
 
 
 
+
 // 11. query with non-schema-defined fields
 res = await client.query({
     collection_name: "quick_setup",
     expr: '$meta["color"] like "brown_8%"',
-    output_fields: ["color"]
+    output_fields: ["color"],
+    limit: 5
 })
 
 console.log(res.data)
@@ -337,23 +282,14 @@ console.log(res.data)
 // Output
 // 
 // [
-//   { '$meta': { color: 'brown_8575' }, id: '99' },
-//   { '$meta': { color: 'brown_8871' }, id: '156' },
-//   { '$meta': { color: 'brown_8861' }, id: '176' },
-//   { '$meta': { color: 'brown_8125' }, id: '211' },
-//   { '$meta': { color: 'brown_8516' }, id: '296' },
-//   { '$meta': { color: 'brown_8523' }, id: '307' },
-//   { '$meta': { color: 'brown_8185' }, id: '314' },
-//   { '$meta': { color: 'brown_8915' }, id: '473' },
-//   { '$meta': { color: 'brown_8135' }, id: '550' },
-//   { '$meta': { color: 'brown_8155' }, id: '569' },
-//   { '$meta': { color: 'brown_8439' }, id: '605' },
-//   { '$meta': { color: 'brown_8618' }, id: '659' },
-//   { '$meta': { color: 'brown_8638' }, id: '704' },
-//   { '$meta': { color: 'brown_8809' }, id: '776' },
-//   { '$meta': { color: 'brown_8495' }, id: '882' }
+//   { id: '210', '$meta': { color: 'brown_8376' } },
+//   { id: '263', '$meta': { color: 'brown_8043' } },
+//   { id: '379', '$meta': { color: 'brown_8611' } },
+//   { id: '392', '$meta': { color: 'brown_8012' } },
+//   { id: '630', '$meta': { color: 'brown_8653' } }
 // ]
 // 
+
 
 
 
@@ -428,6 +364,7 @@ console.log(res.data)
 
 
 
+
     // 13. Delete entities by IDs
     res = await client.deleteEntities({
         collection_name: "quick_setup",
@@ -435,104 +372,64 @@ console.log(res.data)
         output_fields: ["vector"]
     })
 
-    console.log(res)
+    console.log(res.delete_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: {},
-    //   acknowledged: false,
-    //   insert_cnt: '0',
-    //   delete_cnt: '5',
-    //   upsert_cnt: '0',
-    //   timestamp: '0'
-    // }
+    // 5
     // 
+
 
 
 
 
 
     // 14. Delete entities by filter
-res = await client.delete({
-    collection_name: "quick_setup",
-    ids: [0, 1, 2, 3, 4]
-})
+    res = await client.delete({
+        collection_name: "quick_setup",
+        ids: [0, 1, 2, 3, 4]
+    })
 
-console.log(res)
+    console.log(res.delete_cnt)
 
-// Output
-// 
-// {
-//   succ_index: [],
-//   err_index: [],
-//   status: {
-//     error_code: 'Success',
-//     reason: '',
-//     code: 0,
-//     retriable: false,
-//     detail: ''
-//   },
-//   IDs: {},
-//   acknowledged: false,
-//   insert_cnt: '0',
-//   delete_cnt: '5',
-//   upsert_cnt: '0',
-//   timestamp: '0'
-// }
-// 
+    // Output
+    // 
+    // 5
+    // 
 
 
 
 
 
-// 15. Drop the collection
-res = await client.dropCollection({
-    collection_name: "quick_setup"
-})
 
-console.log(res)
+    // 15. Drop the collection
+    res = await client.dropCollection({
+        collection_name: "quick_setup"
+    })
 
-// Output
-// 
-// {
-//   error_code: 'Success',
-//   reason: '',
-//   code: 0,
-//   retriable: false,
-//   detail: ''
-// }
-// 
+    console.log(res.error_code)
+
+    // Output
+    // 
+    // Success
+    // 
 
 
 
 
 
-res = await client.dropCollection({
-    collection_name: "customized_setup"
-})
 
-console.log(res)
+    res = await client.dropCollection({
+        collection_name: "customized_setup"
+    })
 
-// Output
-// 
-// {
-//   error_code: 'Success',
-//   reason: '',
-//   code: 0,
-//   retriable: false,
-//   detail: ''
-// }
-// 
+    console.log(res.error_code)
+
+    // Output
+    // 
+    // Success
+    // 
+
 
 
 
