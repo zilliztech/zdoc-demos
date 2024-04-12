@@ -52,40 +52,23 @@ async function main() {
         enable_dynamic_field: true
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
 
     res = await client.getLoadState({
         collection_name: "test_collection",
     })  
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateLoaded'
-    // }
+    // LoadStateLoaded
     // 
-
 
     // 3. Insert randomly generated vectors 
     const colors = ["green", "blue", "yellow", "red", "black", "white", "purple", "pink", "orange", "brown", "grey"]
@@ -110,57 +93,31 @@ async function main() {
     // {
     //   id: 0,
     //   vector: [
-    //     0.9044868976050435,
-    //     0.6177625444645114,
-    //     0.7895390632163257,
-    //     0.7680228430101279,
-    //     0.9926867413499765
+    //     0.521639270918109,
+    //     0.9418960358339306,
+    //     0.7576785932128338,
+    //     0.7256261748654758,
+    //     0.14608423286768568
     //   ],
-    //   color: 'red',
-    //   tag: 7019,
-    //   color_tag: 'red_7019'
+    //   color: 'yellow',
+    //   tag: 9286,
+    //   color_tag: 'yellow_9286'
     // }
     // 
-
 
     res = await client.insert({
         collection_name: "test_collection",
         data: data,
     })
 
-    console.log(res)
+    console.log(res.insert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //      0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11,
-    //     12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-    //     24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-    //     36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
-    //     48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-    //     60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
-    //     72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
-    //     84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
-    //     96, 97, 98, 99,
-    //     ... 900 more items
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '1000',
-    //   delete_cnt: '0',
-    //   upsert_cnt: '0',
-    //   timestamp: '448169526627926018'
-    // }
+    // 1000
     // 
+
+    await sleep(5000)
 
     // 4. Search with partition key
     const query_vectors = [Math.random(), Math.random(), Math.random(), Math.random(), Math.random()]
@@ -173,24 +130,15 @@ async function main() {
         limit: 3
     })
 
-    console.log(res)
+    console.log(res.results)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   results: [
-    //     { score: 1.4449520111083984, id: '297', color_tag: 'green_8601' },
-    //     { score: 1.3547699451446533, id: '714', color_tag: 'green_4808' },
-    //     { score: 1.3535854816436768, id: '283', color_tag: 'green_1994' }
-    //   ]
-    // }
+    // [
+    //   { score: 3.416375160217285, id: '426', color_tag: 'green_5277' },
+    //   { score: 3.246188163757324, id: '852', color_tag: 'green_9450' },
+    //   { score: 3.2429375648498535, id: '54', color_tag: 'green_8308' }
+    // ]
     // 
 
     // 5. Drop the collection

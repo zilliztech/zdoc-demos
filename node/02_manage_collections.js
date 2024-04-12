@@ -15,48 +15,24 @@ async function main() {
         dimension: 5,
     });  
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
 
     
     res = await client.getLoadState({
         collection_name: "quick_setup"
     })
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateLoaded'
-    // }
+    // LoadStateLoaded
     // 
-
-
-
-
-
 
     // 3. Create a collection in customized setup mode
     // 3.1 Define fields
@@ -92,48 +68,24 @@ async function main() {
         index_params: index_params,
     })
 
-    console.log(res)  
+    console.log(res.error_code)  
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
 
     
     res = await client.getLoadState({
         collection_name: "customized_setup_1"
     })
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateLoaded'
-    // }
+    // LoadStateLoaded
     // 
-
-
-
-
-
 
     // 3.4 Create a collection and index it seperately
     res = await client.createCollection({
@@ -141,48 +93,23 @@ async function main() {
         fields: fields,
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
-
 
     res = await client.getLoadState({
         collection_name: "customized_setup_2"
     })
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateNotLoad'
-    // }
+    // LoadStateNotLoad
     // 
-
-
-
-
-
 
     // 3.5 Create index
     res = await client.createIndex({
@@ -197,25 +124,12 @@ async function main() {
         collection_name: "customized_setup_2"
     })
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateNotLoad'
-    // }
+    // LoadStateNotLoad
     // 
-
-
-
-
 
     
     // 5. View Collections
@@ -228,12 +142,13 @@ async function main() {
     // Output
     // 
     // {
-    //   virtual_channel_names: [ 'in01-0ed1e58b63f3f62-rootcoord-dml_1_448162378879935162v0' ],
-    //   physical_channel_names: [ 'in01-0ed1e58b63f3f62-rootcoord-dml_1' ],
+    //   virtual_channel_names: [ 'by-dev-rootcoord-dml_13_449007919953017716v0' ],
+    //   physical_channel_names: [ 'by-dev-rootcoord-dml_13' ],
     //   aliases: [],
     //   start_positions: [],
     //   properties: [],
     //   status: {
+    //     extra_info: {},
     //     error_code: 'Success',
     //     reason: '',
     //     code: 0,
@@ -248,9 +163,9 @@ async function main() {
     //     autoID: false,
     //     enable_dynamic_field: false
     //   },
-    //   collectionID: '448162378879935162',
-    //   created_timestamp: '448212685858537475',
-    //   created_utc_timestamp: '1709795707163',
+    //   collectionID: '449007919953017716',
+    //   created_timestamp: '449024569603784707',
+    //   created_utc_timestamp: '1712892797866',
     //   shards_num: 1,
     //   consistency_level: 'Bounded',
     //   collection_name: 'customized_setup_2',
@@ -259,11 +174,6 @@ async function main() {
     // }
     // 
 
-
-
-
-
-
     // 6. List all collection names
     res = await client.listCollections()
 
@@ -271,36 +181,20 @@ async function main() {
 
     // Output
     // 
-    // [ 'customized_setup_1', 'quick_setup', 'customized_setup_2' ]
+    // [ 'customized_setup_2', 'customized_setup_1', 'quick_setup' ]
     // 
-
-
-
-
-
 
     // 7. Load the collection
     res = await client.loadCollection({
         collection_name: "customized_setup_2"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
-
 
     await sleep(3000)
 
@@ -308,74 +202,35 @@ async function main() {
         collection_name: "customized_setup_2"
     })
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateLoaded'
-    // }
+    // LoadStateLoaded
     // 
-
-
-
-
-
 
     // 8. Release the collection
     res = await client.releaseCollection({
         collection_name: "customized_setup_2"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
-
 
     res = await client.getLoadState({
         collection_name: "customized_setup_2"
     })
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateNotLoad'
-    // }
+    // LoadStateNotLoad
     // 
-
-
-
-
-
 
     // 9. Manage aliases
     // 9.1 Create aliases
@@ -384,44 +239,24 @@ async function main() {
         alias: "bob"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
-
 
     res = await client.createAlias({
         collection_name: "customized_setup_2",
         alias: "alice"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
 
     await sleep(3000)
 
@@ -430,28 +265,12 @@ async function main() {
         collection_name: "customized_setup_2"
     })
 
-    console.log(res)
+    console.log(res.aliases)
 
     // Output
     // 
-    // {
-    //   aliases: [ 'bob', 'alice' ],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   db_name: 'default',
-    //   collection_name: 'customized_setup_2'
-    // }
+    // [ 'bob', 'alice' ]
     // 
-
-
-
-
-
 
     // 9.3 Describe aliases
     res = await client.describeAlias({
@@ -465,6 +284,7 @@ async function main() {
     // 
     // {
     //   status: {
+    //     extra_info: {},
     //     error_code: 'Success',
     //     reason: '',
     //     code: 0,
@@ -477,200 +297,97 @@ async function main() {
     // }
     // 
 
-
-
-
-
-
     // 9.4 Reassign aliases to other collections
     res = await client.alterAlias({
         collection_name: "customized_setup_1",
         alias: "alice"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
-
 
     res = await client.listAliases({
         collection_name: "customized_setup_1"
     })
 
-    console.log(res)
+    console.log(res.aliases)
 
     // Output
     // 
-    // {
-    //   aliases: [ 'alice' ],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   db_name: 'default',
-    //   collection_name: 'customized_setup_1'
-    // }
+    // [ 'alice' ]
     // 
-
-
-
-
-
 
     res = await client.listAliases({
         collection_name: "customized_setup_2"
     })
 
-    console.log(res)
+    console.log(res.aliases)
 
     // Output
     // 
-    // {
-    //   aliases: [ 'bob' ],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   db_name: 'default',
-    //   collection_name: 'customized_setup_2'
-    // }
+    // [ 'bob' ]
     // 
-
-
-
-
-
 
     // 9.5 Drop aliases
     res = await client.dropAlias({
         alias: "bob"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
 
     res = await client.dropAlias({
         alias: "alice"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
-
-
-
-
-
 
     // 10. Drop the collection
     res = await client.dropCollection({
         collection_name: "customized_setup_2"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
-
 
     res = await client.dropCollection({
         collection_name: "customized_setup_1"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
-
 
     res = await client.dropCollection({
         collection_name: "quick_setup"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
-
 
 }
 

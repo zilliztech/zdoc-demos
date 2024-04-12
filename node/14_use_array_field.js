@@ -54,48 +54,23 @@ async function main() {
         index_params: index_params
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
-
 
     res = await client.getLoadState({
         collection_name: "test_collection",
     })  
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateLoaded'
-    // }
+    // LoadStateLoaded
     // 
-
-
-
-
-
 
     // 3. Insert randomly generated vectors 
     const colors = ["green", "blue", "yellow", "red", "black", "white", "purple", "pink", "orange", "brown", "grey"]
@@ -122,62 +97,31 @@ async function main() {
     // {
     //   id: 0,
     //   vector: [
-    //     0.30695661540580166,
-    //     0.0683065292996865,
-    //     0.1460991476466451,
-    //     0.22134006614929214,
-    //     0.05159331158626035
+    //     0.0338537420906162,
+    //     0.6844108238358322,
+    //     0.28410588909961754,
+    //     0.09752595400212116,
+    //     0.22671013058761114
     //   ],
-    //   color: 'pink',
-    //   color_tag: 7260,
-    //   color_coord: [ 23, 31, 4, 37 ]
+    //   color: 'orange',
+    //   color_tag: 5677,
+    //   color_coord: [ 3, 0, 18, 29 ]
     // }
     // 
-
-
-
-
-
 
     res = await client.insert({
         collection_name: "test_collection",
         data: data,
     })
 
-    console.log(res)
+    console.log(res.insert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //      0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11,
-    //     12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-    //     24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-    //     36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
-    //     48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-    //     60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
-    //     72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
-    //     84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
-    //     96, 97, 98, 99,
-    //     ... 900 more items
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '1000',
-    //   delete_cnt: '0',
-    //   upsert_cnt: '0',
-    //   timestamp: '448186242960719874'
-    // }
+    // 1000
     // 
 
+    await sleep(5000)
 
     // 4. Basic search with the array field
     const query_vectors = [Array(5).fill(0).map(() => Math.random())]
@@ -196,37 +140,38 @@ async function main() {
     // 
     // [
     //     {
-    //         "score": 1.6622756719589233,
-    //         "id": "564",
-    //         "color": "red",
-    //         "color_tag": "4379",
-    //         "color_coord": [
-    //             "6",
-    //             "0",
-    //             "30"
-    //         ]
-    //     },
-    //     {
-    //         "score": 1.6098737716674805,
-    //         "id": "308",
-    //         "color": "grey",
-    //         "color_tag": "4518",
-    //         "color_coord": [
-    //             "8",
-    //             "10",
-    //             "25",
-    //             "14",
-    //             "34"
-    //         ]
-    //     },
-    //     {
-    //         "score": 1.4963085651397705,
-    //         "id": "610",
-    //         "color": "purple",
-    //         "color_tag": "3431",
+    //         "score": 2.015894889831543,
+    //         "id": "260",
+    //         "color": "green",
+    //         "color_tag": "5320",
     //         "color_coord": [
     //             "1",
-    //             "36"
+    //             "7",
+    //             "33",
+    //             "13",
+    //             "23"
+    //         ]
+    //     },
+    //     {
+    //         "score": 2.006500720977783,
+    //         "id": "720",
+    //         "color": "green",
+    //         "color_tag": "4939",
+    //         "color_coord": [
+    //             "0",
+    //             "19",
+    //             "5",
+    //             "30",
+    //             "15"
+    //         ]
+    //     },
+    //     {
+    //         "score": 1.9539016485214233,
+    //         "id": "243",
+    //         "color": "red",
+    //         "color_tag": "2403",
+    //         "color_coord": [
+    //             "4"
     //         ]
     //     }
     // ]
@@ -246,42 +191,39 @@ async function main() {
     // 
     // [
     //     {
-    //         "score": 1.6098737716674805,
-    //         "id": "308",
-    //         "color": "grey",
-    //         "color_tag": "4518",
+    //         "score": 1.783075213432312,
+    //         "id": "593",
+    //         "color_tag": "4079",
     //         "color_coord": [
     //             "8",
-    //             "10",
-    //             "25",
-    //             "14",
-    //             "34"
-    //         ]
+    //             "19"
+    //         ],
+    //         "color": "orange"
     //     },
     //     {
-    //         "score": 1.4961185455322266,
-    //         "id": "203",
-    //         "color": "yellow",
-    //         "color_tag": "4338",
+    //         "score": 1.7695187330245972,
+    //         "id": "248",
+    //         "color_tag": "1618",
     //         "color_coord": [
-    //             "8",
-    //             "9"
-    //         ]
+    //             "7",
+    //             "4",
+    //             "23"
+    //         ],
+    //         "color": "blue"
     //     },
     //     {
-    //         "score": 1.4894033670425415,
-    //         "id": "870",
-    //         "color": "brown",
-    //         "color_tag": "7322",
+    //         "score": 1.6041288375854492,
+    //         "id": "667",
+    //         "color_tag": "4203",
     //         "color_coord": [
     //             "8",
-    //             "9",
-    //             "33"
-    //         ]
+    //             "37",
+    //             "31"
+    //         ],
+    //         "color": "purple"
     //     }
     // ]
     // 
-
 
     // 5. Advanced search within the array field
     res = await client.search({
@@ -298,39 +240,38 @@ async function main() {
     // 
     // [
     //     {
-    //         "score": 1.6098737716674805,
-    //         "id": "308",
+    //         "score": 1.7962548732757568,
+    //         "id": "696",
+    //         "color": "red",
+    //         "color_tag": "1798",
     //         "color_coord": [
-    //             "8",
+    //             "33",
     //             "10",
-    //             "25",
-    //             "14",
-    //             "34"
-    //         ],
-    //         "color": "grey",
-    //         "color_tag": "4518"
+    //             "37"
+    //         ]
     //     },
     //     {
-    //         "score": 1.4775745868682861,
-    //         "id": "35",
+    //         "score": 1.7126177549362183,
+    //         "id": "770",
+    //         "color": "red",
+    //         "color_tag": "1962",
     //         "color_coord": [
-    //             "10",
-    //             "16"
-    //         ],
-    //         "color": "brown",
-    //         "color_tag": "5497"
+    //             "21",
+    //             "23",
+    //             "10"
+    //         ]
     //     },
     //     {
-    //         "score": 1.4648866653442383,
-    //         "id": "355",
+    //         "score": 1.6707111597061157,
+    //         "id": "981",
+    //         "color": "yellow",
+    //         "color_tag": "3100",
     //         "color_coord": [
+    //             "28",
+    //             "39",
     //             "10",
-    //             "9",
-    //             "34",
-    //             "14"
-    //         ],
-    //         "color": "white",
-    //         "color_tag": "4509"
+    //             "6"
+    //         ]
     //     }
     // ]
     // 
@@ -347,46 +288,7 @@ async function main() {
 
     // Output
     // 
-    // [
-    //     {
-    //         "score": 1.2061448097229004,
-    //         "id": "967",
-    //         "color": "grey",
-    //         "color_tag": "9709",
-    //         "color_coord": [
-    //             "8",
-    //             "10",
-    //             "9",
-    //             "21",
-    //             "7"
-    //         ]
-    //     },
-    //     {
-    //         "score": 1.1449353694915771,
-    //         "id": "221",
-    //         "color": "blue",
-    //         "color_tag": "3574",
-    //         "color_coord": [
-    //             "15",
-    //             "8",
-    //             "0",
-    //             "7"
-    //         ]
-    //     },
-    //     {
-    //         "score": 1.1130155324935913,
-    //         "id": "576",
-    //         "color": "grey",
-    //         "color_tag": "8260",
-    //         "color_coord": [
-    //             "7",
-    //             "8",
-    //             "31",
-    //             "11",
-    //             "19"
-    //         ]
-    //     }
-    // ]
+    // []
     // 
 
     res = await client.search({
@@ -403,38 +305,37 @@ async function main() {
     // 
     // [
     //     {
-    //         "score": 1.6098737716674805,
-    //         "id": "308",
-    //         "color": "grey",
-    //         "color_tag": "4518",
+    //         "score": 2.015894889831543,
+    //         "id": "260",
+    //         "color": "green",
+    //         "color_tag": "5320",
+    //         "color_coord": [
+    //             "1",
+    //             "7",
+    //             "33",
+    //             "13",
+    //             "23"
+    //         ]
+    //     },
+    //     {
+    //         "score": 1.783075213432312,
+    //         "id": "593",
+    //         "color": "orange",
+    //         "color_tag": "4079",
     //         "color_coord": [
     //             "8",
-    //             "10",
-    //             "25",
+    //             "19"
+    //         ]
+    //     },
+    //     {
+    //         "score": 1.7713876962661743,
+    //         "id": "874",
+    //         "color": "blue",
+    //         "color_tag": "7029",
+    //         "color_coord": [
     //             "14",
-    //             "34"
-    //         ]
-    //     },
-    //     {
-    //         "score": 1.549060583114624,
-    //         "id": "471",
-    //         "color": "green",
-    //         "color_tag": "9836",
-    //         "color_coord": [
-    //             "37",
-    //             "22",
-    //             "9"
-    //         ]
-    //     },
-    //     {
-    //         "score": 1.5089154243469238,
-    //         "id": "844",
-    //         "color": "white",
-    //         "color_tag": "6711",
-    //         "color_coord": [
-    //             "26",
-    //             "9",
-    //             "18"
+    //             "8",
+    //             "15"
     //         ]
     //     }
     // ]
@@ -454,44 +355,43 @@ async function main() {
     // 
     // [
     //     {
-    //         "score": 1.5182652473449707,
-    //         "id": "531",
+    //         "score": 2.0404388904571533,
+    //         "id": "439",
+    //         "color": "orange",
+    //         "color_tag": "7096",
     //         "color_coord": [
+    //             "27",
     //             "34",
-    //             "6",
-    //             "15",
-    //             "21"
-    //         ],
-    //         "color": "blue",
-    //         "color_tag": "6693"
+    //             "26",
+    //             "39"
+    //         ]
     //     },
     //     {
-    //         "score": 1.4957042932510376,
-    //         "id": "459",
+    //         "score": 1.9059759378433228,
+    //         "id": "918",
+    //         "color": "purple",
+    //         "color_tag": "2903",
     //         "color_coord": [
-    //             "39",
-    //             "9",
+    //             "28",
+    //             "19",
     //             "36",
-    //             "15"
-    //         ],
-    //         "color": "pink",
-    //         "color_tag": "1805"
+    //             "35"
+    //         ]
     //     },
     //     {
-    //         "score": 1.4648866653442383,
-    //         "id": "355",
+    //         "score": 1.8385567665100098,
+    //         "id": "92",
+    //         "color": "yellow",
+    //         "color_tag": "4693",
     //         "color_coord": [
-    //             "10",
-    //             "9",
-    //             "34",
-    //             "14"
-    //         ],
-    //         "color": "white",
-    //         "color_tag": "4509"
+    //             "1",
+    //             "23",
+    //             "2",
+    //             "3"
+    //         ]
     //     }
     // ]
     // 
-
 
     await client.dropCollection({
         collection_name: "test_collection",

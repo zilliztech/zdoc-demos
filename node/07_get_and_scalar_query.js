@@ -8,7 +8,6 @@ async function main() {
     // 1. Set up a Milvus Client
     client = new MilvusClient({address, token}); 
 
-
     // 2. Create a collection in quick setup mode
     await client.createCollection({
         collection_name: "quick_setup",
@@ -38,15 +37,15 @@ async function main() {
     // {
     //   id: 0,
     //   vector: [
-    //     0.4079589522056084,
-    //     0.8722964388388377,
-    //     0.00173434210748602,
-    //     0.9321480028417519,
-    //     0.6234270861758995
+    //     0.16022394821966035,
+    //     0.6514875214491056,
+    //     0.18294484964044666,
+    //     0.30227694168725394,
+    //     0.47553087493572255
     //   ],
-    //   color: 'white',
-    //   tag: 4013,
-    //   color_tag: 'white_4013'
+    //   color: 'blue',
+    //   tag: 8907,
+    //   color_tag: 'blue_8907'
     // }
     // 
 
@@ -55,38 +54,11 @@ async function main() {
         data: data
     })
 
-    console.log(res)
+    console.log(res.insert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //      0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11,
-    //     12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-    //     24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-    //     36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
-    //     48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-    //     60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
-    //     72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
-    //     84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
-    //     96, 97, 98, 99,
-    //     ... 900 more items
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '1000',
-    //   delete_cnt: '0',
-    //   upsert_cnt: '0',
-    //   timestamp: '448167895130701826'
-    // }
+    // 1000
     // 
 
     await sleep(5000)
@@ -122,39 +94,11 @@ async function main() {
         partition_name: "partitionA"
     })
 
-
-    console.log(res)
+    console.log(res.insert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //      0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11,
-    //     12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-    //     24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-    //     36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
-    //     48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-    //     60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
-    //     72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
-    //     84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
-    //     96, 97, 98, 99,
-    //     ... 400 more items
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '500',
-    //   delete_cnt: '0',
-    //   upsert_cnt: '0',
-    //   timestamp: '448167896520327170'
-    // }
+    // 500
     // 
 
     await sleep(5000)
@@ -179,38 +123,11 @@ async function main() {
         partition_name: "partitionB"
     })
 
-    console.log(res)
+    console.log(res.insert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //      0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11,
-    //     12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-    //     24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-    //     36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
-    //     48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-    //     60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
-    //     72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
-    //     84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
-    //     96, 97, 98, 99,
-    //     ... 400 more items
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '500',
-    //   delete_cnt: '0',
-    //   upsert_cnt: '0',
-    //   timestamp: '448167897988333569'
-    // }
+    // 500
     // 
 
     await sleep(5000)
@@ -218,46 +135,98 @@ async function main() {
     // 5. Get entities by id
     res = await client.get({
         collection_name: "quick_setup",
-        ids: [0, 1, 2]
+        ids: [0, 1, 2],
+        output_fields: ["vector", "color_tag"]
     })
 
-    console.log(res)
+    console.log(res.data)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
+    // [
+    //   {
+    //     vector: [
+    //       0.16022394597530365,
+    //       0.6514875292778015,
+    //       0.18294484913349152,
+    //       0.30227693915367126,
+    //       0.47553086280822754
+    //     ],
+    //     '$meta': { color: 'blue', tag: 8907, color_tag: 'blue_8907' },
+    //     id: '0'
     //   },
-    //   data: [ { id: '0' }, { id: '1' }, { id: '2' } ]
-    // }
+    //   {
+    //     vector: [
+    //       0.2459285855293274,
+    //       0.4974019527435303,
+    //       0.2154673933982849,
+    //       0.03719571232795715,
+    //       0.8348019123077393
+    //     ],
+    //     '$meta': { color: 'grey', tag: 3710, color_tag: 'grey_3710' },
+    //     id: '1'
+    //   },
+    //   {
+    //     vector: [
+    //       0.9404329061508179,
+    //       0.49662265181541443,
+    //       0.8088793158531189,
+    //       0.9337621331214905,
+    //       0.8269071578979492
+    //     ],
+    //     '$meta': { color: 'blue', tag: 2993, color_tag: 'blue_2993' },
+    //     id: '2'
+    //   }
+    // ]
     // 
 
     // 5.1 Get entities by id in a partition
     res = await client.get({
         collection_name: "quick_setup",
         ids: [1000, 1001, 1002],
-        partition_names: ["partitionA"]
+        partition_names: ["partitionA"],
+        output_fields: ["vector", "color_tag"]
     })
 
-    console.log(res)
+    console.log(res.data)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
+    // [
+    //   {
+    //     id: '1000',
+    //     vector: [
+    //       0.014254206791520119,
+    //       0.5817716121673584,
+    //       0.19793470203876495,
+    //       0.8064294457435608,
+    //       0.7745839357376099
+    //     ],
+    //     '$meta': { color: 'white', tag: 5996, color_tag: 'white_5996' }
     //   },
-    //   data: [ { id: '1000' }, { id: '1001' }, { id: '1002' } ]
-    // }
+    //   {
+    //     id: '1001',
+    //     vector: [
+    //       0.6073881983757019,
+    //       0.05214758217334747,
+    //       0.730999231338501,
+    //       0.20900958776474,
+    //       0.03665429726243019
+    //     ],
+    //     '$meta': { color: 'grey', tag: 2834, color_tag: 'grey_2834' }
+    //   },
+    //   {
+    //     id: '1002',
+    //     vector: [
+    //       0.48877206444740295,
+    //       0.34028753638267517,
+    //       0.6527213454246521,
+    //       0.9763909578323364,
+    //       0.8031482100486755
+    //     ],
+    //     '$meta': { color: 'pink', tag: 9107, color_tag: 'pink_9107' }
+    //   }
+    // ]
     // 
 
     // 6. Use basic operators
@@ -268,24 +237,24 @@ async function main() {
         limit: 3
     })
 
-    console.log(res)
+    console.log(res.data)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
+    // [
+    //   {
+    //     '$meta': { color: 'pink', tag: 1050, color_tag: 'pink_1050' },
+    //     id: '6'
     //   },
-    //   data: [
-    //     { '$meta': [Object], id: '46' },
-    //     { '$meta': [Object], id: '51' },
-    //     { '$meta': [Object], id: '114' }
-    //   ]
-    // }
+    //   {
+    //     '$meta': { color: 'purple', tag: 1174, color_tag: 'purple_1174' },
+    //     id: '24'
+    //   },
+    //   {
+    //     '$meta': { color: 'orange', tag: 1023, color_tag: 'orange_1023' },
+    //     id: '40'
+    //   }
+    // ]
     // 
 
     res = await client.query({
@@ -295,24 +264,24 @@ async function main() {
         limit: 3
     })
 
-    console.log(res)
+    console.log(res.data)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
+    // [
+    //   {
+    //     '$meta': { color: 'brown', tag: 6839, color_tag: 'brown_6839' },
+    //     id: '22'
     //   },
-    //   data: [
-    //     { id: '3', '$meta': [Object] },
-    //     { id: '10', '$meta': [Object] },
-    //     { id: '24', '$meta': [Object] }
-    //   ]
-    // }
+    //   {
+    //     '$meta': { color: 'brown', tag: 7849, color_tag: 'brown_7849' },
+    //     id: '32'
+    //   },
+    //   {
+    //     '$meta': { color: 'brown', tag: 7855, color_tag: 'brown_7855' },
+    //     id: '33'
+    //   }
+    // ]
     // 
 
     res = await client.query({
@@ -322,24 +291,24 @@ async function main() {
         limit: 3
     })
 
-    console.log(res)
+    console.log(res.data)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
+    // [
+    //   {
+    //     '$meta': { color: 'blue', tag: 8907, color_tag: 'blue_8907' },
+    //     id: '0'
     //   },
-    //   data: [
-    //     { '$meta': [Object], id: '0' },
-    //     { '$meta': [Object], id: '1' },
-    //     { '$meta': [Object], id: '2' }
-    //   ]
-    // }
+    //   {
+    //     '$meta': { color: 'grey', tag: 3710, color_tag: 'grey_3710' },
+    //     id: '1'
+    //   },
+    //   {
+    //     '$meta': { color: 'blue', tag: 2993, color_tag: 'blue_2993' },
+    //     id: '2'
+    //   }
+    // ]
     // 
 
     res = await client.query({
@@ -349,24 +318,24 @@ async function main() {
         limit: 3
     })
 
-    console.log(res)
+    console.log(res.data)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
+    // [
+    //   {
+    //     '$meta': { color: 'red', tag: 8773, color_tag: 'red_8773' },
+    //     id: '17'
     //   },
-    //   data: [
-    //     { '$meta': [Object], id: '11' },
-    //     { '$meta': [Object], id: '27' },
-    //     { '$meta': [Object], id: '29' }
-    //   ]
-    // }
+    //   {
+    //     '$meta': { color: 'red', tag: 9197, color_tag: 'red_9197' },
+    //     id: '34'
+    //   },
+    //   {
+    //     '$meta': { color: 'red', tag: 7914, color_tag: 'red_7914' },
+    //     id: '46'
+    //   }
+    // ]
     // 
 
     res = await client.query({
@@ -376,24 +345,24 @@ async function main() {
         limit: 3
     })
 
-    console.log(res)
+    console.log(res.data)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
+    // [
+    //   {
+    //     '$meta': { color: 'red', tag: 1436, color_tag: 'red_1436' },
+    //     id: '67'
     //   },
-    //   data: [
-    //     { '$meta': [Object], id: '259' },
-    //     { '$meta': [Object], id: '336' },
-    //     { '$meta': [Object], id: '367' }
-    //   ]
-    // }
+    //   {
+    //     '$meta': { color: 'red', tag: 1463, color_tag: 'red_1463' },
+    //     id: '160'
+    //   },
+    //   {
+    //     '$meta': { color: 'red', tag: 1073, color_tag: 'red_1073' },
+    //     id: '291'
+    //   }
+    // ]
     // 
 
     // 7. Use advanced operators
@@ -403,21 +372,13 @@ async function main() {
         output_fields: ["count(*)"]
     })
 
-    console.log(res)   
+    console.log(res.data)   
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   data: [ { 'count(*)': '2000' } ]
-    // }
+    // [ { 'count(*)': '2000' } ]
     // 
+
     
     // Count the number of entities in a partition
     res = await client.query({
@@ -426,21 +387,13 @@ async function main() {
         partition_names: ["partitionA"]
     })
 
-    console.log(res)     
+    console.log(res.data)     
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   data: [ { 'count(*)': '500' } ]
-    // }
+    // [ { 'count(*)': '500' } ]
     // 
+
     
     // Count the number of entities that match a specific filter
     res = await client.query({
@@ -449,20 +402,11 @@ async function main() {
         output_fields: ["count(*)"]
     })
 
-    console.log(res)   
+    console.log(res.data)   
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   data: [ { 'count(*)': '11' } ]
-    // }
+    // [ { 'count(*)': '10' } ]
     // 
 
     // 8. Drop the collection

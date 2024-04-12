@@ -45,7 +45,6 @@ async function main() {
         index_params: index_params,
     })
 
-
     
     res = await client.getLoadState({
         collection_name: "customized_setup_1"
@@ -57,11 +56,6 @@ async function main() {
     // 
     // LoadStateLoaded
     // 
-
-
-
-
-
 
     // 4. Insert data into the collection
     var data = [
@@ -89,11 +83,6 @@ async function main() {
     // 10
     // 
 
-
-
-
-
-
     // 5. Insert more records
     data = []
     colors = ["green", "blue", "yellow", "red", "black", "white", "purple", "pink", "orange", "brown", "grey"]
@@ -117,11 +106,6 @@ async function main() {
     // 995
     // 
 
-
-
-
-
-
     await sleep(5000)
 
     // 6. Search with a single vector
@@ -138,18 +122,13 @@ async function main() {
     // Output
     // 
     // [
-    //   { score: 0, id: '0' },
-    //   { score: 0.503976583480835, id: '961' },
-    //   { score: 0.5741162300109863, id: '168' },
-    //   { score: 0.660664439201355, id: '805' },
-    //   { score: 0.6729328632354736, id: '415' }
+    //   { score: 1, id: '0' },
+    //   { score: 0.749187171459198, id: '160' },
+    //   { score: 0.7374353408813477, id: '109' },
+    //   { score: 0.7352343797683716, id: '120' },
+    //   { score: 0.7103434205055237, id: '721' }
     // ]
     // 
-
-
-
-
-
 
 // 7. Search with multiple vectors
 const query_vectors = [
@@ -169,26 +148,21 @@ console.log(res.results)
 // 
 // [
 //   [
-//     { score: 0, id: '0' },
-//     { score: 0.503976583480835, id: '961' },
-//     { score: 0.5741162300109863, id: '168' },
-//     { score: 0.660664439201355, id: '805' },
-//     { score: 0.6729328632354736, id: '415' }
+//     { score: 1, id: '0' },
+//     { score: 0.749187171459198, id: '160' },
+//     { score: 0.7374353408813477, id: '109' },
+//     { score: 0.7352343797683716, id: '120' },
+//     { score: 0.7103434205055237, id: '721' }
 //   ],
 //   [
-//     { score: 0, id: '1' },
-//     { score: 0.04019960016012192, id: '139' },
-//     { score: 0.049453068524599075, id: '916' },
-//     { score: 0.05025326460599899, id: '606' },
-//     { score: 0.054675549268722534, id: '603' }
+//     { score: 0.9999998807907104, id: '1' },
+//     { score: 0.983799934387207, id: '247' },
+//     { score: 0.9833251237869263, id: '851' },
+//     { score: 0.982724666595459, id: '871' },
+//     { score: 0.9819263219833374, id: '80' }
 //   ]
 // ]
 // 
-
-
-
-
-
 
 // 8. Search with a filter expression using schema-defined fields
 res = await client.search({
@@ -204,18 +178,13 @@ console.log(res.results)
 // Output
 // 
 // [
-//   { score: 0.7135878801345825, id: '675' },
-//   { score: 0.7833935618400574, id: '517' },
-//   { score: 0.7932313084602356, id: '606' },
-//   { score: 0.9196463823318481, id: '603' },
-//   { score: 0.9780420064926147, id: '712' }
+//   { score: 0.7103434205055237, id: '721' },
+//   { score: 0.6970766186714172, id: '736' },
+//   { score: 0.69532310962677, id: '797' },
+//   { score: 0.6908581852912903, id: '642' },
+//   { score: 0.634956955909729, id: '715' }
 // ]
 // 
-
-
-
-
-
 
 // 9. Search with a filter expression using non-schema-defined fields
 res = await client.search({
@@ -231,18 +200,13 @@ console.log(res.results)
 // Output
 // 
 // [
-//   { score: 0.5741162300109863, id: '168', color: 'red_2944' },
-//   { score: 0.9455333948135376, id: '943', color: 'red_8752' },
-//   { score: 0.9563189744949341, id: '441', color: 'red_1222' },
-//   { score: 1.0071179866790771, id: '1', color: 'red_7025' },
-//   { score: 1.0883007049560547, id: '490', color: 'red_6795' }
+//   { score: 0.6625675559043884, id: '844', color: 'red_6894' },
+//   { score: 0.634956955909729, id: '715', color: 'red_2506' },
+//   { score: 0.6290165185928345, id: '1', color: 'red_7025' },
+//   { score: 0.6236231327056885, id: '539', color: 'red_9562' },
+//   { score: 0.6213124990463257, id: '224', color: 'red_3419' }
 // ]
 // 
-
-
-
-
-
 
 // 10. query with schema-defined fields
 res = await client.query({
@@ -264,11 +228,6 @@ console.log(res.data)
 // ]
 // 
 
-
-
-
-
-
 // 11. query with non-schema-defined fields
 res = await client.query({
     collection_name: "quick_setup",
@@ -282,18 +241,13 @@ console.log(res.data)
 // Output
 // 
 // [
-//   { id: '210', '$meta': { color: 'brown_8376' } },
-//   { id: '263', '$meta': { color: 'brown_8043' } },
-//   { id: '379', '$meta': { color: 'brown_8611' } },
-//   { id: '392', '$meta': { color: 'brown_8012' } },
-//   { id: '630', '$meta': { color: 'brown_8653' } }
+//   { '$meta': { color: 'brown_8242' }, id: '97' },
+//   { '$meta': { color: 'brown_8442' }, id: '137' },
+//   { '$meta': { color: 'brown_8243' }, id: '146' },
+//   { '$meta': { color: 'brown_8105' }, id: '278' },
+//   { '$meta': { color: 'brown_8447' }, id: '294' }
 // ]
 // 
-
-
-
-
-
 
     // 12. Get entities by IDs
     res = await client.get({
@@ -308,62 +262,57 @@ console.log(res.data)
     // 
     // [
     //   {
+    //     id: '0',
     //     vector: [
     //       0.35803765058517456,
     //       -0.602349579334259,
     //       0.1841401308774948,
     //       -0.26286205649375916,
     //       0.9029438495635986
-    //     ],
-    //     id: '0'
+    //     ]
     //   },
     //   {
+    //     id: '1',
     //     vector: [
     //       0.19886812567710876,
     //       0.060235604643821716,
     //       0.697696328163147,
     //       0.2614474594593048,
     //       0.8387295007705688
-    //     ],
-    //     id: '1'
+    //     ]
     //   },
     //   {
+    //     id: '2',
     //     vector: [
     //       0.4374213218688965,
     //       -0.5597502589225769,
     //       0.6457887887954712,
     //       0.789405882358551,
     //       0.20785793662071228
-    //     ],
-    //     id: '2'
+    //     ]
     //   },
     //   {
+    //     id: '3',
     //     vector: [
     //       0.31720051169395447,
     //       0.971904456615448,
     //       -0.369811475276947,
     //       -0.48608946800231934,
     //       0.9579188823699951
-    //     ],
-    //     id: '3'
+    //     ]
     //   },
     //   {
+    //     id: '4',
     //     vector: [
     //       0.4452349543571472,
     //       -0.8757026791572571,
     //       0.8220779299736023,
     //       0.46406289935112,
     //       0.3033747971057892
-    //     ],
-    //     id: '4'
+    //     ]
     //   }
     // ]
     // 
-
-
-
-
-
 
     // 13. Delete entities by IDs
     res = await client.deleteEntities({
@@ -379,11 +328,6 @@ console.log(res.data)
     // 5
     // 
 
-
-
-
-
-
     // 14. Delete entities by filter
     res = await client.delete({
         collection_name: "quick_setup",
@@ -397,11 +341,6 @@ console.log(res.data)
     // 5
     // 
 
-
-
-
-
-
     // 15. Drop the collection
     res = await client.dropCollection({
         collection_name: "quick_setup"
@@ -414,11 +353,6 @@ console.log(res.data)
     // Success
     // 
 
-
-
-
-
-
     res = await client.dropCollection({
         collection_name: "customized_setup"
     })
@@ -429,10 +363,6 @@ console.log(res.data)
     // 
     // Success
     // 
-
-
-
-
 
 }
 

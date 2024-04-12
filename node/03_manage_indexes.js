@@ -30,19 +30,12 @@ async function main() {
         fields: fields,
     })
 
-    console.log(res)  
+    console.log(res.error_code)  
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
 
     // 4. Set up index for the collection
     // 4.1. Set up the index parameters
@@ -51,45 +44,30 @@ async function main() {
         field_name: "vector",
         index_type: "AUTOINDEX",
         metric_type: "COSINE",   
-        index_name: "vector_index",
-        params: { nprobe: 10 }
+        index_name: "vector_index"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
 
     // 4.2 Add an index on a scalar field.
-res = await client.createIndex({
-    collection_name: "customized_setup",
-    field_name: "id",
-    index_name: "primary_field_index",
-    index_type: "STL_SORT"
-})
+    res = await client.createIndex({
+        collection_name: "customized_setup",
+        field_name: "id",
+        index_name: "primary_field_index",
+        index_type: "STL_SORT"
+    })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
 
     await sleep(5000)
 
@@ -112,7 +90,7 @@ res = await client.createIndex({
     //       }
     //     ],
     //     "index_name": "primary_field_index",
-    //     "indexID": "448162378879954425",
+    //     "indexID": "449007919953063142",
     //     "field_name": "id",
     //     "indexed_rows": "0",
     //     "total_rows": "0",
@@ -122,7 +100,6 @@ res = await client.createIndex({
     //   }
     // ]
     // 
-
 
     res = await client.describeIndex({
         collection_name: "customized_setup",
@@ -137,10 +114,6 @@ res = await client.createIndex({
     //   {
     //     "params": [
     //       {
-    //         "key": "params",
-    //         "value": "{\"nprobe\":10}"
-    //       },
-    //       {
     //         "key": "index_type",
     //         "value": "AUTOINDEX"
     //       },
@@ -150,7 +123,7 @@ res = await client.createIndex({
     //       }
     //     ],
     //     "index_name": "vector_index",
-    //     "indexID": "448162378879954423",
+    //     "indexID": "449007919953063141",
     //     "field_name": "vector",
     //     "indexed_rows": "0",
     //     "total_rows": "0",
@@ -161,64 +134,42 @@ res = await client.createIndex({
     // ]
     // 
 
-
     // 6. Drop the index
     res = await client.dropIndex({
         collection_name: "customized_setup",
         index_name: "vector_index"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
 
     res = await client.dropIndex({
         collection_name: "customized_setup",
         index_name: "primary_field_index"
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
 
     // 7. Drop the collection
     res = await client.dropCollection({
         collection_name: "customized_setup",
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
 
 }
 

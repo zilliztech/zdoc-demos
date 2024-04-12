@@ -10,7 +10,7 @@ commander
     .option("-e, --env <env>", "path to the .env file")
     .option("-d, --debug", "output extra debugging info")
     .option("-r, --remove", "remove output")
-    .option("-l, --localBuild <localBuild>", "build local sdk version")
+    .option("-l, --localBuild <localBuild>", "use local build sdk")
     .parse(process.argv)
 
 const options = commander.opts()
@@ -75,7 +75,7 @@ proc.stdout.on("end", () => {
         }
 
         return line
-    }).join("\n")
+    }).join("\n").replace(/\n{3,}/g, "\n\n")
 
     env.split("\n").map(line => {
         const key  = line.slice(0, line.indexOf("="))

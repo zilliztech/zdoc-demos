@@ -43,46 +43,23 @@ async function main() {
         index_params: index_params
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
-
-
-
-
 
     res = await client.getLoadState({
         collection_name: "test_collection",
     })  
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateLoaded'
-    // }
+    // LoadStateLoaded
     // 
-
-
-
-
 
     // 3. Insert randomly generated vectors 
     const colors = ["green", "blue", "yellow", "red", "black", "white", "purple", "pink", "orange", "brown", "grey"]
@@ -113,61 +90,27 @@ async function main() {
     // {
     //   id: 0,
     //   vector: [
-    //     0.26360857467104326,
-    //     0.4749221816507778,
-    //     0.516524403744753,
-    //     0.8042319045856339,
-    //     0.6586510992013501
+    //     0.11455530974226114,
+    //     0.21704086958595314,
+    //     0.9430119822312437,
+    //     0.7802712923612023,
+    //     0.9106927960926137
     //   ],
-    //   color: { label: 'blue', tag: 2425, coord: [ 3, 17, 27 ], ref: [ [Array] ] }
+    //   color: { label: 'grey', tag: 7393, coord: [ 22, 1, 22 ], ref: [ [Array] ] }
     // }
     // 
-
-
-
-
 
     res = await client.insert({
         collection_name: "test_collection",
         data: data,
     })
 
-    console.log(res)
+    console.log(res.insert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //      0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11,
-    //     12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-    //     24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-    //     36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
-    //     48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-    //     60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
-    //     72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
-    //     84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
-    //     96, 97, 98, 99,
-    //     ... 900 more items
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '1000',
-    //   delete_cnt: '0',
-    //   upsert_cnt: '0',
-    //   timestamp: '448186258492751874'
-    // }
+    // 1000
     // 
-
-
-
 
     await sleep(5000)
 
@@ -188,70 +131,67 @@ async function main() {
     // 
     // [
     //     {
-    //         "score": 1.8816416263580322,
-    //         "id": "625",
+    //         "score": 1.777988076210022,
+    //         "id": "595",
     //         "color": {
     //             "label": "red",
-    //             "tag": 9032,
+    //             "tag": 7393,
     //             "coord": [
-    //                 4,
-    //                 15,
+    //                 31,
+    //                 34,
     //                 18
     //             ],
     //             "ref": [
     //                 [
-    //                     "blue",
-    //                     "yellow",
-    //                     "blue"
+    //                     "grey",
+    //                     "white",
+    //                     "orange"
     //                 ]
     //             ]
     //         }
     //     },
     //     {
-    //         "score": 1.7273869514465332,
-    //         "id": "552",
+    //         "score": 1.7542595863342285,
+    //         "id": "82",
     //         "color": {
     //             "label": "red",
-    //             "tag": 5747,
+    //             "tag": 8636,
     //             "coord": [
-    //                 7,
-    //                 32,
-    //                 6
-    //             ],
-    //             "ref": [
-    //                 [
-    //                     "purple",
-    //                     "red",
-    //                     "purple"
-    //                 ]
-    //             ]
-    //         }
-    //     },
-    //     {
-    //         "score": 1.7183022499084473,
-    //         "id": "517",
-    //         "color": {
-    //             "label": "red",
-    //             "tag": 1564,
-    //             "coord": [
-    //                 32,
-    //                 33,
-    //                 25
+    //                 4,
+    //                 37,
+    //                 29
     //             ],
     //             "ref": [
     //                 [
     //                     "brown",
+    //                     "brown",
+    //                     "pink"
+    //                 ]
+    //             ]
+    //         }
+    //     },
+    //     {
+    //         "score": 1.7537562847137451,
+    //         "id": "748",
+    //         "color": {
+    //             "label": "red",
+    //             "tag": 1626,
+    //             "coord": [
+    //                 31,
+    //                 4,
+    //                 25
+    //             ],
+    //             "ref": [
+    //                 [
     //                     "grey",
-    //                     "brown"
+    //                     "green",
+    //                     "blue"
     //                 ]
     //             ]
     //         }
     //     }
     // ]
     // 
-
-
-
 
     // 5. Advanced search within a JSON field
     res = await client.search({
@@ -266,32 +206,8 @@ async function main() {
 
     // Output
     // 
-    // [
-    //     {
-    //         "score": 1.6892653703689575,
-    //         "id": "34",
-    //         "color": {
-    //             "label": "grey",
-    //             "tag": 6638,
-    //             "coord": [
-    //                 16,
-    //                 36,
-    //                 11
-    //             ],
-    //             "ref": [
-    //                 [
-    //                     "blue",
-    //                     "brown",
-    //                     "grey"
-    //                 ]
-    //             ]
-    //         }
-    //     }
-    // ]
+    // []
     // 
-
-
-
 
     res = await client.search({
         collection_name: "test_collection",
@@ -307,71 +223,67 @@ async function main() {
     // 
     // [
     //     {
-    //         "score": 1.6978987455368042,
-    //         "id": "127",
+    //         "score": 1.8944344520568848,
+    //         "id": "792",
     //         "color": {
-    //             "label": "white",
-    //             "tag": 9263,
+    //             "label": "purple",
+    //             "tag": 8161,
     //             "coord": [
-    //                 5,
     //                 4,
+    //                 38,
     //                 5
     //             ],
     //             "ref": [
     //                 [
-    //                     "grey",
-    //                     "brown",
-    //                     "yellow"
-    //                 ]
-    //             ]
-    //         }
-    //     },
-    //     {
-    //         "score": 1.5648834705352783,
-    //         "id": "633",
-    //         "color": {
-    //             "label": "blue",
-    //             "tag": 3265,
-    //             "coord": [
-    //                 4,
-    //                 24,
-    //                 5
-    //             ],
-    //             "ref": [
-    //                 [
+    //                     "red",
     //                     "white",
-    //                     "blue",
-    //                     "black"
+    //                     "grey"
     //                 ]
     //             ]
     //         }
     //     },
     //     {
-    //         "score": 0.8837333917617798,
-    //         "id": "528",
+    //         "score": 1.2801706790924072,
+    //         "id": "489",
     //         "color": {
-    //             "label": "white",
-    //             "tag": 7735,
+    //             "label": "red",
+    //             "tag": 4358,
     //             "coord": [
-    //                 4,
     //                 5,
-    //                 11
+    //                 4,
+    //                 1
     //             ],
     //             "ref": [
     //                 [
-    //                     "pink",
     //                     "blue",
-    //                     "grey"
+    //                     "orange",
+    //                     "orange"
+    //                 ]
+    //             ]
+    //         }
+    //     },
+    //     {
+    //         "score": 1.2097992897033691,
+    //         "id": "656",
+    //         "color": {
+    //             "label": "red",
+    //             "tag": 7856,
+    //             "coord": [
+    //                 5,
+    //                 20,
+    //                 4
+    //             ],
+    //             "ref": [
+    //                 [
+    //                     "black",
+    //                     "orange",
+    //                     "white"
     //                 ]
     //             ]
     //         }
     //     }
     // ]
     // 
-
-
-
-
 
     res = await client.search({
         collection_name: "test_collection",
@@ -387,70 +299,67 @@ async function main() {
     // 
     // [
     //     {
-    //         "score": 1.9774878025054932,
-    //         "id": "856",
+    //         "score": 1.9083369970321655,
+    //         "id": "453",
     //         "color": {
-    //             "label": "purple",
-    //             "tag": 1854,
+    //             "label": "brown",
+    //             "tag": 8788,
     //             "coord": [
-    //                 4,
-    //                 0,
-    //                 34
+    //                 21,
+    //                 18,
+    //                 5
     //             ],
     //             "ref": [
     //                 [
     //                     "pink",
-    //                     "white",
-    //                     "white"
+    //                     "black",
+    //                     "brown"
     //                 ]
     //             ]
     //         }
     //     },
     //     {
-    //         "score": 1.9525892734527588,
-    //         "id": "22",
+    //         "score": 1.8944344520568848,
+    //         "id": "792",
     //         "color": {
-    //             "label": "pink",
-    //             "tag": 1264,
+    //             "label": "purple",
+    //             "tag": 8161,
     //             "coord": [
     //                 4,
-    //                 29,
-    //                 35
+    //                 38,
+    //                 5
     //             ],
     //             "ref": [
     //                 [
-    //                     "orange",
-    //                     "orange",
+    //                     "red",
+    //                     "white",
     //                     "grey"
     //                 ]
     //             ]
     //         }
     //     },
     //     {
-    //         "score": 1.8816416263580322,
-    //         "id": "625",
+    //         "score": 1.8615753650665283,
+    //         "id": "272",
     //         "color": {
-    //             "label": "red",
-    //             "tag": 9032,
+    //             "label": "grey",
+    //             "tag": 3400,
     //             "coord": [
-    //                 4,
-    //                 15,
-    //                 18
+    //                 5,
+    //                 1,
+    //                 32
     //             ],
     //             "ref": [
     //                 [
-    //                     "blue",
-    //                     "yellow",
-    //                     "blue"
+    //                     "purple",
+    //                     "green",
+    //                     "white"
     //                 ]
     //             ]
     //         }
     //     }
     // ]
     // 
-
-
-
 
     await client.dropCollection({
         collection_name: "test_collection",

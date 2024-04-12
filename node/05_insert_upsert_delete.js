@@ -35,30 +35,11 @@ async function main() {
         data: data,
     })
 
-    console.log(res)
+    console.log(res.insert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //     0, 1, 2, 3, 4,
-    //     5, 6, 7, 8, 9
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '10',
-    //   delete_cnt: '0',
-    //   upsert_cnt: '0',
-    //   timestamp: '448167069827203076'
-    // }
+    // 10
     // 
 
     // 4. Insert some more data into a specific partition
@@ -86,30 +67,11 @@ async function main() {
         partition_name: "partitionA"
     })
     
-    console.log(res)
+    console.log(res.insert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //     0, 1, 2, 3, 4,
-    //     5, 6, 7, 8, 9
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '10',
-    //   delete_cnt: '0',
-    //   upsert_cnt: '0',
-    //   timestamp: '448167069971644418'
-    // }
+    // 10
     // 
 
     // 5. Upsert some data
@@ -131,30 +93,11 @@ async function main() {
         data: data,
     })
     
-    console.log(res)
+    console.log(res.upsert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //     0, 1, 2, 3, 4,
-    //     5, 6, 7, 8, 9
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '10',
-    //   delete_cnt: '10',
-    //   upsert_cnt: '10',
-    //   timestamp: '448167070076239873'
-    // }
+    // 10
     // 
 
     // 6. Upsert data in partitions
@@ -177,30 +120,11 @@ async function main() {
         partition_name: "partitionA"
     })
 
-    console.log(res)
+    console.log(res.upsert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //     0, 1, 2, 3, 4,
-    //     5, 6, 7, 8, 9
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '10',
-    //   delete_cnt: '10',
-    //   upsert_cnt: '10',
-    //   timestamp: '448167070325276673'
-    // }
+    // 10
     // 
 
     // 7. Delete entities
@@ -209,27 +133,11 @@ async function main() {
         filter: "id in [4,5,6]"
     })
 
-    console.log(res)
+    console.log(res.delete_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: {},
-    //   acknowledged: false,
-    //   insert_cnt: '0',
-    //   delete_cnt: '3',
-    //   upsert_cnt: '0',
-    //   timestamp: '0'
-    // }
+    // 3
     // 
 
     res = await client.delete({
@@ -238,27 +146,11 @@ async function main() {
         partition_name: "partitionA"
     })
 
-    console.log(res)
+    console.log(res.delete_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: {},
-    //   acknowledged: false,
-    //   insert_cnt: '0',
-    //   delete_cnt: '2',
-    //   upsert_cnt: '0',
-    //   timestamp: '0'
-    // }
+    // 2
     // 
 
     // 8. Drop collection

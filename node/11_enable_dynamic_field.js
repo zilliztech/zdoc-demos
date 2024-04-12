@@ -26,6 +26,9 @@ async function main() {
 
     // 2.2 Prepare index parameters
     const index_params = [{
+        field_name: "id",
+        index_type: "STL_SORT"
+    },{
         field_name: "vector",
         index_type: "IVF_FLAT",
         metric_type: "IP",
@@ -40,37 +43,22 @@ async function main() {
         enable_dynamic_field: true
     })
 
-    console.log(res)
+    console.log(res.error_code)
 
     // Output
     // 
-    // {
-    //   error_code: 'Success',
-    //   reason: '',
-    //   code: 0,
-    //   retriable: false,
-    //   detail: ''
-    // }
+    // Success
     // 
 
     res = await client.getLoadState({
         collection_name: "test_collection",
     })  
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateLoaded'
-    // }
+    // LoadStateLoaded
     // 
 
     // 3. Insert randomly generated vectors 
@@ -96,15 +84,15 @@ async function main() {
     // {
     //   id: 0,
     //   vector: [
-    //     0.6765405125697714,
-    //     0.759217474274025,
-    //     0.4122471841491111,
-    //     0.3346805565394215,
-    //     0.09679748345514638
+    //     0.1275656405044483,
+    //     0.47417858592773277,
+    //     0.13858264437643286,
+    //     0.2390904907020377,
+    //     0.8447862593689635
     //   ],
     //   color: 'blue',
-    //   tag: 6911,
-    //   color_tag: 'blue_6911'
+    //   tag: 2064,
+    //   color_tag: 'blue_2064'
     // }
     // 
 
@@ -113,38 +101,11 @@ async function main() {
         data: data,
     })
 
-    console.log(res)
+    console.log(res.insert_cnt)
 
     // Output
     // 
-    // {
-    //   succ_index: [
-    //      0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11,
-    //     12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-    //     24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
-    //     36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
-    //     48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-    //     60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
-    //     72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
-    //     84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
-    //     96, 97, 98, 99,
-    //     ... 900 more items
-    //   ],
-    //   err_index: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   IDs: { int_id: { data: [Array] }, id_field: 'int_id' },
-    //   acknowledged: false,
-    //   insert_cnt: '1000',
-    //   delete_cnt: '0',
-    //   upsert_cnt: '0',
-    //   timestamp: '448169277590863874'
-    // }
+    // 1000
     // 
 
     await sleep(5000)
@@ -160,24 +121,15 @@ async function main() {
         limit: 3
     })
 
-    console.log(res)
+    console.log(res.results)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   results: [
-    //     { score: 1.328633189201355, id: '989', color_tag: 'red_6957' },
-    //     { score: 1.2847548723220825, id: '69', color_tag: 'red_2484' },
-    //     { score: 1.2803990840911865, id: '416', color_tag: 'red_6776' }
-    //   ]
-    // }
+    // [
+    //   { score: 1.2284551858901978, id: '301', color_tag: 'red_1270' },
+    //   { score: 1.2195171117782593, id: '205', color_tag: 'red_2780' },
+    //   { score: 1.2055039405822754, id: '487', color_tag: 'red_6653' }
+    // ]
     // 
 
     // 5. Drop the collection

@@ -19,24 +19,11 @@ async function main() {
         collection_name: "quick_setup"
     })
 
-    console.log(res)
+    console.log(res.partition_names)
 
     // Output
     // 
-    // {
-    //   partition_names: [ '_default' ],
-    //   partitionIDs: [ '448162378879033217' ],
-    //   created_timestamps: [ '448166680294588419' ],
-    //   created_utc_timestamps: [ '1709620209864' ],
-    //   inMemory_percentages: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   }
-    // }
+    // [ '_default' ]
     // 
 
     // 4. Create more partitions
@@ -54,24 +41,11 @@ async function main() {
         collection_name: "quick_setup"
     })
 
-    console.log(res)
+    console.log(res.partition_names)
 
     // Output
     // 
-    // {
-    //   partition_names: [ '_default', 'partitionA', 'partitionB' ],
-    //   partitionIDs: [ '448162378879033217', '448162378879033248', '448162378879033252' ],
-    //   created_timestamps: [ '448166680294588419', '448166681408700418', '448166681461129219' ],
-    //   created_utc_timestamps: [ '1709620209864', '1709620214114', '1709620214314' ],
-    //   inMemory_percentages: [],
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   }
-    // }
+    // [ '_default', 'partitionA', 'partitionB' ]
     // 
 
     // 5. Check whether a partition exists
@@ -80,20 +54,11 @@ async function main() {
         partition_name: "partitionA"
     })
 
-    console.log(res)
+    console.log(res.value)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   value: true
-    // }
+    // true
     // 
 
     res = await client.hasPartition({
@@ -101,20 +66,11 @@ async function main() {
         partition_name: "partitionC"
     })
     
-    console.log(res)
+    console.log(res.value)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   value: false
-    // }
+    // false
     // 
 
     // 6. Load a partition indenpendantly
@@ -126,20 +82,11 @@ async function main() {
         collection_name: "quick_setup"
     })
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateNotLoad'
-    // }
+    // LoadStateNotLoad
     // 
 
     await client.loadPartitions({
@@ -153,20 +100,11 @@ async function main() {
         collection_name: "quick_setup"
     })
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateLoaded'
-    // }
+    // LoadStateLoaded
     // 
 
     res = await client.getLoadState({
@@ -174,20 +112,11 @@ async function main() {
         partition_name: "partitionA"
     })
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateLoaded'
-    // }
+    // LoadStateLoaded
     // 
 
     res = await client.getLoadState({
@@ -195,20 +124,11 @@ async function main() {
         partition_name: "partitionB"
     })
     
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateLoaded'
-    // }
+    // LoadStateLoaded
     // 
 
     // 7. Release a partition
@@ -221,20 +141,11 @@ async function main() {
         collection_name: "quick_setup"
     })
 
-    console.log(res)
+    console.log(res.state)
 
     // Output
     // 
-    // {
-    //   status: {
-    //     error_code: 'Success',
-    //     reason: '',
-    //     code: 0,
-    //     retriable: false,
-    //     detail: ''
-    //   },
-    //   state: 'LoadStateNotLoad'
-    // }
+    // LoadStateNotLoad
     // 
 
 // 8 Drop a partition
@@ -247,24 +158,11 @@ res = await client.listPartitions({
     collection_name: "quick_setup"
 })
 
-console.log(res)
+console.log(res.partition_names)
 
 // Output
 // 
-// {
-//   partition_names: [ '_default', 'partitionA' ],
-//   partitionIDs: [ '448162378879033217', '448162378879033248' ],
-//   created_timestamps: [ '448166680294588419', '448166681408700418' ],
-//   created_utc_timestamps: [ '1709620209864', '1709620214114' ],
-//   inMemory_percentages: [],
-//   status: {
-//     error_code: 'Success',
-//     reason: '',
-//     code: 0,
-//     retriable: false,
-//     detail: ''
-//   }
-// }
+// [ '_default', 'partitionA' ]
 // 
 
     // 9. Drop a collection
