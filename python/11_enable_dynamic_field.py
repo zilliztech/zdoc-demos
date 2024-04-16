@@ -75,15 +75,15 @@ print(data[0])
 # {
 #     "id": 0,
 #     "vector": [
-#         -0.34290103559841256,
-#         0.5690697802345119,
-#         -0.1387570718036084,
-#         0.19907356904377238,
-#         0.7140011532472272
+#         -0.13724213100096905,
+#         0.5142203011384239,
+#         0.6777028315741731,
+#         -0.006594280664368624,
+#         -0.38510188233882015
 #     ],
-#     "color": "grey",
-#     "tag": 2550,
-#     "color_tag": "grey_2550"
+#     "color": "pink",
+#     "tag": 3957,
+#     "color_tag": "pink_3957"
 # }
 
 
@@ -126,6 +126,7 @@ res = client.search(
     data=query_vectors,
     filter="color in [\"red\", \"green\"]",
     search_params={"metric_type": "L2", "params": {"nprobe": 10}},
+    output_fields=["id", "color_tag"],
     limit=3
 )
 
@@ -136,22 +137,33 @@ print(res)
 # [
 #     [
 #         {
-#             "id": 986,
-#             "distance": 0.439428448677063,
-#             "entity": {}
+#             "id": 863,
+#             "distance": 0.188413605093956,
+#             "entity": {
+#                 "id": 863,
+#                 "color_tag": "red_2371"
+#             }
 #         },
 #         {
-#             "id": 713,
-#             "distance": 0.5107282400131226,
-#             "entity": {}
+#             "id": 799,
+#             "distance": 0.29188022017478943,
+#             "entity": {
+#                 "id": 799,
+#                 "color_tag": "red_2235"
+#             }
 #         },
 #         {
-#             "id": 160,
-#             "distance": 0.5383791327476501,
-#             "entity": {}
+#             "id": 564,
+#             "distance": 0.3492690920829773,
+#             "entity": {
+#                 "id": 564,
+#                 "color_tag": "red_9186"
+#             }
 #         }
 #     ]
 # ]
+
+
 
 # 5. Drop the collection
 

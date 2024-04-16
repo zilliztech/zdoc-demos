@@ -70,6 +70,35 @@ async function main() {
     // LoadStateLoaded
     // 
 
+    // 2.1 List partitions
+    res = await client.listPartitions({
+        collection_name: "test_collection",
+    })
+
+    console.log(res.partition_names)
+
+    // Output
+    // 
+    // [
+    //   '_default_0',  '_default_1',  '_default_2',  '_default_3',
+    //   '_default_4',  '_default_5',  '_default_6',  '_default_7',
+    //   '_default_8',  '_default_9',  '_default_10', '_default_11',
+    //   '_default_12', '_default_13', '_default_14', '_default_15',
+    //   '_default_16', '_default_17', '_default_18', '_default_19',
+    //   '_default_20', '_default_21', '_default_22', '_default_23',
+    //   '_default_24', '_default_25', '_default_26', '_default_27',
+    //   '_default_28', '_default_29', '_default_30', '_default_31',
+    //   '_default_32', '_default_33', '_default_34', '_default_35',
+    //   '_default_36', '_default_37', '_default_38', '_default_39',
+    //   '_default_40', '_default_41', '_default_42', '_default_43',
+    //   '_default_44', '_default_45', '_default_46', '_default_47',
+    //   '_default_48', '_default_49', '_default_50', '_default_51',
+    //   '_default_52', '_default_53', '_default_54', '_default_55',
+    //   '_default_56', '_default_57', '_default_58', '_default_59',
+    //   '_default_60', '_default_61', '_default_62', '_default_63'
+    // ]
+    // 
+
     // 3. Insert randomly generated vectors 
     const colors = ["green", "blue", "yellow", "red", "black", "white", "purple", "pink", "orange", "brown", "grey"]
     var data = []
@@ -93,15 +122,15 @@ async function main() {
     // {
     //   id: 0,
     //   vector: [
-    //     0.521639270918109,
-    //     0.9418960358339306,
-    //     0.7576785932128338,
-    //     0.7256261748654758,
-    //     0.14608423286768568
+    //     0.6719498122152168,
+    //     0.02840115337468796,
+    //     0.25261281985653095,
+    //     0.2936432421017825,
+    //     0.10813415803139192
     //   ],
-    //   color: 'yellow',
-    //   tag: 9286,
-    //   color_tag: 'yellow_9286'
+    //   color: 'pink',
+    //   tag: 6034,
+    //   color_tag: 'pink_6034'
     // }
     // 
 
@@ -135,9 +164,9 @@ async function main() {
     // Output
     // 
     // [
-    //   { score: 3.416375160217285, id: '426', color_tag: 'green_5277' },
-    //   { score: 3.246188163757324, id: '852', color_tag: 'green_9450' },
-    //   { score: 3.2429375648498535, id: '54', color_tag: 'green_8308' }
+    //   { score: 2.402090549468994, id: '135', color_tag: 'green_2694' },
+    //   { score: 2.3938629627227783, id: '326', color_tag: 'green_7104' },
+    //   { score: 2.3235254287719727, id: '801', color_tag: 'green_3162' }
     // ]
     // 
 

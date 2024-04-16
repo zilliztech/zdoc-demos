@@ -1,12 +1,14 @@
 #!/usr/bin sh
 
 CLOUD_REGION="gcp-us-west1"
-API_KEY="YOUR_API_KEY"
-PROJECT_ID="proj-************************"
+CLOUD_SUFFIX="cloud-uat3.zilliz.com"
+API_KEY="28faaf6b0e8368f5b8507ed94a6a5c5391d6329a61c12a7355c385aaf7c05dde99d33d852d95b5807314410cf2ce65c1eb99f8fd"
+TOKEN="db_d9f3c307af7de6e:Ex1$)4R,ZM%xM;*A"
+PROJECT_ID="proj-5db31b207ccfe2c8edc676"
 
 # 1. Create a serverless cluster
 serverless_cluster=$(curl -s --request POST \
-    --url "https://controller.api.${CLOUD_REGION}.cloud-uat3.zilliz.com/v1/clusters/createServerless" \
+    --url "https://controller.api.${CLOUD_REGION}.${CLOUD_SUFFIX}/v1/clusters/createServerless" \
     --header "Authorization: Bearer ${API_KEY}" \
     --header "accept: application/json" \
     --header "content-type: application/json" \
@@ -19,7 +21,7 @@ echo $serverless_cluster
 
 # 2. Create a dedicated cluster
 dedicated_cluster=$(curl -s --request POST \
-    --url "https://controller.api.${CLOUD_REGION}.cloud-uat3.zilliz.com/v1/clusters/create" \
+    --url "https://controller.api.${CLOUD_REGION}.${CLOUD_SUFFIX}/v1/clusters/create" \
     --header "Authorization: Bearer ${API_KEY}" \
     --header "accept: application/json" \
     --header "content-type: application/json" \
@@ -36,7 +38,7 @@ echo $dedicated_cluster
 # 3. Get Cluster ENDPOINT and TOKEN
 SERVERLESS_CLUSTER_ID="$(echo $serverless_cluster | jq -r '.data.clusterId')"
 DEDICATED_CLUSTER_D=$(echo $dedicated_cluster | jq -r '.data.clusterId')
-CLUSTER_ENDPOINT="https://$(echo $serverless_cluster | jq -r '.data.clusterId').api.${CLOUD_REGION}.cloud-uat3.zilliz.com"
+CLUSTER_ENDPOINT="https://$(echo $serverless_cluster | jq -r '.data.clusterId').api.${CLOUD_REGION}.${CLOUD_SUFFIX}}"
 TOKEN="$(echo $serverless_cluster | jq -r '(.data.username + ":" + .data.password)')"
 
 echo "Cluster Endpoint: ${CLUSTER_ENDPOINT}"
@@ -201,13 +203,13 @@ curl --request POST \
 
 # # Drop clusters
 # curl --request DELETE \
-#     --url "https://controller.api.${CLOUD_REGION}.cloud-uat3.zilliz.com/v1/clusters/cluster-starter/drop" \
+#     --url "https://controller.api.${CLOUD_REGION}.${CLOUD_SUFFIX}/v1/clusters/cluster-starter/drop" \
 #     --header "Authorization: Bearer ${API_KEY}" \
 #     --header "accept: application/json" \
 #     --header "content-type: application/json"
 
 # curl --request DELETE \
-#     --url "https://controller.api.${CLOUD_REGION}.cloud-uat3.zilliz.com/v1/clusters/cluster-standard/drop" \
+#     --url "https://controller.api.${CLOUD_REGION}.${CLOUD_SUFFIX}/v1/clusters/cluster-standard/drop" \
 #     --header "Authorization: Bearer ${API_KEY}" \
 #     --header "accept: application/json" \
 #     --header "content-type: application/json"

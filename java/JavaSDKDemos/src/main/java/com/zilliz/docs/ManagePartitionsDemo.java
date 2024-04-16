@@ -18,10 +18,12 @@ import io.milvus.v2.service.partition.request.ReleasePartitionsReq;
 public class ManagePartitionsDemo {
     public static void run() throws InterruptedException {
         String CLUSTER_ENDPOINT = "YOUR_CLUSTER_ENDPOINT";
+        String TOKEN = "YOUR_TOKEN";
 
         // 1. Connect to Milvus server
         ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(CLUSTER_ENDPOINT)
+            .token(TOKEN)
             .build();
 
         MilvusClientV2 client = new MilvusClientV2(connectConfig);
@@ -207,7 +209,7 @@ public class ManagePartitionsDemo {
 
 
 
-        // Drop a partition
+        // 8. Drop a partition
         DropPartitionReq dropPartitionReq = DropPartitionReq.builder()
             .collectionName("quick_setup")
             .partitionName("partitionB")

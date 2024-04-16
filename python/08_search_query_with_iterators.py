@@ -96,7 +96,8 @@ iterator = collection.search_iterator(
     anns_field="vector",
     batch_size=10,
     param=search_params,
-    output_fields=["color_tag"]
+    output_fields=["color_tag"],
+    limit=3
 )
 
 results = []
@@ -110,16 +111,7 @@ while True:
     for hit in result:
         results.append(hit.to_dict())
 
-# 5. Check the results
-print(f"There are {len(results)} entities found. The first 3 are as follows:")
-
-# Output
-#
-# There are 10000 entities found. The first 3 are as follows:
-
-
-
-print(results[:3])
+print(results)
 
 # Output
 #

@@ -148,22 +148,22 @@ async function main() {
     // LoadStateNotLoad
     // 
 
-// 8 Drop a partition
-await client.dropPartition({
-    collection_name: "quick_setup",
-    partition_name: "partitionB"
-})
+    // 8 Drop a partition
+    await client.dropPartition({
+        collection_name: "quick_setup",
+        partition_name: "partitionB"
+    })
 
-res = await client.listPartitions({
-    collection_name: "quick_setup"
-})
+    res = await client.listPartitions({
+        collection_name: "quick_setup"
+    })
 
-console.log(res.partition_names)
+    console.log(res.partition_names)
 
-// Output
-// 
-// [ '_default', 'partitionA' ]
-// 
+    // Output
+    // 
+    // [ '_default', 'partitionA' ]
+    // 
 
     // 9. Drop a collection
     await client.dropCollection({

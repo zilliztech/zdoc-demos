@@ -25,10 +25,12 @@ import com.alibaba.fastjson.JSONObject;
 public class ManageCollectionDemo {
     private static void run() throws InterruptedException {
         String CLUSTER_ENDPOINT = "YOUR_CLUSTER_ENDPOINT";
+        String TOKEN = "YOUR_TOKEN";
 
         // 1. Connect to Milvus server
         ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(CLUSTER_ENDPOINT)
+            .token(TOKEN)
             .build();
 
         MilvusClientV2 client = new MilvusClientV2(connectConfig);
@@ -64,8 +66,18 @@ public class ManageCollectionDemo {
         CreateCollectionReq.CollectionSchema schema = client.createSchema();
 
         // 3.2 Add fields to schema
-        schema.addField(AddFieldReq.builder().fieldName("my_id").dataType(DataType.Int64).isPrimaryKey(true).autoID(false).build());
-        schema.addField(AddFieldReq.builder().fieldName("my_vector").dataType(DataType.FloatVector).dimension(5).build());
+        schema.addField(AddFieldReq.builder()
+            .fieldName("my_id")
+            .dataType(DataType.Int64).
+            isPrimaryKey(true)
+            .autoID(false)
+            .build());
+
+        schema.addField(AddFieldReq.builder()
+            .fieldName("my_vector")
+            .dataType(DataType.FloatVector)
+            .dimension(5)
+            .build());
 
         // 3.3 Prepare index parameters
         IndexParam indexParamForIdField = IndexParam.builder()

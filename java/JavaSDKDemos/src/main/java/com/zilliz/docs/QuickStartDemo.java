@@ -50,7 +50,7 @@ public final class QuickStartDemo {
 
         // 3. Create a collection in customized setup mode
 
-        // 3.1 Craete schema
+        // 3.1 Create schema
         CreateCollectionReq.CollectionSchema schema = client.createSchema();
 
         // 3.2 Add fields to schema
@@ -301,40 +301,40 @@ public final class QuickStartDemo {
 
 
 
-        // 9. Search with a filter expression using custom fields
-        List<List<Float>> customFilteredVectorSearchData = new ArrayList<>();
-        customFilteredVectorSearchData.add(Arrays.asList(0.041732933f, 0.013779674f, -0.027564144f, -0.013061441f, 0.009748648f));
+    // 9. Search with a filter expression using custom fields
+    List<List<Float>> customFilteredVectorSearchData = new ArrayList<>();
+    customFilteredVectorSearchData.add(Arrays.asList(0.041732933f, 0.013779674f, -0.027564144f, -0.013061441f, 0.009748648f));
 
-        searchReq = SearchReq.builder()
-            .collectionName("quick_setup")
-            .data(customFilteredVectorSearchData)
-            .filter("$meta[\"color\"] like \"red%\"")
-            .topK(3)
-            .outputFields(Arrays.asList("color"))
-            .build();
+    searchReq = SearchReq.builder()
+        .collectionName("quick_setup")
+        .data(customFilteredVectorSearchData)
+        .filter("$meta[\"color\"] like \"red%\"")
+        .topK(3)
+        .outputFields(Arrays.asList("color"))
+        .build();
 
-        SearchResp customFilteredVectorSearchRes = client.search(searchReq);
+    SearchResp customFilteredVectorSearchRes = client.search(searchReq);
 
-        System.out.println(JSONObject.toJSON(customFilteredVectorSearchRes));
+    System.out.println(JSONObject.toJSON(customFilteredVectorSearchRes));
 
-        // Output:
-        // {"searchResults": [[
-        //     {
-        //         "distance": 0.73705024,
-        //         "id": 596,
-        //         "entity": {"color": "red_691"}
-        //     },
-        //     {
-        //         "distance": 0.7145017,
-        //         "id": 170,
-        //         "entity": {"color": "red_209"}
-        //     },
-        //     {
-        //         "distance": 0.6979258,
-        //         "id": 946,
-        //         "entity": {"color": "red_958"}
-        //     }
-        // ]]}
+    // Output:
+    // {"searchResults": [[
+    //     {
+    //         "distance": 0.73705024,
+    //         "id": 596,
+    //         "entity": {"color": "red_691"}
+    //     },
+    //     {
+    //         "distance": 0.7145017,
+    //         "id": 170,
+    //         "entity": {"color": "red_209"}
+    //     },
+    //     {
+    //         "distance": 0.6979258,
+    //         "id": 946,
+    //         "entity": {"color": "red_958"}
+    //     }
+    // ]]}
 
 
 

@@ -23,10 +23,12 @@ public class ManageIndexesDemo {
 
     public static void run() throws InterruptedException {
         String CLUSTER_ENDPOINT = "YOUR_CLUSTER_ENDPOINT";
+        String TOKEN = "YOUR_TOKEN";
 
         // 1. Connect to Milvus server
         ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(CLUSTER_ENDPOINT)
+            .token(TOKEN)
             .build();
 
         MilvusClientV2 client = new MilvusClientV2(connectConfig);
@@ -40,7 +42,7 @@ public class ManageIndexesDemo {
         schema.addField(AddFieldReq.builder().fieldName("id").dataType(DataType.Int64).isPrimaryKey(true).autoID(false).build());
         schema.addField(AddFieldReq.builder().fieldName("vector").dataType(DataType.FloatVector).dimension(5).build());
 
-        // 2.3 Create a collection without schema and index parameters
+        // 3 Create a collection without schema and index parameters
         CreateCollectionReq customizedSetupReq = CreateCollectionReq.builder()
         .collectionName("customized_setup")
         .collectionSchema(schema)
@@ -69,7 +71,7 @@ public class ManageIndexesDemo {
         indexParams.add(indexParamForIdField);
         indexParams.add(indexParamForVectorField);
 
-        // 4.3 Crate an index file
+        // 4.3 Create an index file
         CreateIndexReq createIndexReq = CreateIndexReq.builder()
             .collectionName("customized_setup")
             .indexParams(indexParams)

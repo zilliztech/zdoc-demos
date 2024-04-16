@@ -24,10 +24,12 @@ import io.milvus.v2.service.vector.response.SearchResp;
 public class EnableDynamicFieldDemo {
     public static void run() throws InterruptedException {
         String CLUSTER_ENDPOINT = "YOUR_CLUSTER_ENDPOINT";
+        String TOKEN = "YOUR_CLUSTER_TOKEN";
 
         // 1. Connect to Milvus server
         ConnectConfig connectConfig = ConnectConfig.builder()
             .uri(CLUSTER_ENDPOINT)
+            .token(TOKEN)
             .build();
 
         MilvusClientV2 client = new MilvusClientV2(connectConfig);
@@ -108,18 +110,19 @@ public class EnableDynamicFieldDemo {
 
         // Output:
         // {
-        //     "color": "orange",
-        //     "color_tag": "orange_3484",
+        //     "color": "brown",
+        //     "color_tag": "brown_9454",
         //     "vector": [
-        //         0.7102922,
-        //         0.108297944,
-        //         0.51227134,
-        //         0.5478929,
-        //         0.47800457
+        //         0.16605926,
+        //         0.36485255,
+        //         0.7184302,
+        //         0.009486496,
+        //         0.45814043
         //     ],
         //     "id": 0,
-        //     "tag": 8745
+        //     "tag": 3367
         // }
+
 
 
 
@@ -140,6 +143,7 @@ public class EnableDynamicFieldDemo {
 
 
 
+
         Thread.sleep(5000);
 
         // 4. Search with non-schema-defined fields
@@ -149,6 +153,7 @@ public class EnableDynamicFieldDemo {
             .collectionName("customized_setup")
             .data(queryVectors)
             .filter("$meta[\"color\"] in [\"red\", \"green\"]")
+            .outputFields(List.of("id", "color_tag"))
             .topK(3)
             .build();
 
@@ -159,21 +164,31 @@ public class EnableDynamicFieldDemo {
         // Output:
         // {"searchResults": [[
         //     {
-        //         "distance": 1.1244214,
-        //         "id": 525,
-        //         "entity": {}
+        //         "distance": 1.3159835,
+        //         "id": 979,
+        //         "entity": {
+        //             "color_tag": "red_7155",
+        //             "id": 979
+        //         }
         //     },
         //     {
-        //         "distance": 0.9610535,
-        //         "id": 722,
-        //         "entity": {}
+        //         "distance": 1.0744804,
+        //         "id": 44,
+        //         "entity": {
+        //             "color_tag": "green_8006",
+        //             "id": 44
+        //         }
         //     },
         //     {
-        //         "distance": 0.9521862,
-        //         "id": 420,
-        //         "entity": {}
+        //         "distance": 1.0060014,
+        //         "id": 617,
+        //         "entity": {
+        //             "color_tag": "red_4056",
+        //             "id": 617
+        //         }
         //     }
         // ]]}
+
 
 
 

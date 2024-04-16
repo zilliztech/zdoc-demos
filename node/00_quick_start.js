@@ -130,124 +130,124 @@ async function main() {
     // ]
     // 
 
-// 7. Search with multiple vectors
-const query_vectors = [
-    [0.3580376395471989, -0.6023495712049978, 0.18414012509913835, -0.26286205330961354, 0.9029438446296592], 
-    [0.19886812562848388, 0.06023560599112088, 0.6976963061752597, 0.2614474506242501, 0.838729485096104]
-]
+    // 7. Search with multiple vectors
+    const query_vectors = [
+        [0.3580376395471989, -0.6023495712049978, 0.18414012509913835, -0.26286205330961354, 0.9029438446296592], 
+        [0.19886812562848388, 0.06023560599112088, 0.6976963061752597, 0.2614474506242501, 0.838729485096104]
+    ]
 
-res = await client.search({
-    collection_name: "quick_setup",
-    vectors: query_vectors,
-    limit: 5,
-})
+    res = await client.search({
+        collection_name: "quick_setup",
+        vectors: query_vectors,
+        limit: 5,
+    })
 
-console.log(res.results)
+    console.log(res.results)
 
-// Output
-// 
-// [
-//   [
-//     { score: 1, id: '0' },
-//     { score: 0.749187171459198, id: '160' },
-//     { score: 0.7374353408813477, id: '109' },
-//     { score: 0.7352343797683716, id: '120' },
-//     { score: 0.7103434205055237, id: '721' }
-//   ],
-//   [
-//     { score: 0.9999998807907104, id: '1' },
-//     { score: 0.983799934387207, id: '247' },
-//     { score: 0.9833251237869263, id: '851' },
-//     { score: 0.982724666595459, id: '871' },
-//     { score: 0.9819263219833374, id: '80' }
-//   ]
-// ]
-// 
+    // Output
+    // 
+    // [
+    //   [
+    //     { score: 1, id: '0' },
+    //     { score: 0.749187171459198, id: '160' },
+    //     { score: 0.7374353408813477, id: '109' },
+    //     { score: 0.7352343797683716, id: '120' },
+    //     { score: 0.7103434205055237, id: '721' }
+    //   ],
+    //   [
+    //     { score: 0.9999998807907104, id: '1' },
+    //     { score: 0.983799934387207, id: '247' },
+    //     { score: 0.9833251237869263, id: '851' },
+    //     { score: 0.982724666595459, id: '871' },
+    //     { score: 0.9819263219833374, id: '80' }
+    //   ]
+    // ]
+    // 
 
-// 8. Search with a filter expression using schema-defined fields
-res = await client.search({
-    collection_name: "quick_setup",
-    vectors: query_vector,
-    limit: 5,
-    filter: "500 < id < 800",
-    output_fields: ["id"]
-})
+    // 8. Search with a filter expression using schema-defined fields
+    res = await client.search({
+        collection_name: "quick_setup",
+        vectors: query_vector,
+        limit: 5,
+        filter: "500 < id < 800",
+        output_fields: ["id"]
+    })
 
-console.log(res.results)
+    console.log(res.results)
 
-// Output
-// 
-// [
-//   { score: 0.7103434205055237, id: '721' },
-//   { score: 0.6970766186714172, id: '736' },
-//   { score: 0.69532310962677, id: '797' },
-//   { score: 0.6908581852912903, id: '642' },
-//   { score: 0.634956955909729, id: '715' }
-// ]
-// 
+    // Output
+    // 
+    // [
+    //   { score: 0.7103434205055237, id: '721' },
+    //   { score: 0.6970766186714172, id: '736' },
+    //   { score: 0.69532310962677, id: '797' },
+    //   { score: 0.6908581852912903, id: '642' },
+    //   { score: 0.634956955909729, id: '715' }
+    // ]
+    // 
 
-// 9. Search with a filter expression using non-schema-defined fields
-res = await client.search({
-    collection_name: "quick_setup",
-    vectors: query_vector,
-    limit: 5,
-    filter: '$meta["color"] like "red%"',
-    output_fields: ["color"]
-})
+    // 9. Search with a filter expression using non-schema-defined fields
+    res = await client.search({
+        collection_name: "quick_setup",
+        vectors: query_vector,
+        limit: 5,
+        filter: '$meta["color"] like "red%"',
+        output_fields: ["color"]
+    })
 
-console.log(res.results)
+    console.log(res.results)
 
-// Output
-// 
-// [
-//   { score: 0.6625675559043884, id: '844', color: 'red_6894' },
-//   { score: 0.634956955909729, id: '715', color: 'red_2506' },
-//   { score: 0.6290165185928345, id: '1', color: 'red_7025' },
-//   { score: 0.6236231327056885, id: '539', color: 'red_9562' },
-//   { score: 0.6213124990463257, id: '224', color: 'red_3419' }
-// ]
-// 
+    // Output
+    // 
+    // [
+    //   { score: 0.6625675559043884, id: '844', color: 'red_6894' },
+    //   { score: 0.634956955909729, id: '715', color: 'red_2506' },
+    //   { score: 0.6290165185928345, id: '1', color: 'red_7025' },
+    //   { score: 0.6236231327056885, id: '539', color: 'red_9562' },
+    //   { score: 0.6213124990463257, id: '224', color: 'red_3419' }
+    // ]
+    // 
 
-// 10. query with schema-defined fields
-res = await client.query({
-    collection_name: "quick_setup",
-    expr: "id in [0, 1, 2, 3, 4]",
-    output_fields: ["id", "color"]  
-})
+    // 10. query with schema-defined fields
+    res = await client.query({
+        collection_name: "quick_setup",
+        expr: "id in [0, 1, 2, 3, 4]",
+        output_fields: ["id", "color"]  
+    })
 
-console.log(res.data)
+    console.log(res.data)
 
-// Output
-// 
-// [
-//   { id: '0', '$meta': { color: 'pink_8682' } },
-//   { id: '1', '$meta': { color: 'red_7025' } },
-//   { id: '2', '$meta': { color: 'orange_6781' } },
-//   { id: '3', '$meta': { color: 'pink_9298' } },
-//   { id: '4', '$meta': { color: 'red_4794' } }
-// ]
-// 
+    // Output
+    // 
+    // [
+    //   { id: '0', '$meta': { color: 'pink_8682' } },
+    //   { id: '1', '$meta': { color: 'red_7025' } },
+    //   { id: '2', '$meta': { color: 'orange_6781' } },
+    //   { id: '3', '$meta': { color: 'pink_9298' } },
+    //   { id: '4', '$meta': { color: 'red_4794' } }
+    // ]
+    // 
 
-// 11. query with non-schema-defined fields
-res = await client.query({
-    collection_name: "quick_setup",
-    expr: '$meta["color"] like "brown_8%"',
-    output_fields: ["color"],
-    limit: 5
-})
+    // 11. query with non-schema-defined fields
+    res = await client.query({
+        collection_name: "quick_setup",
+        expr: '$meta["color"] like "brown_8%"',
+        output_fields: ["color"],
+        limit: 5
+    })
 
-console.log(res.data)
+    console.log(res.data)
 
-// Output
-// 
-// [
-//   { '$meta': { color: 'brown_8242' }, id: '97' },
-//   { '$meta': { color: 'brown_8442' }, id: '137' },
-//   { '$meta': { color: 'brown_8243' }, id: '146' },
-//   { '$meta': { color: 'brown_8105' }, id: '278' },
-//   { '$meta': { color: 'brown_8447' }, id: '294' }
-// ]
-// 
+    // Output
+    // 
+    // [
+    //   { '$meta': { color: 'brown_8242' }, id: '97' },
+    //   { '$meta': { color: 'brown_8442' }, id: '137' },
+    //   { '$meta': { color: 'brown_8243' }, id: '146' },
+    //   { '$meta': { color: 'brown_8105' }, id: '278' },
+    //   { '$meta': { color: 'brown_8447' }, id: '294' }
+    // ]
+    // 
 
     // 12. Get entities by IDs
     res = await client.get({
